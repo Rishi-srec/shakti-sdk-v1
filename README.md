@@ -10,10 +10,10 @@ List of manuals for using SHAKTI-SDK
 
 List of Interactive videos to use SHAKTI over Xilinx Arty boards
 
-1. [Programming SHAKTI onto the FPGA boards - Part 1 video](https://youtu.be/oxsOwRpxfsQ)
-2. [Programming SHAKTI onto the FPGA boards - Part 2 video](https://youtu.be/ZrBL9veHV7c)
-3. [Steps to install SHAKTI-SDK](https://youtu.be/rFqSLuoXtaY)
-4. [Steps to add a simple application to SHAKTI-SDK](https://youtu.be/N7ZLXjTVYMk)
+1. [Programming SHAKTI onto the FPGA boards - Part 1 video](https://www.youtube.com/watch?v=cpGy9iZIrfo)
+2. [Programming SHAKTI onto the FPGA boards - Part 2 video](https://www.youtube.com/watch?v=oYEvvZ-oa1g)
+3. [Steps to install SHAKTI-SDK](https://www.youtube.com/watch?v=hjftmb1Ye2A&t=6s)
+4. [Steps to add a simple application to SHAKTI-SDK](https://www.youtube.com/watch?v=qEoJzhBs9uI)
 
 
 
