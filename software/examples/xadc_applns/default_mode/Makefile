@@ -1,7 +1,7 @@
 #Created by Sathya Narayanan N
 # Email id: sathya281@gmail.com
 
-#   Copyright (C) 2019  IIT Madras. All rights reserved.
+#   Copyright (C) 2020  IIT Madras. All rights reserved.
 
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -18,23 +18,21 @@
 
 SHELL := /bin/bash # Use bash syntax
 DC ?=
-PROGRAM ?=
+PROGRAM ?= default_mode
 #default target board
 TARGET ?= artix7_35t
 DEBUG ?=
 MARCH ?= rv32imac
-MABI  ?= ilp32
-XLEN  ?= 32
-FLASHSPEC :=../../../../bsp/drivers/spi/spi_spansion.c
+MABI ?= ilp32
+XLEN ?= 32
 FLAGS ?=
 
 all: create_dir
-	make spiread.riscv
+	make $(PROGRAM).riscv
 
-spiread.riscv: create_dir
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspboard) -I$(bspinc) -c $(bspdri)/spi/spi_spansion.c -o ./output/spi_driver.o -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bspboard) -I$(bspinc)  -c ./spi.c -o ./output/spi.o -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a ./output/spi_driver.o ./output/spi.o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
+$(PROGRAM).riscv: create_dir
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS)-I$(bsplib) -I$(bspinc) -I$(bspboard) -c ./$(PROGRAM).c -o ./output/$(PROGRAM).o 
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld ./output/$(PROGRAM).o $(GENLIB)/gen_lib/libshakti$(XLEN).a -o ./output/$(PROGRAM).shakti -static -nostartfiles 
 	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 
 create_dir:

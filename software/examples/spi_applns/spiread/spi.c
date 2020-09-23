@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project                               :  shakti devt board
- * Name of the file                      :  spi.c
- * Brief Description of file             :  read data from the flash by spi 
- * Name of Author                        :  Kaustubh Ghormade
- * Email ID                              :  kaustubh4347@gmail.com
+ * Project                               : shakti devt board
+ * Name of the file                      : spi.c
+ * Brief Description of file             : read data from the flash by spi 
+ * Name of Author                        : Kaustubh Ghormade
+ * Email ID                              : kaustubh4347@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -20,34 +20,36 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ***************************************************************************/
-
-#include <stdint.h>
+/**
+@file spi.c
+@brief read data from the flash by spi
+@detail Contains driver codes to read and write flash using SPI interface.
+*/
 #include "spi.h"
+#include "uart.h"
+#include "utils.h"
 
-/** @fn main
- * @brief 
- * @details 
- * @warning 
- * @param[in] No input parameter 
- * @param[Out] No output parameter
+/** @fn void main()
+ * @brief Configures the SPI flash and reads the flash.
+ * @details Configures the SPI flash, Confirms the flash device id and then read 10 addresses in flash
+ *          and prints the value. 
  */
-void main(){
+void main(void){
 
-    configure_spi(SPI1_OFFSET);	
+	configure_spi(SPI0_OFFSET);	
+
 	spi_init();
 	printf("SPI init done\n");
 	flash_device_id();
 	waitfor(200);
 	int total_data = 10; //total data you want to read/write
 	int read_address = 0x00b00000;  //read from this address
-	int* bram_address = (int*) 0x80010000; //write to this address
 
 	for(int i = 0; i < total_data; ++i)
 	{
 		int read_value= flash_read(read_address);
 		printf("Reading from adddress %x and data \
 		       %x\n",read_address,read_value);
-		*(bram_address+i) = read_value;
 		read_address=read_address+4;
 	} 
 	asm volatile ("ebreak");

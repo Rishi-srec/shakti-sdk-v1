@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project           			: shakti devt board
-* Name of the file	     		: csr_test.c
+* Project           		: shakti devt board
+* Name of the file	     	: csr_test.c
 * Brief Description of file     :
 * Name of Author    	        : Sathya Narayanan N
 * Email ID                      : sathya281@gmail.com
@@ -21,13 +21,17 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ***************************************************************************/
+/**
+@file csr_test.c 
+@brief  
+@detail 
+*/
+
 #include "uart.h"//Includes the definitions of uart communication protocol//
 #include <stdio.h>
 
-/** @fn main
+/** @fn void main()
  * @brief prints hello world 
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */
 void main()
 {

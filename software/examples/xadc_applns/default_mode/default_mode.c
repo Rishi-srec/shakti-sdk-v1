@@ -1,11 +1,11 @@
 /***************************************************************************
-* Project           		:  shakti devt board
-* Name of the file	     	:  hello.c
-* Brief Description of file     :  Does the printing of hello with the help of uart communication protocol.
-* Name of Author    	        :  Sathya Narayanan N
-* Email ID                      :  sathya281@gmail.com
+* Project                               : shakti devt board
+* Name of the file                      : xadc_default.c
+* Brief Description of file             :
+* Name of Author                        :
+* Email ID                              :
 
- Copyright (C) 2019  IIT Madras. All rights reserved.
+ Copyright (C) 2020  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -22,18 +22,24 @@
 
 ***************************************************************************/
 /**
-@file hello.c
-@brief Does the printing of hello with the help of uart communication
-@detail 
+@file xadc_default.c
+@brief  write data to flash by xadc
+@detail Contains driver codes to read and write flash using SPI interface.
 */
 
-#include<uart.h>
+#include <stdint.h>
+#include "xadc_driver.h"
+#include "uart.h"
 
-/** @fn void main()
- * @brief prints hello world
- */
-void main()
+int main()
 {
-	printf ("Hello World !\n");
-	while(1);
+	while(1)
+	{
+		uint32_t value = xadc_read_data(0x41200);
+
+		printf("value = %f\n", xadc_onchip_temp(value));
+
+		value = xadc_read_data(0x41204);
+		printf("value = %f\n", xadc_onchip_voltage(value));
+	}
 }

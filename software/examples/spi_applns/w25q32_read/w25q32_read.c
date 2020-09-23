@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           					: shakti devt board
- * Name of the file	     				: w25q32_read.c
- * Brief Description of file            : Performs the windonb flash  spi reading of 0 to 100                                                  numbers.
- * Name of Author    	                : G Nambirajan & Koteeswaran
- * Email ID                             : nambirajan2004@gmail.com
+ * Project           		: shakti devt board
+ * Name of the file	        : w25q32_read.c
+ * Brief Description of file    : Performs the windonb flash  spi reading of 0 to 100                                                  numbers.
+ * Name of Author    	        : G Nambirajan & Koteeswaran
+ * Email ID                     : nambirajan2004@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -25,6 +25,7 @@
 @brief  Contains the driver routines for flash read over SPI interface.
 @detail Configures and reads the flash over SPI interface..
 */
+
 /*********************************************
 PIN DETAILS CONNECTION OF WINBOND W25Q32 FLASH
 d1 - spi mosi
@@ -36,12 +37,9 @@ cs  -spi cs
 #include "spi.h"
 
 /** 
- * @fn read_w25q32_registers
+ * @fn void w25q32()
  * @brief Reads the spi value from w25q32
  * @details Reads SPI over w25q32 interface
- * @param[in]  Nil
- * @param[Out] int
- * @return Void function (Null)
  */
 void w25q32()
 {
@@ -65,13 +63,10 @@ void w25q32()
 }
 
 /** 
- * @fn main
+ * @fn void main()
  * @brief Configures and reads the SPI values.
  * @details Configures the SPI read FLASH values, reads the same 
  * prints the read values.
- * @param[in] No input parameter
- * @param[Out] int
- * @return Void function (Null)
  */
 void main()
 {

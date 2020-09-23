@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           					:  shakti devt board
- * Name of the file	     				:  mcp4921_dac.c
- * Brief Description of file            :  Performs the Digital to analog operation with spi                                                    writing.
- * Name of Author    	                :  G Nambirajan, Koteeswaran
- * Email ID                             :  nambirajan2004@gmail.com
+ * Project           		:  shakti devt board
+ * Name of the file	     	:  mcp4921_dac.c
+ * Brief Description of file    :  Performs the Digital to analog operation with spi writing.
+ * Name of Author    	        :  G Nambirajan, Koteeswaran
+ * Email ID                     :  nambirajan2004@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -30,13 +30,10 @@
 #include "spi.h"
 #include <stdint.h>
 
-/** @fn spi_dac
+/** @fn void spi_dac()
  * @brief Configures DAC and write digital value to DAC.
  * @details configures the DAC and writes the digital value to DAC to convert 
  *          with digital to analog. Configuration is done using SPI.
- * @param[in]  unsigned int, unsigned int, unsigned char, unsigned long
- * @param[Out] int
- * @return Void function.
  */
 void spi_dac()
 {
@@ -63,11 +60,10 @@ void spi_dac()
 	}
 } 
 
-/** @fn write_dac_value
+/** @fn int write_dac_value(unsigned dac_value)
  * @brief Writes the passed Value to DAC
  * @details Writes Digital value that needs to be convert into analog over SPI interface
- * @param[in]  unsigned int
- * @param[Out] int
+ * @param dac_value
  * @return One.
  */
 int write_dac_value(unsigned dac_value)
@@ -90,13 +86,10 @@ int write_dac_value(unsigned dac_value)
 	return 1;
 }
 
-/** @fn main
+/** @fn void main()
  * @brief Configures and Write the SPI values.
  * @details Configures DAC registers and then write the digital 
  *          that needs to be converted to analog.  
- * @param[in] No input parameter
- * @param[Out] Nil
- * @return Void function.
  */
 void main()
 {

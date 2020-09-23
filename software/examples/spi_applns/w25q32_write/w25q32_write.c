@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           			   : shakti devt board
- * Name of the file	     	       : w25q32_write.c
+ * Project           	           : shakti devt board
+ * Name of the file	     	   : w25q32_write.c
  * Brief Description of file       : Performs the windonb flash  spi writing of 0 to 100 nos .
  * Name of Author    	           : G Nambirajan & Koteeswaran
  * Email ID                        : nambirajan2004@gmail.com
@@ -33,16 +33,12 @@ d0 - spi miso
 clk -spi clk
 cs  -spi cs
 *************************************************/
-
 #include <stdint.h>
 #include "spi.h"
 
-/** @fn Write_w25q32_registers
+/** @fn void w25q32()
  * @brief Writes the spi value to w25q32
  * @details Writes SPI over w25q32 interface
- * @param[in]  unsigned int, unsigned int, unsigned char, unsigned long
- * @param[Out] int
- * @return Void function (Null)
  */
 void w25q32()
 {
@@ -68,13 +64,10 @@ void w25q32()
 	printf("SPI Write Success\n");
 }
 
-/**  @fn main
+/**  @fn void main()
  * @brief Configures and Write the SPI values.
  * @details Configures the SPI Write FLASH values, Write the same 
  * prints the write values.
- * @param[in] No input parameter
- * @param[Out] int
- * @return Void function (Null)
  */
 void main()
 {

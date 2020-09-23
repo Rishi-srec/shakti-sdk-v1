@@ -1,7 +1,7 @@
 #Created by Sathya Narayanan N & Abhinav Ramnath
 # Email id: sathya281@gmail.com & abhinavramnath13@gmail.com
 
-#   Copyright (C) 2019  IIT Madras. All rights reserved.
+#  Copyright (C) 2019 IIT Madras. All rights reserved.
 
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -10,11 +10,11 @@
 
 #This program is distributed in the hope that it will be useful,
 #but WITHOUT ANY WARRANTY; without even the implied warranty of
-#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
 
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 SHELL := /bin/bash # Use bash syntax
 
@@ -34,12 +34,13 @@ FLASH ?=
 XLEN ?=32
 filepath ?=
 D ?=
+OPENOCD ?= $(shell which openocd)
 
 # Invoke all possible combinations of applns for different targets
 # There is a provision to make in the exact folder where code is written
 # We are using that provision to invole appropriate makefile scripts from top folder
 all: check library do upload flash finish
-	@echo "TARGET is" $(TARGET)
+	@echo "All done !"
 
 check:
 ifeq ($(DEBUG),DEBUG)
@@ -48,7 +49,8 @@ endif
 
 ifeq ($(TARGET),artix7_35t)
 	@$(eval XLEN = 32)
-	@$(eval FLAGS= -D ARTIX7_35T)
+	@$(eval WIDTH = 4)
+	@$(eval FLAGS=-Wall -Wextra -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-align -Wsign-compare -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wunused  -D ARTIX7_35T)
 	@$(eval MARCH=rv32imac)
 	@$(eval MABI=ilp32)
 	@$(eval INTERFACE=$(bspboard)/ftdi)
@@ -56,6 +58,7 @@ ifeq ($(TARGET),artix7_35t)
 else
 ifeq ($(TARGET),artix7_100t)
 	@$(eval XLEN = 64)
+	@$(eval WIDTH = 8)
 	@$(eval FLAGS= -D ARTIX7_100T)
 	@$(eval MARCH=rv64imac)
 	@$(eval MABI=lp64)
@@ -64,6 +67,7 @@ ifeq ($(TARGET),artix7_100t)
 else
 ifeq ($(TARGET),aardonyx)
 	@$(eval XLEN = 32)
+	@$(eval WIDTH = 4)
 	@$(eval FLAGS= -D AARDONYX)
 	@$(eval MARCH=rv32imac)
 	@$(eval MABI=ilp32)
@@ -72,7 +76,40 @@ ifeq ($(TARGET),aardonyx)
 	@$(eval INTERFACE=$(bspboard)/jlink)
 	@$(eval DC =$(FLAGS) $(D) )
 else
+ifeq ($(TARGET),pinaka)                         # e-class 35t rv32imac
+	@$(eval XLEN = 32)
+	@$(eval WIDTH = 4)
+	@$(eval FLAGS= -D pinaka)
+	@$(eval MARCH=rv32imac)
+	@$(eval MABI=ilp32)
+	@$(eval UPLOADER=$(UPLOADDIR)/spansion)
+	@$(eval INTERFACE=$(bspboard)/ftdi)
+	@$(eval DC =$(FLAGS) $(D))
+else
+ifeq ($(TARGET),parashu)                         # e-class 100t rv32imac
+	@$(eval XLEN = 32)
+	@$(eval WIDTH = 4)
+	@$(eval FLAGS= -D parashu)
+	@$(eval MARCH=rv32imac)
+	@$(eval MABI=ilp32)
+	@$(eval UPLOADER=$(UPLOADDIR)/spansion)
+	@$(eval INTERFACE=$(bspboard)/ftdi)
+	@$(eval DC =$(FLAGS) $(D))
+else
+ifeq ($(TARGET),vajra)                         # c-class 100t rv64imacsu
+	@$(eval XLEN = 64)
+	@$(eval WIDTH = 8)
+	@$(eval FLAGS= -D vajra)
+	@$(eval MARCH=rv64imac)
+	@$(eval MABI=lp64)
+	@$(eval UPLOADER=$(UPLOADDIR)/spansion)
+	@$(eval INTERFACE=$(bspboard)/ftdi)
+	@$(eval DC =$(FLAGS) $(D))
+else
 	@echo -e "$(TARGET) not supported"
+endif
+endif
+endif
 endif
 endif
 endif
@@ -83,22 +120,23 @@ ifeq ($(CLEAR),)
 endif
 compile:
 	@mkdir -p ./gen_lib
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc) -c $(bsplib)/util.c -o ./gen_lib/util.o -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(bspcore)/traps.c -o ./gen_lib/traps.o  -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(bspdri)/qspi/qspi_micron.c -o ./gen_lib/qspi_micron.o  -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/pwm/pwm_driver.c -o ./gen_lib/pwm_driver.o -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/uart/uart.c -o ./gen_lib/uart.o -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc) -I$(bspboard) -c $(bspdri)/i2c/i2c_driver.c -o ./gen_lib/i2c_driver.o  -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI)  -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf  -D__ASSEMBLY__=1 -I$(bspinc) -c $(bspcore)/start.S -o ./gen_lib/start.o
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI)  -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf  -D__ASSEMBLY__=1 -I$(bspinc) -c $(bspcore)/trap.S -o ./gen_lib/trap.o
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH)  -mabi=$(MABI) -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf  -I$(bspinc) -I$(bspboard) -c $(bsplib)/printf.c -o ./gen_lib/printf.shakti
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc)  -I$(bspboard) -c $(bsplib)/log.c -o ./gen_lib/log.o -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -I$(bspdri)/plic -c $(bspcore)/init.c -o ./gen_lib/init.o  -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/plic/plic_driver.c -o ./gen_lib/plic_driver.o          -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/clint/clint_driver.c -o ./gen_lib/clint_driver.o        -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(bsplib)/util.c -o ./gen_lib/util.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(bspcore)/traps.c -o ./gen_lib/traps.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(bspdri)/qspi/qspi_micron.c -o ./gen_lib/qspi_micron.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/pwm/pwm_driver.c -o ./gen_lib/pwm_driver.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/xadc/xadc_driver.c -o ./gen_lib/xadc_driver.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/uart/uart.c -o ./gen_lib/uart.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/i2c/i2c_driver.c -o ./gen_lib/i2c_driver.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf -D__ASSEMBLY__=1 -I$(bspinc) -c $(bspcore)/start.S -o ./gen_lib/start.o
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf -D__ASSEMBLY__=1 -I$(bspinc) -c $(bspcore)/trap.S -o ./gen_lib/trap.o
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bsplib)/printf.c -o ./gen_lib/printf.shakti
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bsplib)/log.c -o ./gen_lib/log.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -I$(bspdri)/plic -c $(bspcore)/init.c -o ./gen_lib/init.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/plic/plic_driver.c -o ./gen_lib/plic_driver.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -I$(bspboard) -c $(bspdri)/clint/clint_driver.c -o ./gen_lib/clint_driver.o -lm -lgcc
 
 build:
-	@riscv$(XLEN)-unknown-elf-ar rcs ./gen_lib/libshakti$(XLEN).a ./gen_lib/start.o ./gen_lib/trap.o ./gen_lib/util.o ./gen_lib/traps.o ./gen_lib/log.o ./gen_lib/printf.shakti ./gen_lib/qspi_micron.o ./gen_lib/uart.o ./gen_lib/i2c_driver.o ./gen_lib/clint_driver.o ./gen_lib/plic_driver.o ./gen_lib/init.o ./gen_lib/pwm_driver.o 
+	@riscv$(XLEN)-unknown-elf-ar rcs ./gen_lib/libshakti$(XLEN).a ./gen_lib/start.o ./gen_lib/trap.o ./gen_lib/util.o ./gen_lib/traps.o ./gen_lib/log.o ./gen_lib/printf.shakti ./gen_lib/qspi_micron.o ./gen_lib/uart.o ./gen_lib/i2c_driver.o ./gen_lib/clint_driver.o ./gen_lib/plic_driver.o ./gen_lib/init.o  ./gen_lib/xadc_driver.o ./gen_lib/pwm_driver.o
 	
 do:
 ifeq ($(PROGRAM),all)
@@ -110,6 +148,7 @@ ifeq ($(PROGRAM),all)
 	cd ./uart_applns && $(MAKE) all TARGET=$(TARGET)
 	cd ./clint_applns && $(MAKE) all TARGET=$(TARGET)
 	cd ./malloc_test && $(MAKE) all TARGET=$(TARGET)
+	cd ./xadc_applns && $(MAKE) all TARGET=$(TARGET)
 else
 ifeq ($(PROGRAM),hello)
 filepath := uart_applns/hello
@@ -120,6 +159,9 @@ else
 ifeq ($(PROGRAM),pwminterrupt)
 filepath := plic_applns/pwminterrupt
 else
+ifeq ($(PROGRAM),pwminterrupt)
+filepath := plic_applns/asm_int
+else
 ifeq ($(PROGRAM),lm75)
 filepath := i2c_applns/lm75
 else
@@ -128,6 +170,9 @@ filepath := i2c_applns/ds3231
 else
 ifeq ($(PROGRAM),pcf8591)
 filepath := i2c_applns/pcf8591
+else
+ifeq ($(PROGRAM),pcf8574)
+filepath := i2c_applns/pcf8574
 else
 ifeq ($(PROGRAM),btnled)
 filepath := gpio_applns/btnled
@@ -162,6 +207,9 @@ else
 ifeq ($(PROGRAM),rgb)
 filepath := gpio_applns/rgb
 else
+ifeq ($(PROGRAM),linkedlist)
+filepath := malloc_test/linkedlist
+else
 ifeq ($(PROGRAM),light_blocking)
 filepath := gpio_applns/light_blocking
 else
@@ -188,6 +236,9 @@ filepath := gpio_applns/gyroi2c
 else
 ifeq ($(PROGRAM),buttons)
 filepath := gpio_applns/buttons
+else
+ifeq ($(PROGRAM),spierase)
+filepath := spi_applns/spierase
 else
 ifeq ($(PROGRAM),spiwrite)
 filepath := spi_applns/spiwrite
@@ -225,7 +276,59 @@ else
 ifeq ($(PROGRAM),counter)
 filepath := clint_applns/counter
 else
+ifeq ($(PROGRAM),adc)
+filepath := uart_applns/adc
+else
+ifeq ($(PROGRAM),ds3231_gpio)
+filepath := gpio_applns/ds3231_gpio
+else
+ifeq ($(PROGRAM),gyro_softi2c)
+filepath := gpio_applns/gyro_softi2c
+else
+ifeq ($(PROGRAM),onewire)
+filepath := gpio_applns/onewire
+else
+ifeq ($(PROGRAM),uartmp3)
+filepath := uart_applns/uartmp3
+else
+ifeq ($(PROGRAM),wifi)
+filepath := uart_applns/wifi
+else
+ifeq ($(PROGRAM),pwminterrupt_test1)
+filepath := plic_applns/pwminterrupt_test1
+else
+ifeq ($(PROGRAM),pwminterrupt_test2)
+filepath := plic_applns/pwminterrupt_test2
+else
+ifeq ($(PROGRAM),pwminterrupt_test2)
+filepath := plic_applns/pwminterrupt_test2
+else
+ifeq ($(PROGRAM),pwminterrupt_test3)
+filepath := plic_applns/pwminterrupt_test3
+else
+ifeq ($(PROGRAM),pwminterrupt_test4)
+filepath := plic_applns/pwminterrupt_test4
+else
+ifeq ($(PROGRAM),pwminterrupt_test5)
+filepath := plic_applns/pwminterrupt_test5
+else
+ifeq ($(PROGRAM),pwminterrupt_test6)
+filepath := plic_applns/pwminterrupt_test6
+else
+ifeq ($(PROGRAM),esp8266)
+filepath := uart_applns/esp8266
+else
+ifeq ($(PROGRAM),bmp280)
+filepath := i2c_applns/bmp280
+else
+ifeq ($(PROGRAM),default_mode)
+filepath := xadc_applns/default_mode
+else
 	@echo "Entry for $(PROGRAM) not present"
+endif
+endif
+endif
+endif
 endif
 endif
 endif
@@ -265,26 +368,49 @@ endif
 endif
 endif
 endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
+endif
 
-upload: path do
+erase: check library 
+	@rm -r output
+	@mkdir output
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspboard) -I$(bspinc)  -c ../../bsp/utils/uploader/spansion/erase.c -o ./gen_lib/erase.o 
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(bspdri)/spi/spi_spansion.c -o gen_lib/flash_driver.o  
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a gen_lib/flash_driver.o ./gen_lib/erase.o -o ./gen_lib/flasherase.shakti -static -nostartfiles 
+
+
+upload: library do finish do1 path 
 path:
 FILEPATH:='"$(GENLIB)$(filepath)"'
 
-do:
+do1:
 ifeq ($(UPLOAD),UPLOAD)
 	@elf2hex 4 8192 $(filepath)/output/$(PROGRAM).shakti 2147483648 > $(filepath)/output/code.mem
 	@gcc -g -w -D FILEPATH='"$(FILEPATH)"' $(UPLOADDIR)/elf_to_header.c -o $(filepath)/output/elf_to_header
 	@$(filepath)/output/elf_to_header
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bspinc) -I$(filepath)/output -c $(UPLOADER)/deploy.c -o $(filepath)/output/deploy.o -march=$(MARCH) -mabi=$(MABI) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc) -c $(FLASHSPEC) -o $(filepath)/output/flash_driver.o -march=$(MARCH)  -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -T $(bspboard)/link.ld $(filepath)/output/deploy.o $(filepath)/output/flash_driver.o $(GENLIB)/gen_lib/libshakti$(XLEN).a -o $(filepath)/output/deploy.shakti -static -nostartfiles -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bspboard) -I$(bspinc) -I$(filepath)/output -c $(UPLOADER)/deploy.c -o $(filepath)/output/deploy.o -march=$(MARCH) -mabi=$(MABI) -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspinc) -c $(FLASHSPEC) -o $(filepath)/output/flash_driver.o -march=$(MARCH) -mabi=$(MABI) -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -T $(bspboard)/link.ld $(filepath)/output/deploy.o $(filepath)/output/flash_driver.o $(GENLIB)/gen_lib/libshakti$(XLEN).a -o $(filepath)/output/deploy.shakti -static -nostartfiles -march=$(MARCH) -mabi=$(MABI) -lm -lgcc
 	@riscv$(XLEN)-unknown-elf-objdump -D $(filepath)/output/deploy.shakti > $(filepath)/output/deploy.dump
 	@echo -e "Upload elf to Flash"
-#@$(UPLOADDIR)/burnFlash.py ./gen)lib/deploy.shakti
-	@sudo $(OCDPATH)/openocd -f $(INTERFACE).cfg -c "reset init"  -c "load_image $(filepath)/output/deploy.shakti;resume 0x80000000;shutdown"
+#	@$(UPLOADDIR)/burnFlash.py ./genlib/deploy.shakti
+	@sudo $(OPENOCD) -f $(INTERFACE).cfg -c "reset init" -c "load_image $(filepath)/output/deploy.shakti ;resume 0x80000000;shutdown"
 	@rm -rf ./gen_lib/*.o
 endif
-
 
 flash:
 ifeq ($(FLASH),FLASH)
@@ -295,12 +421,11 @@ aardonyx : flashsize flashcheck objectsize swap filesize fill layoutsize layout 
 flashsize:
 	@echo "Calculating flash size"
 	@$(eval FLASHROM = $(shell egrep -o -e '[0-9]+\ kB' ./$(filepath)/output/flashoutput.txt | egrep -o '[0-9]+') )
-	@$(eval FLASHSIZE = $(shell echo  $(FLASHROM)*1024  | bc ) )
+	@$(eval FLASHSIZE = $(shell echo $(FLASHROM)*1024 | bc ) )
 	@echo "Checking for flash"
 flashcheck:
 	@echo "Size of flash attached is" $(FLASHSIZE)
-#	Converts .shakti file to binary file	
-	@riscv32-unknown-elf-objcopy -O binary ./$(filepath)/output/$(PROGRAM).shakti ./$(filepath)/output/output.bin      
+	@riscv32-unknown-elf-objcopy -O binary ./$(filepath)/output/$(PROGRAM).shakti ./$(filepath)/output/output.bin 
 
 objectsize:
 #Find size of output.bin and append it to the binary file
@@ -316,7 +441,7 @@ swap:
 filesize:
 	@$(eval FILESIZE=$(shell stat -c%s ./$(filepath)/output/newoutput.bin) )
 fill:
-	@$(eval SPACE = $(shell echo  $(FLASHSIZE)-$(FILESIZE)  | bc ) )
+	@$(eval SPACE = $(shell echo $(FLASHSIZE)-$(FILESIZE) | bc ) )
 	@echo "Expanding bin to flash size. This might take a few seconds.."
 #the file is expanded to 32kb and appended with 0's where required.
 	@dd if=/dev/zero of=./$(filepath)/output/newoutput.bin bs=1 count=$(SPACE) conv=notrunc oflag=append
@@ -324,14 +449,12 @@ layoutsize:
 	@printf "%x\n" $(FLASHSIZE) > ./$(filepath)/output/size1.txt	
 layout:
 	@$(eval FILESIZE= $(shell cat ./$(filepath)/output/size.txt) )
-#	@echo $(FILESIZE)
 	@echo "0000:$(FILESIZE) flash" > ./$(filepath)/output/layout.txt
 flashrom:
 	@flashrom -p ft2232_spi:type=arm-usb-tiny-h -l ./$(filepath)/output/layout.txt -i flash -w ./$(filepath)/output/newoutput.bin
 clean:
 	@rm -rf ./$(filepath)/output/*.txt
 	@rm -rf ./$(filepath)/output/*.bin
-
 
 finish:
 ifeq ($(PROGRAM),all)
