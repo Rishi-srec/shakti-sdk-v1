@@ -1,7 +1,6 @@
 /***************************************************************************
 * Project                               :  shakti devt board
 * Name of the file                      :  lm75.c
-* Created date                          :  22.10.2019
 * Brief Description of file             :  A sample project to demonstrate 
                                            integration of temperature sensor 
                                            and transmission of data to a website
@@ -29,6 +28,7 @@
 @brief  Reads room temperature.
 @detail Reads the temperature from LM75.
 */
+
 #include <stdint.h>//Includes the definitions of standard input/output functions//
 #include "i2c.h"
 #define DELAY_VALUE 900 
@@ -38,12 +38,10 @@
 #define LM75_I2C 1
 
 
-/** @fn temperature_value
+/** @fn int temperature_value(void)
  * @brief reads temperature value from lm75 and prints the same.
  * @details Configures the LM75, Reads the encoded temperature value, 
  * calculates the actual temperature value and prints the same.
- * @param[in] No input parameter
- * @param[Out] int
  * @return 999 on failure; else infinite loop to read temperature.
  */
 int temperature_value(void)
