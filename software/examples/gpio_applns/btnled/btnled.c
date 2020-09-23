@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           			: shakti devt board
- * Name of the file	     		: btnled.c
+ * Project           	        : shakti devt board
+ * Name of the file	        : btnled.c
  * Brief Description of file    : Controls the led operation with help of button,gpio based.
  * Name of Author    	        : Sathya Narayanan N & Raghav
  * Email ID                     : sathya281@gmail.com
@@ -21,13 +21,20 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ***************************************************************************/
-#include "gpio.h" 
+/**
+@file btnled.c
+@brief Controls the led operation with help of button,gpio based.
+@detail A led glows when a button is pressed. The button controlled led is
+implemented using gpio pins.
+*/
+
+#include "gpio.h"
 #include "platform.h"
 
-/** @fn main
+/** @fn int main(void)
  * @brief on press of a button led grows. The technique used here is polling
- * based.
- * @param[Out] int
+ *    based.
+ * @return int
  */
 int main(void)
 {

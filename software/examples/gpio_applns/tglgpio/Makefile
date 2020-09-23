@@ -24,18 +24,16 @@ PROGRAM ?=
 TARGET ?= artix7_35t
 DEBUG ?=
 MARCH ?= rv32imac
-MABI  ?=
+MABI  ?= ilp32
 XLEN  ?= 32
 FLAGS ?=
 
 all: create_dir
 	make tglgpio.riscv
 
-
-
 tglgpio.riscv: create_dir
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bspinc)  -I$(bspboard) -c ./tglgpio.c -o ./output/tglgpio.o -march=$(MARCH) -lm -lgcc -mabi=$(MABI)
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a ./output/tglgpio.o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bspinc)  -I$(bspboard) -c ./tglgpio.c -o ./output/tglgpio.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld ./output/tglgpio.o $(GENLIB)/gen_lib/libshakti$(XLEN).a -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
 	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 
 create_dir:

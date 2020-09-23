@@ -1,7 +1,7 @@
 /***************************************************************************
- * Project           	        : shakti devt board
- * Name of the file	          : human_detection.c
- * Brief Description of file  : Helps to detects the persons around the range of the module with the                                 help of gpio pins
+ * Project           	      : shakti devt board
+ * Name of the file	      : human_detection.c
+ * Brief Description of file  : Helps to detects the persons around the range of the module with the help of gpio pins
  * Name of Author             : Soutrick Roy Chowdhury
  * Email ID                   : soutrick97@gmail.com
 
@@ -20,24 +20,21 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *****************************************************************************/
+/**
+@file human_detection.c
+@brief Implements gpio functionality
+@detail It helps to detect the presence of human within a certain range.
+*/
+
 #include <stdio.h>
 #include "gpio.h"
 #include "platform.h"
+#include "utils.h"
 
-/** @fn delay_loop
- * @brief Maintains the required delay to perform an operation  
- * @warning No warning
- * @param[in] unsigned long, unsigned long
- * @param[Out] No output parameter
- */
-extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
-
-/** @fn main
+/** @fn void main()
  * @brief Used to read through Human Detection Sensors
  * @details Printing the presence of a person near it
  * @warning We have to set the potentiometer correctly to get the correct result
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */
 void main()
 {
@@ -46,14 +43,17 @@ void main()
     
     while (1){
         	readData = read_word(GPIO_DATA_REG);
-		      if (readData == 0x00000001){
-              printf("\nHuman Detected");
-            }
-            else{
-              printf("\nNo one detected");
-            }
-            
+
+	        if (readData == 0x00000001){
+
+ 		printf("\nHuman Detected");
+                }
+
+                else{
+		printf("\nNo one detected");
+             	}
+          
 	      	delay_loop(1000, 1000);
-    }
+    	      }
 }
     

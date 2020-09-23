@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project           			: shakti devt board
-* Name of the file	     		: tglgpio.c
+* Project           		: shakti devt board
+* Name of the file	     	: tglgpio.c
 * Brief Description of file     : Control an led with the help of a button, gpio based.
 * Name of Author    	        : Sathya Narayanan N
 * Email ID                      : sathya281@gmail.com
@@ -21,6 +21,10 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ***************************************************************************/
+/**
+@file tglgpio.c
+@brief Control an led with the help of a button, gpio based.
+*/
 
 #include "platform.h"
 #include "utils.h" 
@@ -28,9 +32,6 @@
 
 /** @fn tglgpio
  * @brief Performs the toggling operation  with the help of button.
- * @warning No warning
- * @param[in] Registers,control word
- * @param[Out] No output parameter
  */
 void tglgpio()
 {
@@ -47,9 +48,6 @@ void tglgpio()
 
 /** @fn main
  * @brief Initiates writing to gpio pins by calling tglgpio
- * @warning No warning
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */ 
 void main()
 {

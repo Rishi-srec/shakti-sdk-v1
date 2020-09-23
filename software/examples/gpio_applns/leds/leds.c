@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           	   	   :  shakti devt board
- * Name of the file	     	   :  leds.c
- * Brief Description of file   :  Control an led with the help of a button, gpio based.
- * Name of Author    	       :  Kotteeswaran
- * Email ID                    :  kottee.1@gmail.com
+ * Project           	       : shakti devt board
+ * Name of the file	       : leds.c
+ * Brief Description of file   : Control an led with the help of a button, gpio based.
+ * Name of Author    	       : Kotteeswaran
+ * Email ID                    : kottee.1@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -21,14 +21,15 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  ***************************************************************************/
 /**
-@file   leds.c
-@brief  Contains the driver routines to glow LEDs.
+@file leds.c
+@brief Contains the driver routines to glow LEDs.
 @detail Switches ON/OFF/TOGGLE the LEDs.
 */
-#include "platform.h"
-#include "gpio.h" 
-#include "led_driver.h"
 
+#include "platform.h"
+#include "gpio.h" // includes definitions of gpio pins and read, write functions//
+#include "led_driver.h"
+#include "utils.h"
 
 /*! Define one of the the following macros to control LEDs in different ways. */
 //#define CONTROL_INDIVIDUAL_LEDS  /*! Controls LEDs Individually */
@@ -44,22 +45,10 @@
 #define DELAY1 1000
 #define DELAY2 1000
 
-/** @fn delay_loop
- * @brief Maintains the required delay to perform an operation
- * @details adds cntr1 * cntr2 number of nops (delay)
- * @param[in] unsigned long, unsigned long
- * @param[Out] No output parameter
- */
-extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
-
-/** @fn main
+/** @fn void main()
  * @brief Performs the toggling operation  with the help of button.
  * @details Based on the uncommented macro. Performs the on/off/toggle 
- * operation on LEDS.    
- * @warning 
- * @param[in] No input parameter
- * @param[Out] No output parameter 
- * @return Nil
+ * operation on LEDS.     
  */
 void main()
 {
@@ -118,6 +107,7 @@ void main()
 #ifdef TOGGLE_ALL_LEDX
 	configure_all_leds();
 #endif
+
 
 	write_word(GPIO_DATA_REG, 0x0);
 
@@ -200,6 +190,7 @@ void main()
 		delay_loop(DELAY1, DELAY2);
 		//  ToggleAllLeds(1000);
 #endif
+
 
 #ifdef TOGGLE_LEDX
 		toggle_ledx(LED0_R, DELAY1, DELAY2);

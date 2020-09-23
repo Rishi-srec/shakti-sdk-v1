@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           			: shakti devt board
- * Name of the file	     		: pwminterrupt.c
+ * Project           		: shakti devt board
+ * Name of the file	     	: pwminterrupt.c
  * Brief Description of file    : pwm interrupt .
  * Name of Author    	        : Sathya Narayanan N  & Abhinav Ramnath
  * Email ID                     : sathya281@gmail.com & abhinavramnath13@gmail.com 
@@ -19,7 +19,17 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 ***************************************************************************/
+/**
+@file pwminterrupt
+@brief A application to demonstrate working of pwm interrupts
+@detail This file contains an application to demonstrate the working of pwm
+ interrupts. The interrupts are enabled for a pwm module. The pwm module is
+ confiured for interrupt mode and pwm registers are setup appropriately.
+ Once the pwm timer overflows, an interrupt is generated and it is handled
+ by the isr.
+*/
 
 #include "gpio.h"
 #include "uart.h"
@@ -30,10 +40,10 @@
 #include "memory.h"
 #include "pwm_driver.h"
 
-/** @fn handle_button_press 
+/** @fn unsigned handle_button_press (unsigned num)
  * @brief a default handler to handle button press 
- * @param[in] unsigned 
- * @param[Out] unsigned 
+ * @param unsigned num
+ * @return unsigned 
  */
 unsigned handle_button_press (unsigned num)
 {
@@ -41,41 +51,26 @@ unsigned handle_button_press (unsigned num)
 	return 0;
 }
 
-/** @fn main 
+/** @fn void main(void) 
  * @brief sets up the environment for pwn interrupt feature 
- * @param[in]  none
- * @param[Out] int
- */
-int main(void){
+  */
+void main(void){
 
 	unsigned int int_id = 1;
 	register uint32_t retval;
 	int i;
-	printf("handle button press isr set\n");
 
 	isr_table[PLIC_INTERRUPT_1] = handle_button_press;
 
-	dump_word_memory(0x0c000000, 24);
-	dump_byte_memory(0x0c001000, 4);
-	dump_byte_memory(0x0c002000, 4);
-	read_word(0x0c010000);
-	read_word(0x0c010010);
+	log_debug("pwm interrupt isr set\n");
 
 	plic_init();
 
-	//interrupt id 13, 10, 14, 20, 21 are coming continuously without manual trigger
-
-	for(int i=1;i<7;i++)
+/*
+ Configure all pwm modules
+*/	for(i=6;i>0;i--)
 		configure_interrupt(i);
 
-/*
-	dump_word_memory(0x0c000000, 24);
-	dump_byte_memory(0x0c001000, 4);
-	dump_byte_memory(0x0c002000, 4);
-	read_word(0x0c010000);
-	read_word(0x0c010010);
-*/
-#if 1
 	// Enable Global (PLIC) interrupts.
 	asm volatile("li      t0, 8\t\n"
 		     "csrrs   zero, mstatus, t0\t\n"
@@ -93,7 +88,8 @@ int main(void){
 		     (retval)
 		    );
 
-	printf(" retval = %x\n", retval);
+	log_debug(" mstatus = %x\n", retval);
+
 	asm volatile(
 		     "csrr %[retval], mie\n"
 		     :
@@ -102,7 +98,7 @@ int main(void){
 		     (retval)
 		    );
 
-	printf(" retval = %x\n", retval);
+	log_debug("mie = %x\n", retval);
 
 	asm volatile(
 		     "csrr %[retval], mip\n"
@@ -112,7 +108,8 @@ int main(void){
 		     (retval)
 		    );
 
-	printf(" retval = %x\n", retval);
+	log_debug(" mip  = %x\n", retval);
+
 /*uncomment to test PWM 0 interrupts (interrupt ID - 5)
 	pwm_configure(PWM_0,0xffff,0xff,0x01,false);
 	pwm_start(PWM_0,2);
@@ -150,16 +147,8 @@ int main(void){
 
 		i++;
 		if((i%10000000) == 0){
-			printf(" retval = %x\n", retval);
-			dump_word_memory(0x0c000000, 24);
-			dump_byte_memory(0x0c001000, 4);
-			dump_byte_memory(0x0c002000, 4);
-			read_word(0x0c010000);
-			read_word(0x0c010010);
+			printf(" mip = %x\n", retval);
 		}
 	}
-#endif
-
-	return 0;
 }
 

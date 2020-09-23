@@ -1,6 +1,6 @@
 /***********************************************************************************
  * Project           	      : shakti devt board
- * Name of the file	          : lm75.c
+ * Name of the file	      : lm75.c
  * Brief Description of file  : reads current room temperature over i2c interface
  * Name of Author             : Kotteeswaran
  * Email ID                   : kottee.1@gmail.com
@@ -19,10 +19,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 ***********************************************************************************/
 /**
-@file   lm75.c
-@brief  Contains the driver routines to configure and read lm75.
+@file lm75.c
+@brief Contains the driver routines to configure and read lm75.
 @detail I2C based routines to configures and read the temperature from LM75.
 */
 #include <stdint.h>//Includes the definitions of standard input/output functions//
@@ -42,12 +43,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #define PRESCALER_COUNT 0x1F
 #define SCLK_COUNT 0x91
 
-/** @fn read_lm75_register
+/** @fn int read_lm75_register(i2c_struct * i2c_instance, unsigned int reg_offset, unsigned int *readTemp, unsigned long delay)
  * @brief Read the lm75 register.
  * @details Reads the value of the passed register of LM75 over I2C Interface. 
- * @warning 
- * @param[in] i2c_struct*, unsigned int, unsigned int, unsigned long
- * @param[Out] int
+ * @param i2c_struct*
+ * @param reg_offset
+ * @param *readTemp
+ * @param delay
  * @return  Read Status (Zero on Success).
  */
 int read_lm75_register(i2c_struct * i2c_instance, unsigned int reg_offset, unsigned int *readTemp, unsigned long delay)
@@ -82,12 +84,13 @@ int read_lm75_register(i2c_struct * i2c_instance, unsigned int reg_offset, unsig
 	return 0;
 }
 
-/** @fn write_lm75_register
+/** @fn int write_lm75_register(i2c_struct * i2c_instance, unsigned int reg_offset, unsigned int write_value, unsigned long delay)
  * @brief Writes the value into passed lm75 register 
  * @details Writes the passed value into the passed lm75 register address over I2C interface.
- * @warning 
- * @param[in] i2c_struct*, unsigned int, unsigned int, unsigned long
- * @param[Out] int
+ * @param i2c_struct*
+ * @param reg_offset
+ * @param write_value
+ * @param delay
  * @return Write Status (Zero on Success)
  */
 int write_lm75_register(i2c_struct * i2c_instance, unsigned int reg_offset, unsigned int write_value, unsigned long delay)
@@ -105,12 +108,10 @@ int write_lm75_register(i2c_struct * i2c_instance, unsigned int reg_offset, unsi
 	return 0;
 }
 
-/** @fn main
+/** @fn int main()
  * @brief reads temperature value from lm75 and prints the same.
  * @details Configures the LM75, Reads the encoded temperature value, 
  * calculates the actual temperature value and prints the same.
- * @param[in] No input parameter
- * @param[Out] int
  * @return Zero
  */
 int main()

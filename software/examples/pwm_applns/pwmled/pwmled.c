@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project               	    		:  shakti devt board
-* Name of the file	            		:  pwmled.c
+* Project               	    	:  shakti devt board
+* Name of the file	            	:  pwmled.c
 * Brief Description of file             :  example file for pwm led.
 * Name of Author    	                :  Abhinav Ramnath
 * Email ID                              :  abhinavramnath13@gmail.com
@@ -21,17 +21,21 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ***************************************************************************/
+/**
+@file pwmled.c
+@brief example file to make the led blink at specified frequency
+@detail it runs the led and causes it to blink at specified frequency using the pwm module
+*/
+
 #include "pwm_driver.h"
 
 #define PINMUX_CONF_REG 0x40310
 
 int *pinmux_reg = (const int*) PINMUX_CONF_REG;
 
-/** @fn main
+/** @fn int main()
  * @brief main function that runs the code
- * @warning No warning
- * @param[in] NO input parameter
- * @param[Out] int
+ * @return zero
  */
 int main()
 {
