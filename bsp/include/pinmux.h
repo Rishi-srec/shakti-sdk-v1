@@ -1,6 +1,6 @@
 /****************************************************************************
- * Project               	   	: shakti devt board
- * Name of the file	            : pinmux.h
+ * Project               	: shakti devt board
+ * Name of the file	        : pinmux.h
  * Brief Description of file    : store pinmux configurations
  * Name of Author    	        : Sathya Narayanan N
  * Email ID                     : sathya281@gmail.com
@@ -22,8 +22,7 @@
 *****************************************************************************/
 /**
  * @file pinmux.h
- * @project shakti devt board
- * @brief store pinmux configurations
+ * @brief store pinmux configuration
  */
 
 #ifndef PINMUX_H

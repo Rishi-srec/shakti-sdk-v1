@@ -71,7 +71,7 @@ Email id: sathya281@gmail.com
 #define PINMUX_CONFIGURE_REG 0x40310
 
 /*! Core Local Interruptor CLINT */
-#define CLINT_START 0x02000000
+
 
 /*! Inter Integrated Circuit (I2C) Interface */
 #define I2C0_BASE 0x00040000 /*! I2C Start Address */
@@ -103,8 +103,8 @@ Email id: sathya281@gmail.com
 #define PLIC_MAX_INTERRUPT_SRC 28
 
 
-/*!General Purpose Input / Output */
-#define GPIO_START 0x00040100 //GPIO Start Address */
+/*!General Purpose Input Output */
+#define GPIO_START 0x00040100 //GPIO Start Address 
 #define GPIO_OFFSET 0x08 /*!Generic offset used to access GPIO registers*/
 #define PLIC_GPIO_OFFSET 6
 

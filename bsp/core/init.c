@@ -24,8 +24,11 @@
 /**
 @file init.c
 @brief source file for system initialization
-@detail 
-*/ 
+@detail This is the beginning part of a application beginning.
+Different sections are initialized. main function is called. 
+uart is initialized. Trap handler is initialized. 
+Disable Xip for Aardonyx
+*/
 
 #include "traps.h"
 #include "plic_driver.h"
@@ -37,49 +40,33 @@
 #include "defines.h"
 #include "uart.h"
 
-extern void trap_entry();
+extern void init(void);
+extern void trap_entry(void);
 extern uart_struct *uart_instance[MAX_UART_COUNT];
 
 extern char _stack_end[];
 extern char _stack[];
 extern char _heap[];
 extern char _heap_end[];
-extern char __bss_end[];
-extern char __bss_start[];
-extern char __sbss_end[];
-extern char __sbss_start[];
 
 char *stack_end=(char *)&_stack_end;
 char *stack_start=(char *)&_stack;
 char *heap_start=(char *)&_heap;
 char *heap_end=(char *)&_heap_end;
-char *bss_end=(char *)&__bss_end;
-char *bss_start=(char *)&__bss_start;
-char *sbss_end=(char *)&__sbss_end;
-char *sbss_start=(char *)&__sbss_start;
 
-/** @fn section_init
+/** @fn void section_init()
  * @brief resets the different sections
  * @details Explicitly 0x0 or 0xffffffff is written all the addresses in different "write" sections of memory
  * @warning takes long time. so the caller is diabled as of now
  */
-void section_init()
+static void section_init(void)
 {
-	while(bss_start<=bss_end)
-	{
-		*bss_start=0x0;
-		bss_start++;
-	}
-
-	while(sbss_start<=sbss_end)
-	{
-		*sbss_start=0x0;
-		sbss_start++;
-	}
-
+#if 0
+	/*Enable below code only on need
+	 */
 	while(heap_start<=heap_end)
 	{
-		*heap_start=0xffffffff;
+		*heap_start=0xff;
 		heap_start++;
 	}
 
@@ -88,18 +75,18 @@ void section_init()
 		*stack_end=0x0;
 		stack_end--;
 	}
+#endif
+
 }
 
-/** @fn trap_init
+/** @fn void trap_init()
  * @brief Initialize the trap/interrupt callback routines with user defined handler.
  * @details Assign default handler for trap / interrupt that does not have user defined
  *          callback routines"
  */
-void trap_init()
+static void trap_init(void)
 {
-	log_info("trap_init entered \n ");
-
-
+	log_trace("trap_init entered \n ");
 
 	mcause_interrupt_table[USER_SW_INTERRUPT]        = default_handler;
 	mcause_interrupt_table[SUPER_SW_INTERRUPT]       = default_handler;
@@ -117,7 +104,6 @@ void trap_init()
 	mcause_interrupt_table[RESERVED_INTERRUPT4]      = default_handler;
 	mcause_interrupt_table[RESERVED_INTERRUPT5]      = default_handler;
 	mcause_interrupt_table[RESERVED_INTERRUPT6]      = default_handler;
-
 
 	mcause_trap_table[INSTRUCTION_ADDRESS_MISALIGNED] =
 		default_handler;
@@ -151,33 +137,28 @@ void trap_init()
 		default_handler;
 	mcause_trap_table[STORE_AMO_PAGE_FAULT] =
 		default_handler;
-	log_info("trap_init exited \n ");
+
+	log_trace("trap_init exited \n ");
 }
 
-/** @fn init
+/** @fn void init(void)
  * @brief initialize the necessary variables for system start
  */
 void init(void)
 {
-
+//	section_init(); // uncomment on need basis
 	uart_init();
-	
-	log_info("init entered \n ");
 
-	asm volatile("la t0, trap_entry\t\n"
-			" csrw mtvec, t0\t\n");
+	log_trace("init entered \n ");
 
 #ifdef AARDONYX
 	micron_disable_xip_volatile(0,0);
 	flashMemInit();
 #endif
 
-
-//	section_init();
 	trap_init();
 
 	main();
 
-	log_info("init exited\n");
+	log_trace("init exited\n");
 }
-

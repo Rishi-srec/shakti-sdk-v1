@@ -1,8 +1,9 @@
 /***************************************************************************
- * Project                               :  shakti devt board
- * Name of the file                      :  deploy.c
- * Brief Description of file             :  Deploy elf into flash in board.
-
+ * Project                         :  shakti devt board
+ * Name of the file                :  deploy.c
+ * Brief Description of file       :  Deploy elf into flash in board.
+ * Name of Author    	           : 
+ * Email ID                        : 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
@@ -19,6 +20,11 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
  ***************************************************************************/
+/**
+@file deploy.c
+@brief Deploy elf into flash in board.
+@detail Writes an array of hex values into the flash memory using QSPI.
+*/
 
 #include <stdint.h>
 #include "uart.h"
@@ -30,8 +36,13 @@
 
 extern int  status;
 
-void main(){
+/** @fn void main()
+ * @brief Deploys the hex file for a project to the flash device using QSPI
+ * protocol. 
+ */
 
+void deploy()
+{
 	int ar_read,dum_data,i;
 	int write_address = 0x0;
 	int size_byte=0;
@@ -107,3 +118,7 @@ void main(){
 	asm volatile ("ebreak");
 }
 
+void main(){
+
+	deploy();
+}

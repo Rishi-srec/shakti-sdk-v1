@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project               	   	: shakti devt board
- * Name of the file	            : log.h
- * Brief Description of file    : Header file for logger.
- * Name of Author    	        : Abhinav Ramnath
- * Email ID                     : abhinavramnath13@gmail.com
+* Project               	: shakti devt board
+* Name of the file	        : log.h
+* Brief Description of file     : Header file for logger.
+* Name of Author    	        : Abhinav Ramnath
+* Email ID                      : abhinavramnath13@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -22,8 +22,10 @@
 ***************************************************************************/
 /**
  * @file log.h
- * @project shakti devt board
  * @brief Header file for logger.
+ * @detail This file is used for logging. There are 6 levels of logging.
+ Level 0 is the most critical. Usually system stops after level 0 logging.
+ Level 3 is the default level of logging.
  */
 
 #include <stdarg.h>

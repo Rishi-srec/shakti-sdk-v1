@@ -1,6 +1,6 @@
 /************************************************************************
- * Project           			: shakti devt board
- * Name of the file	     		: qspi.h
+ * Project           		: shakti devt board
+ * Name of the file	     	: qspi.h
  * Brief Description of file    : Header file for qspi.
  * Name of Author    	        : visvesh
  * Email ID                     : vishu.vivek@gmail.com
@@ -22,8 +22,8 @@
 ************************************************************************/
 /**
  * @file qspi.h
- * @project shakti devt board
  * @brief Header file for qspi.
+ * @detail this is the header file for qspi_micron.c
  */
 
 #ifndef QSPI_H
@@ -145,15 +145,40 @@ extern int* cr      ;
  extern int* endmm ;
 
 void set_qspi_shakti32(int* addr, const int val);
+void set_qspi_shakti16(int16_t* addr, int16_t val);
+void set_qspi_shakti8(char* addr, char val);
 int get_qspi_shakti( int* addr);
-void reset_interrupt_flags();
-
+int check_fail_bit(void);
+void reset_interrupt_flags(void);
+int micron_write_enable(int status);
+int flashSingleSPIDDRXip(int addr, int* dest_addr);
 int wait_for_tcf(int status);
 void qspi_init(int fsize, int csht, int prescaler, int enable_interrupts, int fthreshold, int ck_mode);
-
-
+int pageProgramSingleSPI(int value1, int value2, int value3, int value4, int address);
+int pageProgramQuadSPI(int value1, int value2, int value3, int value4, int address);
+int flashReadSingleSPI(int dummy_cycles, int read_address, int instruction, int data_words, int adsize);
+int flashReadDualSPI(int address, int data_length);
+int flashReadQuadSPI(int dummy_cycles, int read_address, int instruction, int data_words, int adsize);
 int micron_disable_xip_volatile(int,int);
+int flashSingleSPIXip(int addr, int* dest_addr);
+int flashMemInit(void);
+int flashDualSPIXip(int addr, int* dest_addr);
+int flashDualSPIDDRXip(int addr, int* dest_addr);
+int flashWriteVolatileConfigReg(int value);
+int flashQuadSPIXip(int addr, int* dest_addr);
+int flashQuadSPIDDRXip(int addr, int* dest_addr);
+int eraseSector(int command, int address);
+int micron_volatile_write_enable(int status);
+int micron_enable_4byte_addressing(int status);
+int micron_configure_xip_volatile(int status, int value);
+int micron_read_configuration_register(int status, int value);
+int micron_read_id_cmd(int status, int value);
+int wait_for_wip(void);
+int flashIdentificationDevice(void);
+int flashReadFlagRegister(void);
+int flashWriteEnable(void);
+int flashEnable4ByteAddressingMode(void);
+int flash_Write_disable(void);
 
-int flashMemInit();
 
 #endif

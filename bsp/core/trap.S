@@ -35,7 +35,7 @@
    */
 
   addi sp, sp, -32*REGSIZE
-.p2align 3
+  .p2align 3
   SREG x1, 1*REGSIZE(sp)
   SREG x2, 2*REGSIZE(sp)
   SREG x3, 3*REGSIZE(sp)

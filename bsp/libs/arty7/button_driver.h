@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           		       : shakti devt board
- * Name of the file	               : buttons_driver.h
+ * Project           		   : shakti devt board
+ * Name of the file	           : buttons_driver.h
  * Brief Description of file       : Header file for buttons
  * Name of Author    	           : Madan Kumar S
  * Email ID                        : kumarmadan96@gmail.com
@@ -22,9 +22,9 @@
  ***************************************************************************/
 /**
  * @file button_driver.h
- * @project shakti devt board
- * @brief  Header file for buttons 
+ * @brief Header file for buttons 
  */
+
 #ifndef BUTTON_DRIVER_H
 #define BUTTON_DRIVER_H
 

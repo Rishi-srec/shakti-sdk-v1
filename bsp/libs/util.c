@@ -23,20 +23,25 @@
 /**
 @file util.c
 @brief source file for util
-@detail 
+@detail Commonly used utility fuctions are implemented here. These functions are
+used to achieve higher level objectives.
 */
 
-/** @fn  waitfor
- * @brief stall the process fro given time 
- * @param unsigned int
+#include "log.h"
+#include "utils.h"
+#include "string.h"
+
+/** @fn  void waitfor(unsigned int secs)
+ * @brief stall the process for given time
+ * @param unsigned int secs
  */
-void waitfor(unsigned int secs) 
+void waitfor(unsigned int secs)
 {
 	unsigned int time = 0;
 	while (time++ < secs);
 }
 
-/** @fn delay
+/** @fn void delay(unsigned long seconds)
  * @brief  sleeps for number seconds  
  * @param unsigned long (number of seconds) 
  */
@@ -51,15 +56,14 @@ void delay(unsigned long seconds)
 	}
 }
 
-/** @fn pow_10
+/** @fn float pow_10(unsigned int y)
  * @brief generate different powers of 10 
- * @param unsigned int
+ * @param unsigned int y
  * @return return result in float 
  */
 float pow_10(unsigned int y)
 {
 	unsigned int x=1;
-	float result=1;
 
 	for (unsigned int i=0; i <y; i++)
 	{
@@ -68,10 +72,10 @@ float pow_10(unsigned int y)
 
 	return ((float) x);
 }
-/** @fn reverse 
+/** @fn void reverse(char *str, int length) 
  * @brief reverse a string and store in the same string
- * @param char
- * @param int
+ * @param char *str
+ * @param int length
  */
 void reverse(char *str, int length) 
 { 
@@ -90,20 +94,20 @@ void reverse(char *str, int length)
 	} 
 } 
 
-/** @fn int_to_string
+/** @fn int int_to_string(int number, char str[], int afterpoint) 
  * @brief convert decimal numbers to string
  * @details Takes num as input and converts it to string.
  *	    The converted string is stored in str. The 
  *          position of last character in the str is returned.
  *          This function is tailored to support ftoa. 
- * @param int
- * @param char
- * @param int
+ * @param int number
+ * @param char str[]
+ * @param int afterpoint
  * @return int
  */
-int int_to_string(int number, char str[], int afterpoint) 
+int int_to_string(int number, char str[], unsigned int afterpoint) 
 {
-	int i = 0; 
+	uint32_t i = 0; 
 
 	/*extract each digit and put into str[i]*/
 
@@ -131,7 +135,7 @@ int int_to_string(int number, char str[], int afterpoint)
 
 	return i; 
 }
-/** @fn ftoa
+/** @fn void ftoa(float n, char *res, int afterpoint) 
  * @brief converts float to string
  * @details Split floating number into fpart and ipart
  *          Finally merge it into one float number.
@@ -140,7 +144,7 @@ int int_to_string(int number, char str[], int afterpoint)
  * @param char* (float in string - res)
  * @param int (precision - afterpoint)
  */
-void ftoa(float n, char *res, int afterpoint) 
+void ftoa(float n, char *res, unsigned int afterpoint) 
 {
 	int i=0;
 	char temp[30]={'\0'};
@@ -199,7 +203,7 @@ void ftoa(float n, char *res, int afterpoint)
 	} 
 } 
 
-/** @fn delay_loop
+/** @fn void delay_loop(unsigned long cntr1, unsigned long cntr2)
  * @brief Delay calculated interms of iterative operation 
  * @param unsigned long 
  * @param unsigned long
@@ -216,24 +220,24 @@ void delay_loop(unsigned long cntr1, unsigned long cntr2)
 	}
 }
 
-/** @fn read_word
+/** @fn long int read_word(int *addr)
  * @brief returns the value stored at a given address
  * Here we assume the word size to be 32 bits for gpio
- * @param int*
+ * @param int* addr
  * @return long int
  */
-long int read_word(int *addr)
+unsigned long read_word(uint32_t *addr)
 {
 	log_debug("addr = %x data = %x\n", addr, *addr);
 	return *addr;
 }
 
-/** @fn write_word
+/** @fn void write_word(int *addr, unsigned long val)
  * @brief  writes a value to an address
  * @param int* 
  * @param unsigned long
  */
-void write_word(int *addr, unsigned long val)
+void write_word(uint32_t *addr, unsigned long val)
 {
 	*addr = val;
 	log_debug("addr = %x data = %x\n", addr, *addr);

@@ -23,7 +23,7 @@
 /**
 @file switch_driver.c
 @brief Reads onboard switch values from gpio pins.
-@detail 
+@detail Configures Switches and maps to the gpio pins 
 */ 
 
 #if defined(ARTIX7_35T) || defined(ARTIX7_100T)
@@ -31,15 +31,9 @@
 #include "platform.h"
 #include "gpio.h"
 #include "switch_driver.h"
+#include "utils.h"
 
-/** @fn delay_loop
- * @brief Maintains the required delay to perform an operation
- * @param unsigned long
- * @param unsigned long
- */
-extern void delay_loop(unsigned long , unsigned long );
-
-/** @fn static void configure_switch
+/** @fn void configure_switch(unsigned long pinCntrl)
  * @brief Function for configure Individual Switch pins as input.
  * @details 4 GPIO pins are mapped to 4 Switches. This function configures
  * each SW as input pin.
@@ -52,7 +46,7 @@ void configure_switch(unsigned long pinCntrl)
 	write_word(GPIO_DIRECTION_CNTRL_REG, ( read_data | ~(pinCntrl) ) );
 }
 
-/** @fn  void configure_all_switchs
+/** @fn  void configure_all_switchs()
  * @brief Function for configure All SWs as input.
  * @details 4 GPIO pins are mapped to 4 Switches. This function configures
  *          all SWs as input pin.

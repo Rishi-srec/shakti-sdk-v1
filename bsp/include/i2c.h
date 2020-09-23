@@ -1,6 +1,6 @@
 /**************************************************************************
  * Project           	         : shakti devt board
- * Name of the file	     		 : i2c.h
+ * Name of the file	         : i2c.h
  * Brief Description of file     : header file for i2c
  * Name of Author    	         : Kotteeswaran 
  * Email ID                      : kottee.1@gmail.com
@@ -22,9 +22,10 @@
 *****************************************************************************/
 /**
  * @file i2c.h
- * @project shakti devt board
  * @brief  Header file for i2c
+ * @detail this is the header file for i2c_driver.c
  */
+
 #ifndef I2C_H
 #define I2C_H
 
@@ -120,22 +121,21 @@ typedef struct
 } i2c_struct;
 
 
-void i2c_init();
+void i2c_init(void);
 int config_i2c(i2c_struct *,unsigned char prescale_div, unsigned char scl_div);
 int wait_till_I2c_bus_free(i2c_struct *);
 int wait_till_txrx_operation_Completes(i2c_struct *,int *status);
 int sendbytes(i2c_struct *, const char *buf, int count, int last, int eni);
 int readbytes(i2c_struct *,char *buf, int count, int last);
-int i2c_send_slave_address(i2c_struct *,unsigned char slaveAddress, unsigned char rdWrCntrl
-, unsigned long delay);
+int i2c_send_slave_address(i2c_struct *,unsigned char slaveAddress, unsigned char rdWrCntrl, unsigned long delay);
 int i2c_write_data(i2c_struct *,unsigned char writeData, unsigned char delay);
 int i2c_read_data(i2c_struct *,unsigned char *read_data, unsigned char delay);
-
-
+int i2c_send_interrupt_slave_address(i2c_struct * instance, unsigned char slaveAddress, unsigned char rdWrCntrl, unsigned long delay);
 unsigned char i2c_complete_flag;
 unsigned int i2c_read_value;
+int i2c_read_interrupt_data(i2c_struct * instance, unsigned char *read_data, unsigned char delay, unsigned char last);
+int i2c_write_interrupt_data(i2c_struct * instance, unsigned char writeData, unsigned char delay, unsigned char last);
 
 extern i2c_struct *i2c_instance[MAX_I2C_COUNT];
-
 
 #endif

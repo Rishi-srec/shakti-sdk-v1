@@ -21,7 +21,14 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
- ***************************************************************************/
+***************************************************************************/
+/**
+@file deploy.c
+@brief Deploy elf into flash in board.
+@detail This file has functions that can write an array of hex numbers into the
+flash device. SPI protocol is used for this purporse. The array is usually a
+project's hex file 
+*/
 
 #include <stdint.h>
 #include <uart.h>
@@ -29,50 +36,47 @@
 #include "spi.h"
 #include "flashdata.h"
 
-/** @fn deploy
+/** @fn void deploy()
  * @brief Erases flash and writes the hex array entry by entry into the flash
- * memory.
- * @param[in] none 
- * @param[Out] none
+ *       memory. Here SPI protocol is used.
  */
 void deploy()
 {
-	int read_address = 0x00b00000;  
+	int read_address = 0x00b00000;
 	double count=0.0;
 
+	configure_spi(SPI0_OFFSET);
 	spi_init();
-	flash_device_id(); 
+	flash_device_id();
 
-	printf("\n Erasing FLASH\n");
+	waitfor(200);
+	printf("\nErasing...\n");
 
 	flash_write_enable();
-	flash_erase(read_address); 
+	flash_erase(read_address);
 	flash_status_register_read();
+	printf("\nErase complete.\n");
 
-	flash_write_enable();
 	flash_write(read_address,write_data[0]);
-	flash_status_register_read();
 	read_address+=4;
+
+	printf("\nWriting...");
 
 	for(int i =0; i< write_data[0]; i++)
 	{
-		flash_write_enable();
+		waitfor(200);
 		flash_write(read_address,write_data[i+1]);
-		flash_status_register_read();
 		read_address+=4;
+
+		if(i%512 == 0)
+			printf(".");;
 	}
 
-	printf("\n Completed write to FLASH\n");
+	printf("\n\nWrite complete.\n");
+	printf("\nPlease reset.\n");
 	asm volatile ("ebreak");
 }
 
-/** @fn main
- * @brief calls deploy function to load the code to flash memory
- * @param[in] none 
- * @param[Out] none
- */
 void main(){
-
 	deploy();
 }
-
