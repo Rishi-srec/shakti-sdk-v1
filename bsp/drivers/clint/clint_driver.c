@@ -1,9 +1,9 @@
 /***************************************************************************
-* Project           		: shakti devt board
-* Name of the file	     	: clint_driver.c
-* Brief Description of file     : source file for clint.
-* Name of Author    	        : Sathya Narayanan N
-* Email ID                      : sathya281@gmail.com
+* Project                     : shakti devt board
+* Name of the file	      : clint_driver.c
+* Brief Description of file   : source file for clint.
+* Name of Author    	      : Sathya Narayanan N
+* Email ID                    : sathya281@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -23,22 +23,23 @@
 /**
 @file clint_driver.c
 @brief source file for clint.
-@detail 
-*/ 
+@detail This file is a driver file for clint. The file contains the clint 
+interrupt handler, configure the counter and support for e and c class clint timers. 
+*/
 
 #include "clint_driver.h"
 #include "log.h"
 #include "defines.h"
 
-uint64_t* mtime    = 0x0200bff8;
-uint64_t* mtimecmp = 0x02004000;
+uint32_t* mtime    = 0x0200bff8;
+uint32_t* mtimecmp = 0x02004000;
 
-/** @fn mtime_low
+/** @fn static unsigned long mtime_low( )
  * @brief return the lower 32bit of mtime.
- * @details return the lower half of mtime. And this is needed mostly in dealing mtime in 32 bit machines. 
+ * @details return the lower half of mtime. And this is needed mostly in dealing mtime in 32 bit machines.
  * @return unsigned long
  */
-static unsigned long mtime_low( )
+static unsigned long mtime_low(void)
 {
   return *(volatile unsigned long *)(CLINT_BASE + MTIME);
 }
@@ -47,9 +48,9 @@ static unsigned long mtime_low( )
 Get each 32 bit and append for full timer value
 */
 
-/** @fn  mtime_high
+/** @fn static uint32_t mtime_high(void)
  * @brief return the upper 32 bit of mtime
- * @details return the upper 32 bit of mtime register. This is very useful incase of 32 bit core.    
+ * @details return the upper 32 bit of mtime register. This is very useful incase of 32 bit core.
  *          Incase of 64 bit core this has to be appended with lower 32 bits adn sent.
  * @return unsigned 32bit int
  */
@@ -58,7 +59,7 @@ static uint32_t mtime_high(void)
   return *(volatile uint32_t *)(CLINT_BASE + MTIME + 4);
 }
 
-/** @fn  get_timer_value
+/** @fn uint64_t get_timer_value()
  * @brief return the mtime value for a 32 bit or 64 bit machine
  * @details return the mtime value based on the __riscv_xlen. Incase of 64 bit, this joins the upper
  *          and lower 32 bits of mtime and return
@@ -74,37 +75,37 @@ uint64_t get_timer_value()
 #endif
 }
 
-/** @fn configure_counter
+/** @fn void configure_counter( uint64_t value)
  * @brief sets up the timer
  * @details sets the mtimecmp to current mtime + delta
  * @param unsigned 64bit int (delta value after which interrupt happens)
  */
 void configure_counter( uint64_t value)
 {
+	log_trace("\nconfigure_counter entered\n");
+
 	*mtimecmp = *mtime + value;
-	log_info("mtimecmp value = %x\n", *mtimecmp);
-	log_info("mtime value = %x\n", *mtime);
+
+	log_info("mtimecmp value = %d\n", *mtimecmp);
+	log_info("mtime value = %d\n", *mtime);
+
+	log_trace("\nconfigure_counter exited\n");
 }
 
-/** @fn  mach_clint_handler
+/** @fn void mach_clint_handler(uintptr_t int_id, uintptr_t epc)
  * @brief handler for machine timer interrupt
  * @details handler for machine timer interrupt. This handles the timer interrupt and sets mtimecmp to clear timer interrupt.
- * @param unsigned int ptr
+ * @param unsigned int ptr int_id
+ * @param unsigned int ptr epc
  */
-void mach_clint_handler(uintptr_t int_id, uintptr_t epc)
+void mach_clint_handler( __attribute__((unused)) uintptr_t int_id,  __attribute__((unused)) uintptr_t epc)
 {
-	unsigned int  interrupt_id;
-
 	log_trace("\nmach_clint_handler entered\n");
 
-	log_debug("mtimecmp value = %x\n", *mtimecmp);
-	log_debug("mtime value = %x\n", *mtime);
-  printf("Timer interrupt handled\n");
-	
-  *mtimecmp = (uint64_t) -1;
+	*mtimecmp = -1;
 
-	log_info("mtimecmp value = %x\n", *mtimecmp);
-	log_info("mtime value = %x\n", *((uint32_t *)(0x0200bffc)));
+	log_debug("mtimecmp value = %x\n", *mtimecmp);
+	log_debug("mtime value = %x\n", *((uint32_t *)(0x0200bff8)));
 
 	log_trace("mach_clint_handler exited\n");
 }
