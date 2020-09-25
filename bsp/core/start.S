@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Name of the file              : start.S 
- * Brief description             : header file for initializing the registers
+ * Brief description             : first instruction to execute in an application
  * Name of Author                : Abhinav Ramnath & Sathya Narayanan N
  * Email id                      : abhinavramnath13@gmail.com & sathya281@gmail.com
 
@@ -20,6 +20,11 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************/
+/**
+@file start.S
+@detail first instruction to execute in an application. 
+ Registers are initialized, trap table is setup here.
+*/
 
 #include "defines.h"
 

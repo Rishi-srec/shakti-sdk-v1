@@ -103,8 +103,9 @@ uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 	   The Interrupt bit in the mcause register is set if the trap was caused by an interrupt.
 	   The Exception Code field contains a code identifying the last exception
 	 */
+	 /* checking for type of trap */
 
-	log_debug("sizeof(uintptr)  = %d \n",sizeof(uintptr_t));
+	log_debug("sizeof(uintptr)  = %d \n",sizeof(uintptr_t));   
 	shift_length = __riscv_xlen - 1;
 
 	if (mcause & (1 << (shift_length))){

@@ -116,7 +116,7 @@
 #define STORE_AMO_PAGE_FAULT           15
 
 /*
-   Trap table -  Each entry in the table corresponds to a service routine for Trap
+   Trap table -  Each entry in the table corresponds to a service routine for a Trap
  */
 
 typedef void (*mtrap_fptr_t) (uintptr_t trap_cause, uintptr_t epc);

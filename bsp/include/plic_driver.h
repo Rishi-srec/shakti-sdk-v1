@@ -24,7 +24,7 @@
  * @file plic_driver.h
  * @brief  Header file for plic driver.c
  * @detail This file contains the definitions for plic driver. The memory map
- * for the plic registers are also defined here.
+ * for the plic module are also defined here.
  */
 
 #ifndef PLIC_DRIVER_H

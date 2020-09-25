@@ -1,7 +1,7 @@
 /***************************************************************************
  * Project                          : shakti devt board
  * Name of the file                 : spi.h
- * Brief Description of file        : Header to spi driver
+ * Brief Description of file        : Header to spi spansion driver
  * Name of Author                   : Kaustubh Ghormade
  * Email ID                         : kaustubh4347@gmail.com
 
@@ -22,7 +22,7 @@
  ***************************************************************************/
 /**
  * @file spi.h
- * @brief Header to spi driver
+ * @brief Header to spi spansion driver
  * @detail this is the header file for spi_flash_w25q32.c,spi_spansion.c
  */
 #ifndef SPI_H
