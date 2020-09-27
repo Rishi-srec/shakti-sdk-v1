@@ -18,7 +18,7 @@
 
 SHELL := /bin/bash # Use bash syntax
 DC ?=
-PROGRAM ?=
+PROGRAM ?=asm_int
 #default target board
 TARGET ?= artix7_35t
 DEBUG ?=
@@ -28,12 +28,12 @@ XLEN  ?= 32
 FLAGS ?=
 
 all: create_dir
-	make uartmp3.riscv
+	make asm_int.riscv
 
-
-uartmp3.riscv: create_dir	 
-	
+$(PROGRAM).riscv: create_dir
+	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -c $(PROGRAM).S -o ./output/$(PROGRAM).o -march=$(MARCH) -mabi=$(MABI) 
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld ./output/$(PROGRAM).o -o ./output/$(PROGRAM).shakti -static -nostartfiles 
+	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 
 create_dir:
 	@mkdir -p ./output
-
