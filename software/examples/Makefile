@@ -65,7 +65,7 @@ ifeq ($(TARGET),artix7_100t)
 	@$(eval INTERFACE=$(bspboard)/ftdi)
 	@$(eval DC =$(FLAGS) $(D))
 else
-ifeq ($(TARGET),aardonyx)
+ifeq ($(TARGET),moushik)
 	@$(eval XLEN = 32)
 	@$(eval WIDTH = 4)
 	@$(eval FLAGS= -D AARDONYX)
@@ -411,9 +411,9 @@ endif
 flash:
 ifeq ($(FLASH),FLASH)
 	@flashrom -p ft2232_spi:type=arm-usb-tiny-h > ./$(filepath)/output/flashoutput.txt
-	make aardonyx
+	make moushik
 endif
-aardonyx : flashsize flashcheck objectsize swap filesize fill layoutsize layout flashrom clean
+moushik : flashsize flashcheck objectsize swap filesize fill layoutsize layout flashrom clean
 flashsize:
 	@echo "Calculating flash size"
 	@$(eval FLASHROM = $(shell egrep -o -e '[0-9]+\ kB' ./$(filepath)/output/flashoutput.txt | egrep -o '[0-9]+') )

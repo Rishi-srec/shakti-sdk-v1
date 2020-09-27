@@ -1,10 +1,12 @@
 /***************************************************************************
 * Project           			:  shakti devt board
 * Name of the file	     		:  flash_gpio.c
-* Brief Description of file             :  artix7_35t: Reads 8 switches status and writes to flash. Reads from flash and 
-					                       and toggles the gpio pins 0 to 7.
-					                       aardonyx: Directly write into flash 'deadbeef' and read from flash and toggle the leds in gpio pins.
-					                       SPANSTION Flash IC NO FL256LAVFOD									
+* Brief Description of file             :  artix7_35t: Reads 8 switches status
+*					  and writes to flash. Reads from flash and
+					  toggles the gpio pins 0 to 7.
+                                          moushik: Directly write into flash 'deadbeef'
+					  and read from flash and toggle the leds in
+					  gpio pins. SPANSTION Flash IC NO FL256LAVFOD
 * Name of Author    	                 : G Nambirajan
 * Email ID                               : nambirajan2004@gmail.com
 
@@ -24,9 +26,9 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ***************************************************************************/
 /**
-@file flash_gpio.c  
-@brief  
-@detail 
+@file flash_gpio.c
+@brief
+@detail
 */
 
 #include <stdio.h>//includes the definitions of standard input/output functions
@@ -71,7 +73,7 @@ void spansion()
 	unsigned long readData = 0;
 	//*pinmux_reg = 0x154000;
 	int write_address = 0x00b00000;  // read/write from/to this address
-	
+
 	write_word(GPIO_DIRECTION_CNTRL_REG, 0x0000FFFF);
 	readData =read_word(GPIO_DATA_REG);//copies the GPIO_DATA_REG Register contents//
 	printf("\n Read Data is :%x\n", readData);
@@ -81,7 +83,7 @@ void spansion()
 	delay_loop(1000, 1000);
 	write_word(GPIO_DIRECTION_CNTRL_REG, 0x0000FFFF);
 
-	configure_spi(SPI1_OFFSET);	
+	configure_spi(SPI1_OFFSET);
 	spi_init();
 	printf("SPI init done\n");
 	flash_device_id(); 
@@ -102,10 +104,10 @@ void spansion()
 
 	int write_address = 0x00b00000;  // read/write from/to this address
 	int data = 0xDEADBEEF; //32 bits of data can be written at a time
-	
+
     configure_spi(SPI1_OFFSET);
 	spi_init();
-	
+
 	printf("SPI init done\n");
 
 	flash_device_id(); 
@@ -123,7 +125,7 @@ void spansion()
 	       write_address, data);
 #endif
 	int i=4;
-	configure_spi(SPI1_OFFSET);	
+	configure_spi(SPI1_OFFSET);
 	spi_init();
 	printf("SPI init done\n");
 	flash_device_id();
@@ -147,6 +149,4 @@ void spansion()
 		write_word(GPIO_DATA_REG, 0x00);
 		delay_loop(1000, 1000);
 	}
-
-
 }
