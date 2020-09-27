@@ -279,9 +279,6 @@ else
 ifeq ($(PROGRAM),adc)
 filepath := uart_applns/adc
 else
-ifeq ($(PROGRAM),ds3231_gpio)
-filepath := gpio_applns/ds3231_gpio
-else
 ifeq ($(PROGRAM),gyro_softi2c)
 filepath := gpio_applns/gyro_softi2c
 else
@@ -346,7 +343,6 @@ endif
 endif
 endif
 endif	
-endif
 endif
 endif
 endif

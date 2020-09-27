@@ -34,39 +34,33 @@
 #include "traps.h"
 
 /**@name Register offsets
- *
  * The following constants provide access to each of the registers of the
  * System Monitor/ADC device.
- * @{
  */
 
-/*
- * System Monitor/ADC Local Registers
- */
+/* System Monitor/ADC Local Registers */
+
 #define XADC_SRR_OFFSET		0x00  /**< Software Reset Register */
 #define XADC_SR_OFFSET		0x04  /**< Status Register */
 #define XADC_AOR_OFFSET		0x08  /**< Alarm Output Register */
 #define XADC_CONVST_OFFSET	0x0C  /**< ADC Convert Start Register */
 #define XADC_ARR_OFFSET		0x10  /**< ADC Reset Register */
 
-/*
- * System Monitor/ADC Interrupt Registers
- */
+/* System Monitor/ADC Interrupt Registers */
+
 #define XADC_GIER_OFFSET	0x5C  /**< Global Interrupt Enable Register */
 #define XADC_ISR_OFFSET	        0x60  /**< Interrupt Status Register */
 #define XADC_IER_OFFSET		0x68  /**< Interrupt Enable register */
 
-/*
- * System Monitor/ADC Internal Channel Registers
- */
+/* System Monitor/ADC Internal Channel Registers */
+
 #define XADC_TEMP_OFFSET	  (0x200)   /**< On-chip Temperature Reg */
 #define XADC_VCCINT_OFFSET	  (0x204)   /**< On-chip VCCINT Data Reg */
 #define XADC_VCCAUX_OFFSET	  (0x208)   /**< On-chip VCCAUX Data Reg */
 #define XADC_VPVN_OFFSET	  (0x20C)   /**< ADC out of VP/VN	   */
 
-/*
- * System Monitor/ADC External Channel Registers
- */
+/* System Monitor/ADC External Channel Registers */
+
 #define XADC_AUX00_OFFSET	(0x240)   /**< ADC out of VAUXP0/VAUXN0 */
 #define XADC_AUX01_OFFSET	(0x244)   /**< ADC out of VAUXP1/VAUXN1 */
 #define XADC_AUX02_OFFSET	(0x248)   /**< ADC out of VAUXP2/VAUXN2 */
@@ -86,7 +80,7 @@
 
 /*
  * System Monitor/ADC Registers for Maximum/Minimum data captured for the
- * on chip Temperature/VCCINT/VCCAUX data.
+ * on chip Temperature/VCCINT/VCCAUX data. 
  */
 #define XADC_MAX_TEMP_OFFSET	(0x280)   /**< Maximum Temperature Reg */
 #define XADC_MAX_VCCINT_OFFSET	(0x284)   /**< Maximum VCCINT Register */
@@ -114,14 +108,12 @@
 
 #define XADC_FLAG_REG_OFFSET	(0x2FC) /**< General Status */
 
-/*
- * System Monitor/ADC Configuration Registers
- */
+/* System Monitor/ADC Configuration Registers */
+
 #define XADC_CFR0_OFFSET		(0x300)   /**< Configuration Register 0 */
 
-/*
- * System Monitor/ADC Sequence Registers
- */
+/* System Monitor/ADC Sequence Registers */
+
 #define XADC_SEQ00_OFFSET	(0x320)   /**< Seq Reg 00 Adc Channel Selection */
 #define XADC_SEQ01_OFFSET	(0x324)   /**< Seq Reg 01 Adc Channel Selection */
 #define XADC_SEQ02_OFFSET	(0x328)   /**< Seq Reg 02 Adc Average Enable */
@@ -133,21 +125,12 @@
 #define XADC_SEQ08_OFFSET	(0x318)   /**< Seq Reg 08 Adc Channel Selection */
 #define XADC_SEQ09_OFFSET	(0x31C)   /**< Seq Reg 09 Adc Average Enable */
 
+/* @name System Monitor/ADC Software Reset Register (SRR) mask(s) */
 
-/*@}*/
-
-/**
- * @name System Monitor/ADC Software Reset Register (SRR) mask(s)
- * @{
- */
 #define XADC_SRR_RESET_VALUE	0x0000000A   /**< Device Reset Mask */
 
-/*@}*/
+/* @name System Monitor/ADC Status Register (SR) mask(s) */
 
-/**
- * @name System Monitor/ADC Status Register (SR) mask(s)
- * @{
- */
 #define XADC_SR_JTAG_BUSY_MASK	   0x00000400 /**< JTAG is busy */
 #define XADC_SR_JTAG_MODIFIED_MASK 0x00000200 /**< JTAG Write has occurred */
 #define XADC_SR_JTAG_LOCKED_MASK   0x00000100 /**< JTAG is locked */
@@ -157,48 +140,32 @@
 #define XADC_SR_CH_MASK		   0x0000001F /**< Input ADC channel */
 
 
-/**
- * @name System Monitor/ADC CONVST Register (CONVST) mask(s)
- * @{
- */
-#define XADC_CONVST_CONVST_MASK		0x00000001   /**< Conversion Start Mask */
-#define XADC_CONVST_TEMPUPDT_MASK	0x00000002   /**< Temperature Update   	Enable Mask */
-#define XADC_CONVST_WAITCYCLES_SHIFT	2	/**< Wait Cycles Shift */
-#define XADC_CONVST_WAITCYCLES_MASK	0x0003FFFC /**< Wait Cycles Mask */
-#define XADC_CONVST_WAITCYCLES_DEFAULT	0x03E8	/**< Wait Cycles   	 default value */
-/*@}*/
+/* @name System Monitor/ADC CONVST Register (CONVST) mask(s) */
 
-/**
- * @name System Monitor/ADC Reset Register (ARR) mask(s)
- * @{
- */
+#define XADC_CONVST_CONVST_MASK		0x00000001   	/**< Conversion Start Mask */
+#define XADC_CONVST_TEMPUPDT_MASK	0x00000002   	/**< Temperature Update Enable Mask */
+#define XADC_CONVST_WAITCYCLES_SHIFT	2		/**< Wait Cycles Shift */
+#define XADC_CONVST_WAITCYCLES_MASK	0x0003FFFC 	/**< Wait Cycles Mask */
+#define XADC_CONVST_WAITCYCLES_DEFAULT	0x03E8	 	/**< Wait Cycles   	 default value */
+
+/* @name System Monitor/ADC Reset Register (ARR) mask(s) */
+
 #define XADC_ARR_RST_MASK	0x00000001 /**< ADC Reset bit mask */
 
-/*@}*/
+/* @name Global Interrupt Enable Register (GIER) mask(s) */
 
-/**
- * @name Global Interrupt Enable Register (GIER) mask(s)
- * @{
- */
 #define XADC_GIER_GIE_MASK	0x80000000 /**< Global interrupt enable */
-/*@}*/
 
 /**
  * @name System Monitor/ADC device Interrupt Status/Enable Registers
- *
  * <b> Interrupt Status Register (IPISR) </b>
- *
  * This register holds the interrupt status flags for the device.
- *
  * <b> Interrupt Enable Register (IPIER) </b>
- *
  * This register is used to enable interrupt sources for the device.
  * Writing a '1' to a bit in this register enables the corresponding Interrupt.
  * Writing a '0' to a bit in this register disables the corresponding Interrupt
- *
  * IPISR/IPIER registers have the same bit definitions and are only defined
  * once.
- * @{
  */
 #define XADC_IPIXR_VBRAM_MASK	      0x00000400 /**< ALM3 - VBRAM Output Mask */
 #define XADC_IPIXR_TEMP_DEACTIVE_MASK  0x00000200 /**< Alarm 0 DEACTIVE */

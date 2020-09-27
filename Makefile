@@ -115,7 +115,6 @@ GENLIB:=$(shell pwd)/software/examples/
 .PHONY: all
 all:
 	cd  ./software/examples/  && $(MAKE) all TARGET=$(TARGET)
-	cd  ./software/testcases/  && $(MAKE) all TARGET=$(TARGET)
 
 .PHONY: target
 list_targets:
@@ -137,14 +136,6 @@ software:
 project:
 	@echo "Build $(PROGRAM) on $(TARGET) board"
 	cd ./software/projects && $(MAKE) PROGRAM=$(PROGRAM) TARGET=$(TARGET)
-
-#Project commands
-.PHONY: testcases
-testcases:
-	@echo "Build $(PROGRAM) on $(TARGET) board"
-	cd ./software/testcases && $(MAKE) PROGRAM=$(PROGRAM) TARGET=$(TARGET)
-
-
 
 .PHONY: upload
 upload:
@@ -180,8 +171,6 @@ ifeq ($(PROGRAM),)
 	cd ./software/examples/plic_applns && $(MAKE) clean CLEAR=CLEAR
 	cd ./software/examples/malloc_test && $(MAKE) clean CLEAR=CLEAR
 	cd ./software/examples/xadc_applns && $(MAKE) clean CLEAR=CLEAR
-	cd ./software/testcases/uart && $(MAKE) clean CLEAR=CLEAR
-	cd ./software/testcases/csr && $(MAKE) clean CLEAR=CLEAR
 	cd ./software/projects && $(MAKE) clean CLEAR=CLEAR
 else
 	cd ./software/examples && $(MAKE) PROGRAM=$(PROGRAM) CLEAR=CLEAR
