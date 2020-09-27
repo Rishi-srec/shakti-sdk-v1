@@ -96,14 +96,6 @@
 #define XADC_MIN_VCCPINT_OFFSET	(0x2AC)   /**< Min VCCPINT Register  */
 #define XADC_MIN_VCCPAUX_OFFSET	(0x2B0)   /**< Min VCCPAUX Register  */
 #define XADC_MIN_VCCPDRO_OFFSET	(0x2B4)   /**< Min VCCPDRO Register  */
-#define XADC_MAX_VUSR0_OFFSET	(0x480)   /**< Maximum VUSER0 Supply Reg */
-#define XADC_MAX_VUSR1_OFFSET	(0x484)   /**< Maximum VUSER1 Supply Reg */
-#define XADC_MAX_VUSR2_OFFSET	(0x488)   /**< Maximum VUSER2 Supply Reg */
-#define XADC_MAX_VUSR3_OFFSET	(0x48C)   /**< Maximum VUSER3 Supply Reg */
-#define XADC_MIN_VUSR0_OFFSET	(0x4A0)   /**< Minimum VUSER0 Supply Reg */
-#define XADC_MIN_VUSR1_OFFSET	(0x4A4)   /**< Minimum VUSER1 Supply Reg */
-#define XADC_MIN_VUSR2_OFFSET	(0x4A8)   /**< Minimum VUSER2 Supply Reg */
-#define XADC_MIN_VUSR3_OFFSET	(0x4AC)   /**< Minimum VUSER3 Supply Reg */
 
 
 #define XADC_FLAG_REG_OFFSET	(0x2FC) /**< General Status */
@@ -129,25 +121,6 @@
 
 #define XADC_SRR_RESET_VALUE	0x0000000A   /**< Device Reset Mask */
 
-/* @name System Monitor/ADC Status Register (SR) mask(s) */
-
-#define XADC_SR_JTAG_BUSY_MASK	   0x00000400 /**< JTAG is busy */
-#define XADC_SR_JTAG_MODIFIED_MASK 0x00000200 /**< JTAG Write has occurred */
-#define XADC_SR_JTAG_LOCKED_MASK   0x00000100 /**< JTAG is locked */
-#define XADC_SR_BUSY_MASK	   0x00000080 /**< ADC is busy in conversion */
-#define XADC_SR_EOS_MASK	   0x00000040 /**< End of Sequence */
-#define XADC_SR_EOC_MASK	   0x00000020 /**< End of Conversion */
-#define XADC_SR_CH_MASK		   0x0000001F /**< Input ADC channel */
-
-
-/* @name System Monitor/ADC CONVST Register (CONVST) mask(s) */
-
-#define XADC_CONVST_CONVST_MASK		0x00000001   	/**< Conversion Start Mask */
-#define XADC_CONVST_TEMPUPDT_MASK	0x00000002   	/**< Temperature Update Enable Mask */
-#define XADC_CONVST_WAITCYCLES_SHIFT	2		/**< Wait Cycles Shift */
-#define XADC_CONVST_WAITCYCLES_MASK	0x0003FFFC 	/**< Wait Cycles Mask */
-#define XADC_CONVST_WAITCYCLES_DEFAULT	0x03E8	 	/**< Wait Cycles   	 default value */
-
 /* @name System Monitor/ADC Reset Register (ARR) mask(s) */
 
 #define XADC_ARR_RST_MASK	0x00000001 /**< ADC Reset bit mask */
@@ -155,34 +128,6 @@
 /* @name Global Interrupt Enable Register (GIER) mask(s) */
 
 #define XADC_GIER_GIE_MASK	0x80000000 /**< Global interrupt enable */
-
-/**
- * @name System Monitor/ADC device Interrupt Status/Enable Registers
- * <b> Interrupt Status Register (IPISR) </b>
- * This register holds the interrupt status flags for the device.
- * <b> Interrupt Enable Register (IPIER) </b>
- * This register is used to enable interrupt sources for the device.
- * Writing a '1' to a bit in this register enables the corresponding Interrupt.
- * Writing a '0' to a bit in this register disables the corresponding Interrupt
- * IPISR/IPIER registers have the same bit definitions and are only defined
- * once.
- */
-#define XADC_IPIXR_VBRAM_MASK	      0x00000400 /**< ALM3 - VBRAM Output Mask */
-#define XADC_IPIXR_TEMP_DEACTIVE_MASK  0x00000200 /**< Alarm 0 DEACTIVE */
-#define XADC_IPIXR_OT_DEACTIVE_MASK    0x00000100 /**< Over Temp DEACTIVE */
-#define XADC_IPIXR_JTAG_MODIFIED_MASK  0x00000080 /**< JTAG Modified */
-#define XADC_IPIXR_JTAG_LOCKED_MASK    0x00000040 /**< JTAG Locked */
-#define XADC_IPIXR_EOC_MASK	      0x00000020 /**< End Of Conversion */
-#define XADC_IPIXR_EOS_MASK	      0x00000010 /**< End Of Sequence */
-#define XADC_IPIXR_VCCAUX_MASK	      0x00000008 /**< Alarm 2 - VCCAUX */
-#define XADC_IPIXR_VCCINT_MASK	      0x00000004 /**< Alarm 1 - VCCINT */
-#define XADC_IPIXR_TEMP_MASK	      0x00000002 /**< Alarm 0 - Temp ACTIVE */
-#define XADC_IPIXR_OT_MASK	      0x00000001 /**< Over Temperature ACTIVE */
-#define XADC_IPIXR_VUSR0_MASK	      0x00004000 /**< Alarm 8  VUSER0 */
-#define XADC_IPIXR_VUSR1_MASK	      0x00008000 /**< Alarm 9  VUSER1 */
-#define XADC_IPIXR_VUSR2_MASK	      0x00010000 /**< Alarm 10 VUSER2 */
-#define XADC_IPIXR_VUSR3_MASK	      0x00020000 /**< Alarm 11 VUSER3 */
-#define XADC_IPIXR_ALL_MASK	      0x0003C7FF /**< Mask of all interrupts */
 
 /************************** Function Prototypes ******************************/
 
