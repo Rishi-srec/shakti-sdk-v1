@@ -36,6 +36,9 @@ cs  -spi cs
 #include <stdint.h>
 #include "spi.h"
 
+#define PINMUX_CONF_REG 0x41510
+int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
+
 /** 
  * @fn void w25q32()
  * @brief Reads the spi value from w25q32
@@ -43,15 +46,20 @@ cs  -spi cs
  */
 void w25q32()
 {
-	 configure_spi(SPI1_OFFSET);
-	spi_init();
-	printf("SPI init done\n");
-	flash_device_id();
-	waitfor(200);
 	int total_data = 100; //total data you want to read/write
 	int read_address = 0x00000100;  //read from this address
 	int* bram_address = (int*) 0x80000100; //write to this address
 
+	*pinmux_reg = 0x154000;	
+
+	configure_spi(SPI1_OFFSET);
+	spi_init();
+
+	printf("SPI init done\n");
+
+	flash_device_id();
+	waitfor(200);
+		
 	for(int i = 0; i < total_data; ++i)
 	{
 		int read_value= flash_read(read_address);
@@ -74,4 +82,3 @@ void main()
 
 	while(1);
 }
- 

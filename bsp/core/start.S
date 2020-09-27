@@ -22,8 +22,8 @@
 ********************************************************************************/
 /**
 @file start.S
-@detail first instruction to execute in an application. 
- Registers are initialized, trap table is setup here.
+@detail first instruction to execute in an application is here. 
+ Registers are initialized, trap entry is setup here.
 */
 
 #include "defines.h"

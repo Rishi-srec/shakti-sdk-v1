@@ -252,8 +252,8 @@ else
 ifeq ($(PROGRAM),w25q32_read)
 filepath := spi_applns/w25q32_read
 else
-ifeq ($(PROGRAM),spidac)
-filepath := spi_applns/spidac
+ifeq ($(PROGRAM),mcp4921_dac)
+filepath := spi_applns/mcp4921_dac
 else
 ifeq ($(PROGRAM),pwmmotor)
 filepath := pwm_applns/pwmmotor
