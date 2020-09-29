@@ -36,8 +36,9 @@ void display_list();
 void delete_node(int position);
 
 /** @fn void main()
- * @brief 
- * @details 
+ * @brief Get the user input for the linked list creation and deletion. Also displays the linked list.
+ * @param[in] int
+ * @param[Out] No output parameter
  */
 void main()
 {
@@ -71,9 +72,9 @@ void main()
 }
 
 /** @fn void create_list(int n) 
- * @brief 
- * @details 
- * @param 
+ * @brief Creates a linked list with the nodes entered by the user.
+ * @param[in] int
+ * @param[Out] No output parameter
  */
 void create_list(int n)
 {
@@ -124,8 +125,9 @@ void create_list(int n)
 }
 
 /** @fn void display_list() 
- * @brief 
- * @details 
+ * @brief Displays the linked list
+ * @param[in] No input parameter
+ * @param[Out] No output parameter
  */
 void display_list()
 {
@@ -150,9 +152,10 @@ void display_list()
 }
 
 /** @fn void delete_node(int position)
- * @brief 
- * @details 
- * @param 
+ * @brief Deletes the node entered by the user.
+ * @param[in] int
+ * @param[Out] No output parameter
+
  */
 void delete_node(int position)
 {
