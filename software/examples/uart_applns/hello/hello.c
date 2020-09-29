@@ -23,7 +23,7 @@
 ***************************************************************************/
 /**
 @file hello.c
-@brief Does the printing of hello with the help of uart communication
+@brief Prints "Hello world !" in the uart terminal.
 */
 
 #include<uart.h>
