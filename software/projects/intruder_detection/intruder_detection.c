@@ -3,7 +3,8 @@
 * Name of the file			:  intruder_detection.c
 * Brief Description of file		:  Intruder detection with keypad and PIR sensors.
 * Name of Author			:  Sambhav Jain 
-   
+* Email ID                              :
+
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify

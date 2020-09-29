@@ -35,6 +35,10 @@ void create_list(int n);
 void display_list();
 void delete_node(int position);
 
+/** @fn void main()
+ * @brief 
+ * @details 
+ */
 void main()
 {
 	int n,position,m;
@@ -66,6 +70,11 @@ void main()
 	while(1);
 }
 
+/** @fn void create_list(int n) 
+ * @brief 
+ * @details 
+ * @param 
+ */
 void create_list(int n)
 {
 	struct node *node, *tmp;
@@ -114,6 +123,10 @@ void create_list(int n)
 	}
 }
 
+/** @fn void display_list() 
+ * @brief 
+ * @details 
+ */
 void display_list()
 {
 	int i = 0;
@@ -136,6 +149,11 @@ void display_list()
 	}
 }
 
+/** @fn void delete_node(int position)
+ * @brief 
+ * @details 
+ * @param 
+ */
 void delete_node(int position)
 {
 	struct node *temp;

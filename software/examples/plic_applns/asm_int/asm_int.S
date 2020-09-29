@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project               	    : shakti devt board
-* Name of the file	            : asm_int.S
+* Project               	: shakti devt board
+* Name of the file	        : asm_int.S
 * Brief Description of file     : Source asm file for interrupt demonstration.
 * Name of Author    	        : Sathya narayanan
 * Email ID                      : sathya281@gmail.com

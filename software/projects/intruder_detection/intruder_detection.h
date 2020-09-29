@@ -2,8 +2,9 @@
  * Project           		   :  Shakti development board
  * Name of the file	           :  Intruder detection.c
  * Brief Description of file       :  This is a program for Intruder Detection System which uses PIR Sensor to detect any intrusion
- *                                   	    			        	
-     Modified to SHakti by Sambhav Jain 
+ * Name of Author		   :  Sambhav Jain 
+ * Email ID                        :
+ 
     Copyright (C) 2019  IIT Madras. All rights reserved.
 
     This program is free software: you can redistribute it and/or modify

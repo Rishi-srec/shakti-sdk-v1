@@ -1,6 +1,6 @@
 /***************************************************************************
 * Project                   	: shakti devt board
-* Name of the file	            : malloc_testing.c
+* Name of the file	        : malloc_testing.c
 * Brief Description of file     : Test for malloc implementation
 * Name of Author    	        : Abhinav Ramnath
 * Email ID                      : abhinavramnath13@gmail.com
@@ -54,6 +54,11 @@ char *test12=(char *)&__sbss_start;
 int c1,c2,c3,c4,c5;
 int *pointer;
 
+/** @fn int main()
+ * @brief main runs the code to test malloc
+ * @details runs the code to test malloc
+ * @return returns int
+ */
 int main()
 {
 

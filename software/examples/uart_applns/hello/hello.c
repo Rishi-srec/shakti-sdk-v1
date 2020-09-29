@@ -24,7 +24,6 @@
 /**
 @file hello.c
 @brief Does the printing of hello with the help of uart communication
-@detail 
 */
 
 #include<uart.h>

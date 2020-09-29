@@ -46,27 +46,19 @@ int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
  */
 extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
 
-/**  @fn main
- * @brief Configures and Write the SPI values.
- * @details Configures the SPI Write FLASH values, Write the same 
- * prints the write values.
- * @param[in] No input parameter
- * @param[Out] int
- * @return Void function (Null)
+/**  @fn void main()
+ * @brief 
+ * @details 
  */
 void main()
 {
 	spansion();
 }
 
-/** @fn Write & read_spantion_registers
- * @brief Writes & read the spi value to spantion
- * @details Writes & read SPI over spantion interface
- * @param[in]  unsigned int, unsigned int, unsigned char, unsigned long
- * @param[Out] int
- * @return Void function (Null)
+/** @fn void spansion()
+ * @brief 
+ * @details 
  */
-
 void spansion()
 {
 #if defined(ARTIX7_35T) 

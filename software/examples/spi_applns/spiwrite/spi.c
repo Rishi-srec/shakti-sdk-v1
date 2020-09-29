@@ -35,6 +35,12 @@
 #define DELAY1 1000//Determines the duration of delay1//
 #define DELAY2 2000//Determines the duration of delay2//
 
+/** @fn static void flash_read_locations(uint32_t read_address, uint16_t length)
+ * @brief 
+ * @details 
+ * @param unsigned int (32-bit).
+ * @param unsigned int (16-bit).           
+ */
 static void flash_read_locations(uint32_t read_address, uint16_t length)
 {
 	for(int i = 0; i < length; ++i)

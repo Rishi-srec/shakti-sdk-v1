@@ -31,6 +31,12 @@
 #include "xadc_driver.h"
 #include "uart.h"
 
+/** 
+ * @fn int main()
+ * @brief 
+ * @details  
+ * @return int
+ */
 int main()
 {
 	while(1)

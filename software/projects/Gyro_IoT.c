@@ -25,7 +25,8 @@
 @file gyro_iot.c
 @brief Contains the driver routines to configure and read DS3231.
 @detail I2C based routines to configures and read the Accelerometer cum Gyroscope.
-*/#include<stdint.h>
+*/
+#include<stdint.h>
 #include<math.h>
 #include<time.h>
 #include<stdio.h> 
@@ -97,9 +98,7 @@ int I2c_Read_byte(unsigned char ,unsigned char );
 /** @fn measuring_value
  * @brief 
  * @details 
- * @warning 
- * @param[in] 
- * @param[Out] 
+ * @warning  
  */
 void measuring_value()
 {
@@ -124,12 +123,11 @@ void measuring_value()
      GyroZ = GyroZ + GyroErrorZ; // GyroErrorZ
 }
 
-/** @fn main
+/** @fn int main()
  * @brief Configures the MPU6050 and reads values.
  * @details Configures the MPU6050 and reads the accelerometer
  *          and gyrometer values.
- * @param[in] None
- * @param[Out] None
+ * @return int
  */
 int main()
 {
@@ -305,11 +303,9 @@ Delay(DELAY1,DELAY2);
  return 0;
 }
 
-/** @fn calculate_imu_error
+/** @fn void calculate_imu_error()
  * @brief Calculates the IMU error.
  * @details Calculates the error in the read value.
- * @param[in] None
- * @param[Out] None
  */
 void calculate_imu_error()
 {
@@ -346,11 +342,10 @@ void calculate_imu_error()
 
 #ifdef ETHERNET
 
-/** @fn send_data
+/** @fn void send_data(int sockfd) 
  * @brief Send the data
  * @details Sends the data over ethernet link to the server.
- * @param[in] Socket id
- * @param[Out] None
+ * @param int Socket id
  */
 void send_data(int sockfd) 
 {  
@@ -448,12 +443,13 @@ switch(comm_header)
 }
 #endif
 
-/** @fn I2c_Write_byte
+/** @fn  void I2c_Write_byte(unsigned char slave_address,unsigned char reg_address, unsigned char data )
  * @brief To write one byte of data into a particular register of a partivular slave
  * @details Writes one byte of data to the slave with given slave address and 
  * register address.
- * @param[in] slave address, register address, data to be written
- * @param[Out] NULL
+ * @param slave address
+ * @param register address
+ * @param data to be written
  */
  void I2c_Write_byte(unsigned char slave_address,unsigned char reg_address, unsigned char data )
 {
@@ -463,12 +459,13 @@ switch(comm_header)
     I2cStop(delay);
 }
 
-/** @fn I2c_Read_byte
+/** @fn int I2c_Read_byte(unsigned char slave_address,unsigned char reg_address)
  * @brief  To read one byte of data from a particular register of a partivular slave
  * @details Reads one byte of data by passing the slave address and the address of 
  * register that needs to be read.
- * @param[in] slave address, register address
- * @param[Out] readdata
+ * @param slave address
+ * @param register address
+ * @return readdata
  */
 int I2c_Read_byte(unsigned char slave_address,unsigned char reg_address)
 {
@@ -481,11 +478,13 @@ int I2c_Read_byte(unsigned char slave_address,unsigned char reg_address)
    return (int) readData;
 }
 
-/** @fn I2c_shakti_byte
+/** @fn int I2c_shakti_readbytes(char *buf, int count, int last)
  * @brief  To burst read (i.e read multiple bytes byte of data)
  * @details Reads n number of bytes from slave I2C device.
- * @param[in] readbuf to store read data, count to tell how many bytes to read , last
- * @param[Out] No. of values(bytes) read
+ * @param readbuf to store read data
+ * @param count to tell how many bytes to read 
+ * @param last
+ * @return No. of values(bytes) read
  */
 int I2c_shakti_readbytes(char *buf, int count, int last)
 {
