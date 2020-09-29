@@ -1,11 +1,11 @@
 /***************************************************************************
- * Project				:  shakti devt board
- * Name of the file			:  intruder_detection.c
- * Brief Description of file		:  Intruder detection with keypad and PIR sensors.
- * Name of Author			:  Sambhav Jain
- * Email ID                             :
-
- Copyright (C) 2019  IIT Madras. All rights reserved.
+* Project				:  shakti devt board
+* Name of the file			:  intruder_detection.c
+* Brief Description of file		:  Intruder detection with keypad and PIR sensors.
+* Name of Author			:  Sambhav Jain
+* Email ID				:  sambhav.jv@gmail.com 
+   
+ Copyright (C) 2020  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -19,16 +19,16 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
- ***************************************************************************/
+***************************************************************************/
 /**
-  @file  intruder_detection.c
-  @brief Intruder detection with keypad and PIR sensors.
-  @detail
- */
+@file intruder_detection.c
+@brief Intruder detection using PIR Sensors and Keypad 
+@detail Intruder detection using PIR Sensors for detection of intruder and Keypad for interfacing, locking and unlocking the device.
+*/
 
 /***********************************************************
- *		Pin Definitions
- ************************************************************/
+*		Pin Definitions
+************************************************************/
 // GPIOx       - Pin Mapped
 //     	0       -Keypad Top Line-4   	(Output)
 //		1       -Keypad Top Line-3		(Output)
@@ -38,9 +38,9 @@
 //		5       -Keypad Bottom Line-3	(Output)
 //		6       -Keypad Bottom Line-2	(Output)
 //		7       -Keypad Bottom Line-1	(Output)
-//		Gnd		-Keypad Bottom Line-5
-//		Vcc		-Keypad Bottom Line-6
-
+//		Gnd		-Keypad Bottom Line-5	
+//		Vcc		-Keypad Bottom Line-6	
+ 
 
 //		8		-PIR Sensor Output Pin	(Input)
 //		16		-LED P1					(Output)
@@ -53,13 +53,12 @@
 //		25		-Deactivation Switch	(Input)
 
 /***********************************************************
- *		Include File Definitions
- ************************************************************/
-
+*		Include File Definitions
+************************************************************/
 #include "gpio.h"
 #include "platform.h"
-#include "intruder_detection.h"  //Includes the definitions//
-
+#include "intruder_detection.h" 
+#include "log.h" 
 /* global variable definition*/
 
 int pir_present_state = 0;
@@ -100,17 +99,17 @@ int  keyTable[4][4] =
 	{ 10, 11, 12, 13}
 };
 
-/** @fn void write_gpio(unsigned long gpio_pin, int gpio_pin_mode )
+/** @fn write_gpio
  * @brief This function Writes to the Data Register 
- * @details 
- * @warning 
- * @param gpio_pin
- * @param gpio_pin_mode
+ * @details Writing to specific GPIO Pins to set to HIGH or LOW 
+ * @param  gpio_pin The pin number for which the function sets HIGH or LOW
+ * @param gpio_pin_mode Mode = 0 - Sets the GPIO Pin to LOW, 1- Sets the GPIO Pin to HIGH 
  */
 void write_gpio(unsigned long gpio_pin, int gpio_pin_mode )
 {
 	unsigned long read_data = 0;
 	read_data = read_word(GPIO_DATA_REG);
+
 	if(gpio_pin_mode == 1)
 	{
 		write_word (GPIO_DATA_REG, ( read_data | (gpio_pin ) ) );
@@ -122,71 +121,69 @@ void write_gpio(unsigned long gpio_pin, int gpio_pin_mode )
 
 }
 
-/** @fn int pir_read_state(unsigned long temp_read_data)
+/** @fn pir_read_state
  * @brief Reads the State of the PIR Sensor Output 
- * @details 
- * @warning 
- * @param Data Register
- * @return 
+ * @details Reads the status of the PIR Sensor and returns its state 
+ * @param temp_read_data Present Register Data of GPIO 
+ * @return 0- State (1->0 or 0->0); 1- State (0->1);2- State (1->1) 
  */
 int pir_read_state(unsigned long temp_read_data)
 {
-	pir_present_state= ((PIR_IN & temp_read_data) >>PIR_OFFSET);
-	if( (pir_present_state == 1) && (pir_previous_state == 0) ){
-		//State of 0->1
-		//printf("\nHuman Detected - Intrusion Alert %x -- %x ",pir_present_state,pir_previous_state);
-		pir_previous_state = pir_present_state;
-		return 1;
-	}
-	else if((pir_present_state == 1) && (pir_previous_state == 1)) {
-		//State of 1 -> 1
+  pir_present_state= ((PIR_IN & temp_read_data) >>PIR_OFFSET);  
 
-		// printf("\nCode 2 %x -- %x ",pir_present_state,pir_previous_state);
-		pir_previous_state = pir_present_state;
-		return 2;
-	}
-	else {
-		//State of 1->0 and 0->0
-		//printf("\n. %x -- %x",pir_present_state,pir_previous_state);
-		pir_previous_state = pir_present_state;
-		return 0;
-	}
+  if( (pir_present_state == 1) && (pir_previous_state == 0) ){
+	//State of 0->1
+   	log_debug("\nHuman Detected - Intrusion Alert %x -- %x ",pir_present_state,pir_previous_state);
+	pir_previous_state = pir_present_state;
+    return 1;
+  }
+  else if((pir_present_state == 1) && (pir_previous_state == 1)) {
+	//State of 1 -> 1
+	log_debug("\nPIR Code 2 %x -- %x ",pir_present_state,pir_previous_state);
+	pir_previous_state = pir_present_state;
+	return 2;
+  }
+  else {
+	//State of 1->0 and 0->0
+   	log_debug("\nPIR Code 0 %x -- %x",pir_present_state,pir_previous_state);
+    pir_previous_state = pir_present_state;
+    return 0;
+  }
 }
 
-/** @fn int panic_button_read_state(unsigned long temp_read_data)
+
+/** @fn panic_button_read_state
  * @brief Reads the State of the Panic Button 
- * @details 
- * @warning 
- * @param[in] Data Register
- * @return
+ * @details Reads the state of the panic button and returns the panic 
+ * @param temp_read_data Present Register Data of GPIO 
+ * @return 0 - State (0->0 & 1->0) ;1 - State (0->1);2 - State (1->1) 
  */
 int panic_button_read_state(unsigned long temp_read_data)
 {
-	panic_present_state= ( (PANIC_BUTTON & temp_read_data) >> PANIC_BUTTON_OFFSET);
-	if( (panic_present_state == 1) && (panic_previous_state == 0) ) {
-		// printf("\nHuman Detected - Intrusion Alert %x -- %x ",pir_present_state,pir_previous_state);
-		// printf("\nSOS -Panic Button Activated");
+  panic_present_state= ( (PANIC_BUTTON & temp_read_data) >> PANIC_BUTTON_OFFSET);  
 
-		panic_previous_state = panic_present_state;
-		return 1;
-	}
-	else if( (panic_previous_state == 1) && (panic_present_state == 1) ) {
-		//Function Returns 2 when mode is 1-1 (present and prev state)
-		// printf("\nCode 2 %x -- %x ",pir_present_state,pir_previous_state);
-		panic_previous_state = panic_present_state;
-		return 2;
-	}
-	else {
-		// printf("\n. %x -- %x",pir_present_state,pir_previous_state);
-		panic_previous_state = panic_present_state;
-		return 0;
-	}
+  if( (panic_present_state == 1) && (panic_previous_state == 0) ) {
+	  log_debug("\nHuman Detected - Intrusion Alert %x -- %x ",pir_present_state,pir_previous_state);
+	  log_debug("\nSOS -Panic Button Activated");
+	  panic_previous_state = panic_present_state;
+	  return 1;
+  }
+  else if( (panic_previous_state == 1) && (panic_present_state == 1) ) {
+	  //Function Returns 2 when mode is 1-1 (present and prev state)
+	  log_debug("\nPanic -Code 2 %x -- %x ",pir_present_state,pir_previous_state);
+	  panic_previous_state = panic_present_state;
+	  return 2;
+  }
+  else {
+	  log_debug("\nPanic -Code 0 %x -- %x",pir_present_state,pir_previous_state);
+	  panic_previous_state = panic_present_state;
+	  return 0;
+  }
 }
 
-/** @fn void buzzer_tone()
+/** @fn buzzer_tone
  * @brief Outputs the Buzzer Tone
- * @details 
- * @warning 
+ * @details Generates a tone for the buzzer module
  */
 void buzzer_tone()
 {
@@ -197,18 +194,19 @@ void buzzer_tone()
 		delay(1);
 		write_gpio(BUZZER,LOW);		//No tone
 		delay(1);
-	}
+    }
 }
 
-/** @fn void  set_key_pins_map( unsigned int*  row, unsigned int* col, int table[COLNUM][ROWNUM] )
+
+/** @fn set_pins
  * @brief This function sets the pins for the row and column
  * 			and maps the table to its keymap
- * @details 
- * @warning 	
- * @param
- * @param 
+ * @details This function sets the mapping of pin for row and column. 
+ * @param row pointer address which sets row pins   
+ * @param col pointer address which sets column pins
+ * @param table Array which maps the table to the key map 
  */
-void  set_key_pins_map( unsigned int*  row, unsigned int* col, int table[COLNUM][ROWNUM])
+void  set_key_pins_map( unsigned int*  row, unsigned int* col, int table[COLNUM][ROWNUM] )
 {
 	for(int i = 0 ; i < COLNUM ; i++)	{
 		col_pins[i] = col[i]; // set col
@@ -224,12 +222,11 @@ void  set_key_pins_map( unsigned int*  row, unsigned int* col, int table[COLNUM]
 	}
 }
 
-/** @fn int get_key(int col_row)
+/** @fn getkey
  * @brief This function returns the corresponding value in the keymap
- * @details 
- * @warning 
- * @param col, row 
- * @return 
+ * @details This function returns the value from key map 
+ * @param col_row The input to return the correspoding mapped value in key_map table 
+ * @return Returns the corresponding value based on the input from the key_map table
  */
 int get_key(int col_row)
 {
@@ -239,9 +236,8 @@ int get_key(int col_row)
 /** @fn get_col_row
  * @brief This function returns the column-row
  * @details Identifies the pressed key by making the corresponding coloumn
- low and reading the row values
- * @warning  
- * @return 
+   low and reading the row values     
+ * @return -1 - No keys pressed ; else - Returns the key pressed by the Keypad
  */
 int get_col_row(void)
 {
@@ -260,9 +256,9 @@ int get_col_row(void)
 
 		for(int j = 0 ; j < ROWNUM ; j++) {
 			read_value =  read_word(GPIO_DATA_REG);
-			//printf("\n The read value is %lx; row_pins: %x", (read_value), row_pins[j]);
+			log_debug("\n The read value is %lx; row_pins: %x", (read_value), row_pins[j]);
 			if( ( read_value & (1 << row_pins[j] ) ) == 0 ) {
-				//printf("\n The read value is %lx; [i:%d; j:%d] row_pins: %d; key_map=%d", read_value, i, j, row_pins[j], key_map[i][j]);
+				log_debug("\n The read value is %lx; [i:%d; j:%d] row_pins: %d; key_map=%d", read_value, i, j, row_pins[j], key_map[i][j]);
 				return key_map[i][j];
 			}
 		}
@@ -273,10 +269,9 @@ int get_col_row(void)
 	return -1;
 }
 
-/** @fn void gpio_init()
- * @brief This maps the keypad from pins
- * @details
- * @warning
+/** @fn gpio_init
+ * @brief This function initializes the GPIOs, Keypad and PIR Sensor. 
+ * @details Initializing the GPIOs used by the sensors and keypad to its mode.    
  */
 void gpio_init()
 {
@@ -301,11 +296,10 @@ void gpio_init()
 	write_gpio(BUZZER,LOW);
 }
 
-/** @fn int main()
- * @brief 
- * @details    
- * @warning
- * @return 
+/** @fn main
+ * @brief This is the first function called when the program is executed. 
+ * @details Initializes the necessary devices and pins and then runs the main intruder detection program   
+ * @return 0 
  */
 int main()
 {
@@ -347,7 +341,8 @@ int main()
 			alarm_present_state= ((temp_read_PIR > 0) || (temp_read_panic == 1) || alarm_flag == 1 ) && (deactivate_flag == 0);
 
 			if(alarm_present_state == 1 && alarm_previous_state == 0) {
-				//printf("\n%x   %x",alarm_previous_state,alarm_present_state);
+				log_debug("\nAlarm state- %x   %x",alarm_previous_state,alarm_present_state);
+
 				if(temp_read_PIR == 1)
 					printf("\nHuman Detection\nDeactivate to stop Alarm");
 				else if(temp_read_panic == 1)
@@ -360,8 +355,8 @@ int main()
 				alarm_previous_state = alarm_present_state;
 
 			}
-			else if(alarm_present_state == 1 && alarm_previous_state == 1)
-			{
+			else if(alarm_present_state == 1 && alarm_previous_state == 1) {
+				log_debug("\n%x   %x",alarm_previous_state,alarm_present_state);
 				write_gpio(LED_P1,HIGH);
 				buzzer_tone();
 				alarm_flag =1;
@@ -410,8 +405,6 @@ int main()
 			col_row = get_col_row();
 			//KeyPad Sensor 
 			if( col_row != -1 ) {
-				//			key = get_key(col_row);
-
 				printf("\nThe %x Key Pressed", col_row);
 
 				if( col_row == key_map[3][3]) {

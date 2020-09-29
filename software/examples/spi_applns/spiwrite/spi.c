@@ -36,8 +36,8 @@
 #define DELAY2 2000//Determines the duration of delay2//
 
 /** @fn static void flash_read_locations(uint32_t read_address, uint16_t length)
- * @brief 
- * @details 
+ * @brief Reads the flash memory contents starting from read_address.
+          Totally length number of bytes will be read.
  * @param unsigned int (32-bit).
  * @param unsigned int (16-bit).           
  */
@@ -100,5 +100,4 @@ void main()
 	printf("\n After Write");
 	flash_read_locations(read_address, length);
 	asm volatile ("ebreak");
-} 
-
+}

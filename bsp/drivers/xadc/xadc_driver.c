@@ -32,12 +32,9 @@
 
 //Dedicated mode
 
-//Dedicated mode
-
 /**
  * @fn uint32_t xadc_read_data(uint32_t *address)
- * @brief 
- * @details 
+ * @brief A api to read data from a memory mapped address.
  * @param unsigned int (32-bit)
  * @return unsigned int (32-bit)
  */
@@ -48,8 +45,7 @@ uint32_t xadc_read_data(uint32_t *address)
 
 /**
  * @fn void xadc_write_ctrl_reg(uint32_t *address, uint32_t data)
- * @brief 
- * @details 
+ * @brief A api to write data to a memory mapped address.
  * @param unsigned int (32-bit)
  * @param unsigned int (32-bit)
  */
@@ -59,21 +55,9 @@ void xadc_write_ctrl_reg(uint32_t *address, uint32_t data)
 }
 
 /**
- * @fn uint32_t xadc_read_ctrl_reg(uint32_t *address)
- * @brief 
- * @details 
- * @param  unsigned int (32-bit)
- * @return unsigned int (32-bit)
- */
-uint32_t xadc_read_ctrl_reg(uint32_t *address)
-{
-	return(*address);
-}
-
-/**
- * @fn float xadc_onchip_voltage(uint32_t value)
- * @brief 
- * @details 
+ * @fn xadc_onchip_voltage(uint32_t value)
+ * @brief Reads the onchip voltage
+ * @details Read the voltage in the FPGA chip and returns a value in volts
  * @param unsigned int (32-bit)
  * @return float
  */
@@ -83,9 +67,10 @@ float xadc_onchip_voltage(uint32_t value)
 }
 
 /**
- * @fn float xadc_onchip_temp(uint32_t value)
- * @brief 
- * @details 
+ * @fn xadc_onchip_temp(uint32_t value)
+ * @brief Reads the onchip temperature
+ * @details Read the temperature on the FPGA chip and returns a value in
+ * celsius.
  * @param unsigned int (32-bit)
  * @return float
  */
@@ -95,9 +80,8 @@ float xadc_onchip_temp(uint32_t value)
 }
 
 /**
- * @fn float xadc_dedicated_channel(uint32_t value) 
- * @brief 
- * @details 
+ * @fn  xadc_dedicated_channel(uint32_t value)
+ * @brief Reads the data on the dedicated VP/VN pins
  * @param unsigned int (32-bit)
  * @return float
  */

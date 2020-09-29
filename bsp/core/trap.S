@@ -1,7 +1,7 @@
 /*************************************************************************
  * Project           		 : shakti devt board
  * Name of the file              : trap.S 
- * Brief description             : 
+ * Brief description             : Trap handling is managed from here. 
  * Name of Author                : Abhinav Ramnath & Sathya Narayanan N
  * Email id                      : abhinavramnath13@gmail.com & sathya281@gmail.com
  
@@ -23,7 +23,8 @@
 ****************************************************************************/
 /**
 @file trap.S
-@detail 
+@detail Context switching on trap is taken here. After saving the context, trap handler
+        is called. After servicing the trap, context is restored. 
 */
 
 #include "defines.h"
@@ -114,4 +115,3 @@
 
   addi sp, sp, 32*REGSIZE
   mret
-

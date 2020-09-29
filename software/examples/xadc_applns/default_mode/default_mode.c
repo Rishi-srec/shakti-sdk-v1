@@ -1,9 +1,9 @@
 /***************************************************************************
 * Project                               : shakti devt board
 * Name of the file                      : xadc_default.c
-* Brief Description of file             :
-* Name of Author                        :
-* Email ID                              :
+* Brief Description of file             : Demonstrates the usage of onchip xadc.
+* Name of Author                        : Sathya Narayanan
+* Email ID                              : sathya281@gmail.com
 
  Copyright (C) 2020  IIT Madras. All rights reserved.
 
@@ -33,11 +33,10 @@
 
 /** 
  * @fn int main()
- * @brief 
- * @details  
- * @return int
+ * @brief Calls the xadc apis to read temperature and onchip voltage.
+ * @return none
  */
-int main()
+void main()
 {
 	while(1)
 	{
