@@ -24,7 +24,6 @@
 /**
 @file elf_to_header.c
 @brief Create hex array of the contents in elf.
-@detail 
 */
 
 #include <stdio.h>

@@ -1,5 +1,4 @@
-/*
- **************************************************************************
+/***************************************************************************
  * Project                               :  shakti devt board
  * Name of the file                      :  deploy.c
  * Brief Description of file             :  Deploy elf into flash in board.
@@ -77,6 +76,9 @@ void deploy()
 	asm volatile ("ebreak");
 }
 
+/** @fn void main()
+ * @brief initiates by calling deploy function
+ */
 void main(){
 	deploy();
 }

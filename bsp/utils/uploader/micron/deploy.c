@@ -4,6 +4,7 @@
  * Brief Description of file       :  Deploy elf into flash in board.
  * Name of Author    	           : 
  * Email ID                        : 
+
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
@@ -36,11 +37,10 @@
 
 extern int  status;
 
-/** @fn void main()
+/** @fn void deploy()
  * @brief Deploys the hex file for a project to the flash device using QSPI
  * protocol. 
  */
-
 void deploy()
 {
 	int ar_read,dum_data,i;
@@ -118,6 +118,9 @@ void deploy()
 	asm volatile ("ebreak");
 }
 
+/** @fn void main()
+ * @brief initiates by calling deploy function 
+ */
 void main(){
 
 	deploy();

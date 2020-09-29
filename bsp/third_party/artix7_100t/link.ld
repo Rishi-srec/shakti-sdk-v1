@@ -1,8 +1,7 @@
 /***************************************************************************
- * Project           			:  shakti devt board
- * Name of the file	     		:  link.ld
- * Created date			        :   
- * Brief Description of file    :   linker file
+ * Project           		:  shakti devt board
+ * Name of the file	     	:  link.ld  
+ * Brief Description of file    :  linker file
  * Name of Author    	        :  Sathya Narayanan N & Abhinav ramnath
  * Email ID                     :  sathya281@gmail.com
 

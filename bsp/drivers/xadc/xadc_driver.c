@@ -34,31 +34,73 @@
 
 //Dedicated mode
 
+/**
+ * @fn uint32_t xadc_read_data(uint32_t *address)
+ * @brief 
+ * @details 
+ * @param unsigned int (32-bit)
+ * @return unsigned int (32-bit)
+ */
 uint32_t xadc_read_data(uint32_t *address)
 {
 	return(*address);
 }
 
+/**
+ * @fn void xadc_write_ctrl_reg(uint32_t *address, uint32_t data)
+ * @brief 
+ * @details 
+ * @param unsigned int (32-bit)
+ * @param unsigned int (32-bit)
+ */
 void xadc_write_ctrl_reg(uint32_t *address, uint32_t data)
 {
 	*address = data;
 }
 
+/**
+ * @fn uint32_t xadc_read_ctrl_reg(uint32_t *address)
+ * @brief 
+ * @details 
+ * @param  unsigned int (32-bit)
+ * @return unsigned int (32-bit)
+ */
 uint32_t xadc_read_ctrl_reg(uint32_t *address)
 {
 	return(*address);
 }
 
+/**
+ * @fn float xadc_onchip_voltage(uint32_t value)
+ * @brief 
+ * @details 
+ * @param unsigned int (32-bit)
+ * @return float
+ */
 float xadc_onchip_voltage(uint32_t value)
 {
 	return (((value >> 4)*3.0f)/4096.0f );
 }
 
+/**
+ * @fn float xadc_onchip_temp(uint32_t value)
+ * @brief 
+ * @details 
+ * @param unsigned int (32-bit)
+ * @return float
+ */
 float xadc_onchip_temp(uint32_t value)
 {
 	return (((value/65536.0f)/0.00198421639f ) - 273.15f);
 }
 
+/**
+ * @fn float xadc_dedicated_channel(uint32_t value) 
+ * @brief 
+ * @details 
+ * @param unsigned int (32-bit)
+ * @return float
+ */
 float xadc_dedicated_channel(uint32_t value)
 {
 	return ((value >> 4)/4096.0f );

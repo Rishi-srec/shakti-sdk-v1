@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project               	     : shakti devt board
- * Name of the file	           : sys_brk.c
- * Brief Description of file   : System BRK
- * Name of Author    	         : Abhinav Ramnath
- * Email ID                    : abhinavramnath13@gmail.com
+ * Project               	: shakti devt board
+ * Name of the file	        : sys_brk.c
+ * Brief Description of file   	: System BRK
+ * Name of Author    	        : Abhinav Ramnath
+ * Email ID                     : abhinavramnath13@gmail.com
 
   Copyright (C) 2019  IIT Madras. All rights reserved.
 

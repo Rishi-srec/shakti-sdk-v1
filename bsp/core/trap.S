@@ -1,6 +1,7 @@
 /*************************************************************************
+ * Project           		 : shakti devt board
  * Name of the file              : trap.S 
- * Brief description             : header file for handling traps 
+ * Brief description             : 
  * Name of Author                : Abhinav Ramnath & Sathya Narayanan N
  * Email id                      : abhinavramnath13@gmail.com & sathya281@gmail.com
  
@@ -20,6 +21,11 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ****************************************************************************/
+/**
+@file trap.S
+@detail 
+*/
+
 #include "defines.h"
 
   .global trap_entry
