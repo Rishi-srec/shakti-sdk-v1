@@ -68,5 +68,3 @@ char * m_sbrk (nbytes)
 	}
 	return base;
 }
-
-

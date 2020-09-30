@@ -46,17 +46,25 @@ int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
  */
 extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
 
-/**  @fn void main()
- * @brief Configures, Write the value and read the same using SPI  Read values write in gpio pins
- * @details Write the values in flash and same will be read in gpio pins and gpio output was connected to the led*/
+/**  @fn main
+ * @brief Configures and Write the SPI values.
+ * @details Configures the SPI Write FLASH values, Write the same 
+ * prints the write values.
+ * @param[in] No input parameter
+ * @param[Out] int
+ * @return Void function (Null)
+ */
 void main()
 {
 	spansion();
 }
 
-/** @fn void spansion()
- * @brief Write and read the value as per the given Target
- * @details Config the gpio direction register and write in flash and same willl read using  gpio spi 
+/** @fn Write & read_spantion_registers
+ * @brief Writes & read the spi value to spantion
+ * @details Writes & read SPI over spantion interface
+ * @param[in]  unsigned int, unsigned int, unsigned char, unsigned long
+ * @param[Out] int
+ * @return Void function (Null)
  */
 void spansion()
 {
@@ -64,7 +72,7 @@ void spansion()
 	unsigned long readData = 0;
 	//*pinmux_reg = 0x154000;
 	int write_address = 0x00b00000;  // read/write from/to this address
-
+	
 	write_word(GPIO_DIRECTION_CNTRL_REG, 0x0000FFFF);
 	readData =read_word(GPIO_DATA_REG);//copies the GPIO_DATA_REG Register contents//
 	printf("\n Read Data is :%x\n", readData);
@@ -74,7 +82,7 @@ void spansion()
 	delay_loop(1000, 1000);
 	write_word(GPIO_DIRECTION_CNTRL_REG, 0x0000FFFF);
 
-	configure_spi(SPI1_OFFSET);
+	configure_spi(SPI1_OFFSET);	
 	spi_init();
 	printf("SPI init done\n");
 	flash_device_id(); 

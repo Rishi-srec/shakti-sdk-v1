@@ -116,7 +116,7 @@ void write_gpio(unsigned long gpio_pin, int gpio_pin_mode )
 	}
 	else
 	{
-		write_word(GPIO_DATA_REG, ( read_data & ( ~gpio_pin ) ) );  
+                write_word(GPIO_DATA_REG, ( read_data & ( ~gpio_pin ) ) );  
 	}
 
 }

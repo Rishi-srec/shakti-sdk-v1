@@ -455,6 +455,46 @@ int i2c_read_data(i2c_struct * instance, unsigned char *read_data, unsigned char
 	return I2C_SUCCESS;
 }
 
+
+/**
+ * @fn int i2c_read_data_nack(i2c_struct * i2c_instance, unsigned char *read_data, unsigned char delay)
+ * @brief It does the reading or writing from the address specified .
+ * @details Reads a byte of data over I2C bus from the passed I2C location. Then sends request to send 
+ *          in the next byte.
+ * @param i2c_struct*
+ * @param unsigned char  *read_data
+ * @param unsigned char delay
+ * @return Zero on success; else -ETIMEOUT
+ */
+//#define READ_INTERRUPT 1
+int i2c_read_data_nack(i2c_struct * i2c_instance, unsigned char *read_data, unsigned char delay)
+{
+	int timeout;
+	int status = 0;
+
+	/* Make a dummy read as per spec of the I2C controller */
+
+	*read_data = i2c_instance->data; //~
+
+#ifdef USE_WRITE_I2C_INTERRUPT	
+	i2c_complete_flag = 0;
+	i2c_instance->control = I2C_REPSTART_ENI; //~
+	while(!i2c_complete_flag);
+	*read_data = i2c_instance->data;
+	printf("\n I2C Read Data = %x", i2c_read_data);
+#else
+/*
+	while(wait_till_txrx_operation_Completes(i2c_instance, &status))
+	{
+		printf("\twaiting for pin\n");
+		waitfor(delay);
+	}
+*/	
+#endif
+	printf("\n I2C Read Data = %x", *read_data);
+	return I2C_SUCCESS;
+}
+
 /**
  * @fn int i2c_send_interrupt_slave_address(i2c_struct * instance, unsigned char slaveAddress, unsigned char rdWrCntrl, unsigned long delay)
  * @brief Sends the slave address over I2C Bus.

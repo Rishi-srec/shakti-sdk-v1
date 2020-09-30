@@ -174,6 +174,12 @@ else
 ifeq ($(PROGRAM),pcf8574)
 filepath := i2c_applns/pcf8574
 else
+ifeq ($(PROGRAM),at24c256)
+filepath := i2c_applns/at24c256
+else
+ifeq ($(PROGRAM),mpu6050)
+filepath := i2c_applns/mpu6050
+else
 ifeq ($(PROGRAM),btnled)
 filepath := gpio_applns/btnled
 else
@@ -234,6 +240,9 @@ else
 ifeq ($(PROGRAM),buttons)
 filepath := gpio_applns/buttons
 else
+ifeq ($(PROGRAM),cdce)
+filepath := gpio_applns/cdce
+else
 ifeq ($(PROGRAM),spierase)
 filepath := spi_applns/spierase
 else
@@ -289,6 +298,9 @@ endif
 endif
 endif
 endif	
+endif
+endif
+endif
 endif
 endif
 endif
