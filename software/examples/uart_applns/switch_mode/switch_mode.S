@@ -1,7 +1,7 @@
 /***************************************************************************
 * Project               	: shakti devt board
 * Name of the file	        : switch_mode.S
-* Brief Description of file     : 
+* Brief Description of file     : Demonstrates the working of supervisor mode 
 * Name of Author    	        : Sathya narayanan
 * Email ID                      : sathya281@gmail.com
 
@@ -22,8 +22,7 @@
 ***************************************************************************/
 /**
  * @file switch_mode.S
- * @brief 
- * @detail 
+ * @brief Demonstrates the working of supervisor mode 
  */
 
 #start in m mode, jump to S mode. access M mode code. Trap happens. handle trap in M mode. jump to mepc
