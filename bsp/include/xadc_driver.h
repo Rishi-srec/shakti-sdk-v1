@@ -136,5 +136,6 @@ uint32_t xadc_read_ctrl_reg(uint32_t *address);
 uint32_t xadc_read_data(uint32_t *address);
 float xadc_onchip_temp(uint32_t value);
 float xadc_onchip_voltage(uint32_t value);
+float xadc_dedicated_channel(uint32_t value);
 
 #endif
