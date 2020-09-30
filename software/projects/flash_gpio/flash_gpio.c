@@ -1,7 +1,7 @@
 /***************************************************************************
 * Project           			:  shakti devt board
 * Name of the file	     		:  flash_gpio.c
-* Brief Description of file             :  artix7_35t: Reads 8 switches status
+* Brief Description of file     :  artix7_35t: Reads 8 switches status
 *					  and writes to flash. Reads from flash and
 					  toggles the gpio pins 0 to 7.
                                           moushik: Directly write into flash 'deadbeef'
@@ -27,8 +27,8 @@
 ***************************************************************************/
 /**
 @file flash_gpio.c
-@brief
-@detail
+@brief write the data in the spansionflash with spi and read the data thru spi and read data was pass in gpio pins and toggle the leds in the gpio
+@detail Configures the SPI flash, Confirms the flash device id and then write the data in addresses in flash and then read and write in gpio pins
 */
 
 #include <stdio.h>//includes the definitions of standard input/output functions
@@ -47,17 +47,16 @@ int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
 extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
 
 /**  @fn void main()
- * @brief 
- * @details 
- */
+ * @brief Configures, Write the value and read the same using SPI  Read values write in gpio pins
+ * @details Write the values in flash and same will be read in gpio pins and gpio output was connected to the led*/
 void main()
 {
 	spansion();
 }
 
 /** @fn void spansion()
- * @brief 
- * @details 
+ * @brief Write and read the value as per the given Target
+ * @details Config the gpio direction register and write in flash and same willl read using  gpio spi 
  */
 void spansion()
 {
