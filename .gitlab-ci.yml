@@ -7,6 +7,9 @@ build:
     - make all
     - make all TARGET=aardonyx
     - make all TARGET=artix7_100t
+    - make all TARGET=pinaka
+    - make all TARGET=parashu
+    - make all TARGET=vajra
     
   tags:
     - sw-runner
