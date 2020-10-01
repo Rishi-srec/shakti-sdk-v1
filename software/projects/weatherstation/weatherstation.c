@@ -45,15 +45,12 @@
 #include "pinmux.h"
 
 #define LM75_SLAVE_ADDRESS 0x90//Defines the Starting address of slave
-//#define API_KEY "9T40C2TMUSU1ZX6E"
 #define API_KEY   "PPI6OVOI1A2LGXMZ"
 #define ESP_UART uart_instance[1]
 /**
-  * @fn int write_to_esp8266(char *data,uart_num sel,int baudrate)
+  * @fn int write_to_esp8266(char *data)
   * @brief sends data to esp8266 using UART
-  * @param data data that has to be sent to could
-  * @param sel Uart that is connected to esp8266
-  * @param baudrate Baudrate that is used to communicate with esp8266
+  * @param data data that has to be sent to cloud
 */
 
 int write_to_esp8266(char *data) {
@@ -67,13 +64,10 @@ int write_to_esp8266(char *data) {
 }
 
 /**
-  * @fn int write_to_esp8266(char *data,uart_num sel,int baudrate)
+  * @fn int write_enter_to_esp8266()
   * @brief sends carriage return and new line charector to esp8266
   * @detail sends carriage return and new line charector to esp8266
   *         this method is neeed to indicate end to data transmission
-  * @param data data that has to be sent to could
-  * @param sel Uart that is connected to esp8266
-  * @param baudrate Baudrate that is used to communicate with esp8266
 */
 
 int write_enter_to_esp8266(){
@@ -82,12 +76,10 @@ int write_enter_to_esp8266(){
 }
 
 /**
-  * @fn int read_from_esp8266(char *data,uart_num sel,int baudrate)
+  * @fn int read_from_esp8266(char *data)
   * @brief Reads data sent by esp8266
   * @details Reads data sent by esp8266 until one of the key word is found
   * @param data responses read from esp8266, mainly used for logging
-  * @param sel Uart that is connected to esp8266
-  * @param baudrate Baudrate that is used to communicate with esp8266
 */
 int read_from_esp8266(char *data) {
 	int ch;
@@ -126,14 +118,9 @@ int read_from_esp8266(char *data) {
 }
 
 /**
-  * @fn void transmit_data(int temperature, int baudrate)
-  * @brief formats AT commands  to be sent to esp8266
-  * @details formats the data in AT commands and sends to esp8266 in  sequence
-  *      Open connection to server (thingspeak.com in this example)
-  *      Send data to the server 
-  *      Close connection
-  * @param temperature temperate that has to be sent to database in cloud
-  * @param baudrate baudrate used to communicate with esp8266
+  * @fn void setup_esp8266 ()
+  * @brief setup esp8266
+  * @details set up esp8266 to send data
 */
 void setup_esp8266(){
 	char data[200];
@@ -146,7 +133,7 @@ void setup_esp8266(){
 	delay(1);
 	read_from_esp8266(data);
 	printf(" Connect esp8266 to AP \n");
-	write_to_esp8266("AT+CWJAP=\"newwifi\",\"1234drama#\"");
+	write_to_esp8266("AT+CWJAP=\"SSID\",\"PASSWORD\"");
 	delay(3);
 	read_from_esp8266(data);
 */
@@ -159,6 +146,12 @@ void setup_esp8266(){
 	delay(1);
 	read_from_esp8266(data);
 }
+/**
+  * @fn void transmit_data (int temperature )
+  * @brief transmit temperature value to thingspeak.com using esp8266
+  * @details Open http connection to thingspeak.com, using GET method send data and close the connection
+  * @param temperature value that has to eb transmitted.
+*/
 void transmit_data(int temperature) {
 /***************************************************
     AT – response OK
@@ -166,7 +159,7 @@ void transmit_data(int temperature) {
     AT+CIPMUX=0
     AT+CIPSTART="TCP","api.thingspeak.com",80
     AT+CIPSEND=75
-    GET https://api.thingspeak.com/update?api_key=9T40C2TMUSU1ZX6E&field1=45
+    GET https://api.thingspeak.com/update?api_key=PPI6OVOI1A2LGXMZ&field1=45
 
 **************************************************/
 
@@ -213,6 +206,9 @@ void transmit_data(int temperature) {
 /**
   * @fn void main()
   * @brief Entry point for the program
+  * @detail sets the pinmux to select UART1 to communicate with esp8266
+  *      Set desired baudrate, get temperature from lm75 
+  *      transmit data to thingspeak.com
 */
 void main()
 {	
@@ -231,10 +227,6 @@ void main()
 	printf("\n Waiting to ESP8266 to initialize \n");
 	delay(3);
 	setup_esp8266();
-	//write_to_esp8266("AT+RST");
-	//delay_loop(1000,1000);
-	//read_from_esp8266(data);
-	//printf(" data from esp :%s\n",data);
 	while (1) {
  		temperature = temperature_value();
 		if (temperature != 999)
