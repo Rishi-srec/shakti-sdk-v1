@@ -42,9 +42,12 @@
 
 #include "uart.h"//Includes the definitions of uart communication protocol//
 #include "string.h"
-#define LM75_SLAVE_ADDRESS 0x90//Defines the Starting address of slave
-#define API_KEY "9T40C2TMUSU1ZX6E"
+#include "pinmux.h"
 
+#define LM75_SLAVE_ADDRESS 0x90//Defines the Starting address of slave
+//#define API_KEY "9T40C2TMUSU1ZX6E"
+#define API_KEY   "PPI6OVOI1A2LGXMZ"
+#define ESP_UART uart_instance[1]
 /**
   * @fn int write_to_esp8266(char *data,uart_num sel,int baudrate)
   * @brief sends data to esp8266 using UART
@@ -53,13 +56,13 @@
   * @param baudrate Baudrate that is used to communicate with esp8266
 */
 
-int write_to_esp8266(char *data,uart_num sel,int baudrate) {
+int write_to_esp8266(char *data) {
 	while (*data != '\0') {
-		write_uart_character(ptr_UART, *data);
+		write_uart_character(ESP_UART, *data);
 		data++;
 	}
-	write_uart_character(ptr_UART,'\r');
-	write_uart_character(ptr_UART,'\n');
+	write_uart_character(ESP_UART,'\r');
+	write_uart_character(ESP_UART,'\n');
 
 }
 
@@ -73,9 +76,9 @@ int write_to_esp8266(char *data,uart_num sel,int baudrate) {
   * @param baudrate Baudrate that is used to communicate with esp8266
 */
 
-int write_enter_to_esp8266(uart_num sel,int baudrate){
-	write_uart('\r',sel,baudrate);
-	write_uart('\n',sel,baudrate);
+int write_enter_to_esp8266(){
+	write_uart_character(ESP_UART,'\r');
+	write_uart_character(ESP_UART,'\n');
 }
 
 /**
@@ -86,31 +89,35 @@ int write_enter_to_esp8266(uart_num sel,int baudrate){
   * @param sel Uart that is connected to esp8266
   * @param baudrate Baudrate that is used to communicate with esp8266
 */
-int read_from_esp8266(char *data,uart_num sel,int baudrate) {
+int read_from_esp8266(char *data) {
 	int ch;
 	char *str = data;
 	char *test = data;
 	for(int i=0;i<198;i++) {
-		read_uart_character(ptr_UART,&ch);
+		read_uart_character(ESP_UART,&ch);
 		//printf("read from esp %c  \n",ch);
 		*str = ch;
 		str++; 
 		*str = '\0';
-		//printf("string is %s\n",test);
+		//printf("read  %c\n",ch);
 		if(strstr(test,"OK") != NULL)  {
-			//printf("read from esp8266 %s\n",test);
+			printf("read from esp8266 %s\n",test);
 			return;
 		}
 		if(strstr(test,"ERROR") != NULL) {
-			//printf("read from esp8266 %s\n",test);
+			printf("read from esp8266 %s\n",test);
 			return;
 		}
 		if(strstr(test,">") != NULL) {
-			//printf("read from esp8266 %s\n",test);
+			printf("read from esp8266 %s\n",test);
 			return;
 		}
 		if(strstr(test,"RECV") != NULL) {
-			//printf("read from esp8266 %s\n",test);
+			printf("read from esp8266 %s\n",test);
+			return;
+		}
+		if(strstr(test,"IP") != NULL) {
+			printf("read from esp8266 %s\n",test);
 			return;
 		}
 	}
@@ -128,7 +135,31 @@ int read_from_esp8266(char *data,uart_num sel,int baudrate) {
   * @param temperature temperate that has to be sent to database in cloud
   * @param baudrate baudrate used to communicate with esp8266
 */
-void transmit_data(int temperature, int baudrate) {
+void setup_esp8266(){
+	char data[200];
+	write_to_esp8266("AT");
+	delay(1);
+	read_from_esp8266(data);
+/*
+	printf(" set esp8266 as AP\n");
+	write_to_esp8266("AT+CWMODE=1");
+	delay(1);
+	read_from_esp8266(data);
+	printf(" Connect esp8266 to AP \n");
+	write_to_esp8266("AT+CWJAP=\"newwifi\",\"1234drama#\"");
+	delay(3);
+	read_from_esp8266(data);
+*/
+	printf(" sending AT Echo off command to esp\n");
+	write_to_esp8266("ATE0");
+	delay(1);
+	read_from_esp8266(data);
+	printf(" write AT+CIPMUX\n");
+	write_to_esp8266("AT+CIPMUX=0");
+	delay(1);
+	read_from_esp8266(data);
+}
+void transmit_data(int temperature) {
 /***************************************************
     AT – response OK
     AT+CWLAP – list nearby available WiFi networks
@@ -145,56 +176,36 @@ void transmit_data(int temperature, int baudrate) {
 	sprintf(sendData,"GET https://api.thingspeak.com/update?api_key=%s&field1=%d",API_KEY,temperature);
 	//printf("\n send data %s\n",sendData);
 	// Connect to Wifi using esp8266
-		set_baud_rate(UART1, 9600);
 
 		// Connect to Wifi using esp8266
-		flush_uart(UART1);
-		printf(" sending AT command to esp\n");
-		write_to_esp8266(UART1, "AT");
-		read_from_esp8266(UART1, data);
-		printf(" data from esp :%s\n",data);
-	
-		flush_uart(UART1);
-		printf(" sending AT Echo off command to esp\n");
-		write_to_esp8266(UART1, "ATE0");
-		read_from_esp8266(UART1, data);
-		printf(" data from esp :%s\n",data);
-	
-	
-		printf(" write AT+CIPMUX\n");
-		flush_uart(UART1);
-		write_to_esp8266(UART1, "AT+CIPMUX=0");
-		read_from_esp8266(UART1, data);
-		printf(" data from esp :%s\n",data);
-s	
-		delay_loop(2000,2000);
 		printf(" Open connection to thingspeak.com\n",data);
-		flush_uart(UART1);
-		write_to_esp8266(UART1, "AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80");
-		read_from_esp8266(UART1, data);
+		flush_uart(ESP_UART);
+		write_to_esp8266("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80");
+		read_from_esp8266(data);
 		printf(" data from esp :%s\n",data);
 	
 		//delay_loop(2000,2000);
 		printf(" write AT+CIPSEND\n");
-		flush_uart(UART1);
-		write_to_esp8266(UART1, "AT+CIPSEND=75");
-		read_from_esp8266(UART1, data);
+		flush_uart(ESP_UART);
+		write_to_esp8266("AT+CIPSEND=75");
+		read_from_esp8266(data);
 		printf(" data from esp :%s\n",data);
 	
 		printf(" write Data\n");
-		flush_uart(UART1);
-		write_to_esp8266(UART1, sendData);
+		flush_uart(ESP_UART);
+		write_to_esp8266(sendData);
 	
-		//flush_uart(UART1);
-		write_enter_to_esp8266(UART1s);
-		read_from_esp8266(UART1, data);
+		//flush_uart(ESP_UART);
+		write_enter_to_esp8266();
+		delay_loop(1000,1000);
+		read_from_esp8266(data);
 		printf(" data from esp :%s\n",data);
 	
 		// disconnect from link
 		printf(" write AT+CIPCLOSE\n");
-		flush_uart(UART1);
-		write_to_esp8266(UART1, "AT+CIPCLOSE");
-		read_from_esp8266(UART1, data);
+		flush_uart(ESP_UART);
+		write_to_esp8266("AT+CIPCLOSE");
+		read_from_esp8266(data);
 		printf(" data from esp :%s\n",data);
 
 }
@@ -206,16 +217,29 @@ s
 void main()
 {	
 	int i=0;
-	int baudrate = 9600;
+	//int baudrate = 9600;
+	int baudrate = 115200;
 	int temperature = 24;
+	int transmit_count = 0;
+	char data[200];
+   	printf("\n setting PIN MUX config to 2 .... \n");
+    	*pinmux_config_reg = 0x5;
+   	printf("\n set PIN MUX config to 2 .... \n");
+	set_baud_rate(ESP_UART,baudrate);	
 	printf("\n Sending temperature data to cloud server!....\n");
 	printf("\n Baud rate set to %d \n",baudrate);
 	printf("\n Waiting to ESP8266 to initialize \n");
 	delay(3);
+	setup_esp8266();
+	//write_to_esp8266("AT+RST");
+	//delay_loop(1000,1000);
+	//read_from_esp8266(data);
+	//printf(" data from esp :%s\n",data);
 	while (1) {
-		temperature = temperature_value();
+ 		temperature = temperature_value();
 		if (temperature != 999)
-			transmit_data(temperature, baudrate); 
+			transmit_data(temperature); 
 		delay(60);
+
 	}
 }

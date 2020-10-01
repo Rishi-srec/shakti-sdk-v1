@@ -72,7 +72,43 @@ ifeq ($(TARGET),moushik)
 	@$(eval INTERFACE=$(bspboard)/jlink)
 	@$(eval DC =$(FLAGS) $(D) )
 else
+ifeq ($(TARGET),pinaka)     # e-class 35t rv32imac
+	@echo $(filepath)
+	@$(eval XLEN = 32)
+	@$(eval WIDTH = 4)
+	@$(eval FLAGS= -D pinaka )
+	@$(eval MARCH=rv32imac)
+	@$(eval MABI=ilp32)
+	@$(eval INTERFACE=$(bspboard)/ftdi)
+	@$(eval DC=$(FLAGS) $(D) )
+	@$(eval UPLOADER = $(UPLOADDIR)/spansion)
+else
+ifeq ($(TARGET),parashu)  # e-class 100t rv32imac
+	@echo $(filepath)
+	@$(eval XLEN = 32)
+	@$(eval WIDTH = 4)
+	@$(eval FLAGS = -D parashu )
+	@$(eval MARCH=rv32imac)
+	@$(eval MABI=ilp32)
+	@$(eval UPLOADER = $(UPLOADER)/spansion)
+	@$(eval INTERFACE=$(bspboard)/ftdi)
+	@$(eval DC=$(FLAGS) $(D))
+else
+ifeq ($(TARGET),vajra)  # c-class 100t rv64imacsu
+	@echo $(filepath)
+	@$(eval XLEN = 64)
+	@$(eval WIDTH = 8 )
+	@$(eval FLAGS = -D vajra )
+	@$(eval MARCH = rv64imac)
+	@$(eval MABI=lp64)
+	@$(eval UPLODER= $(UPLOADER)/spansion)
+	@$(eval INTERFACE = $(bspboard)/ftdi)
+	@$(eval DC=$(FLAGS) $(D))
+else
 	@echo -e "$(TARGET) not supported"
+endif
+endif
+endif
 endif
 endif
 endif
