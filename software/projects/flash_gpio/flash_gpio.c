@@ -1,14 +1,14 @@
 /***************************************************************************
 * Project           			:  shakti devt board
 * Name of the file	     		:  flash_gpio.c
-* Brief Description of file     :  artix7_35t: Reads 8 switches status
+* Brief Description of file             :  artix7_35t: Reads 8 switches status
 *					  and writes to flash. Reads from flash and
 					  toggles the gpio pins 0 to 7.
                                           moushik: Directly write into flash 'deadbeef'
 					  and read from flash and toggle the leds in
 					  gpio pins. SPANSTION Flash IC NO FL256LAVFOD
-* Name of Author    	                 : G Nambirajan
-* Email ID                               : nambirajan2004@gmail.com
+* Name of Author    	                : G Nambirajan
+* Email ID                              : nambirajan2004@gmail.com
 
   Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -129,7 +129,7 @@ void spansion()
 	printf("SPI init done\n");
 	flash_device_id();
 	waitfor(200);
-	//int total_data = 10; //total data you want to read/write
+
 	int read_address = 0x00b00000;  //read from this address
 	int* bram_address = (int*) 0x80010000; //write to this address
 

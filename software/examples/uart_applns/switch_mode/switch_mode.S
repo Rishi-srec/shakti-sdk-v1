@@ -5,7 +5,7 @@
 * Name of Author    	        : Sathya narayanan
 * Email ID                      : sathya281@gmail.com
 
- Copyright (C) 2019  IIT Madras. All rights reserved.
+ Copyright (C) 2020  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

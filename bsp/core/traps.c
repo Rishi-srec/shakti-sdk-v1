@@ -33,10 +33,11 @@ mtrap_fptr_t mcause_trap_table[MAX_TRAP_VALUE];
 mtrap_fptr_t mcause_interrupt_table[MAX_INTERRUPT_VALUE];
 
 /** @fn unsigned int extract_ie_code(unsigned int num)
- * @brief Extract the exception code from the mcause reg
- * @details Extract the exception code from the mcause reg
- *	    by masking the most significant bit. 
- * @param unsigned int num
+ * @brief Extract the exception code from the mcause value
+ * @details Extract the exception code from the mcause value
+ *	    by masking the most significant bit and return
+ *	    the exception code.
+ * @param unsigned int num - mcause value
  * @return unsigned int
  */
 unsigned int extract_ie_code(unsigned int num)
