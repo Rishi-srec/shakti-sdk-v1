@@ -308,7 +308,7 @@ void pwm_configure(int module_number,int clock_divisor, int period, int duty, bo
 	pwm_set_duty_cycle(module_number, duty);
 	pwm_set_clock(module_number, clock_divisor);
 	pwm_use_external_clock(module_number, external_clock);
-	log_info("PWM %d succesfully configured",module_number);
+	log_info("\nPWM %d succesfully configured",module_number);
 }
 
 /** @fn void pwm_stop(int module_number)

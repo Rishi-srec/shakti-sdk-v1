@@ -97,7 +97,7 @@ uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 	   Otherwise, mcause is never written by the implementation, though it may be explicitly written by software.
 	 */
 
-	log_info("mcause = %x, epc = %x\n", mcause, epc);
+	log_info("\nTrap: mcause = %x, epc = %x\n", mcause, epc);
 
 	/*
 	   The Interrupt bit in the mcause register is set if the trap was caused by an interrupt.

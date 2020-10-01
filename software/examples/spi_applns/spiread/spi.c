@@ -19,24 +19,24 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-***************************************************************************/
+ ***************************************************************************/
 /**
-@file spi.c
-@brief read data from the flash by spi
-@detail Contains driver codes to read and write flash using SPI interface.
-*/
+  @file spi.c
+  @brief read data from the flash by spi
+  @detail Contains driver codes to read and write flash using SPI interface.
+ */
 #include "spi.h"
 #include "uart.h"
 #include "utils.h"
 
 /** @fn void main()
  * @brief Configures the SPI flash and reads the flash.
- * @details Configures the SPI flash, Confirms the flash device id and then read 10 addresses in flash
- *          and prints the value. 
+ * @details Configures the SPI flash, Confirms the flash device id,
+            then read 10 addresses in flash and prints the value.
  */
-void main(void){
+int main(void){
 
-	configure_spi(SPI0_OFFSET);	
+	configure_spi(SPI0_OFFSET);
 
 	spi_init();
 	printf("SPI init done\n");
@@ -51,6 +51,7 @@ void main(void){
 		printf("Reading from adddress %x and data \
 		       %x\n",read_address,read_value);
 		read_address=read_address+4;
-	} 
+	}
 	asm volatile ("ebreak");
-} 
+	return 0;
+}

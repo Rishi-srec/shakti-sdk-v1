@@ -31,8 +31,8 @@ interrupt handler, configure the counter and support for e and c class clint tim
 #include "log.h"
 #include "defines.h"
 
-uint32_t* mtime    = 0x0200bff8;
-uint32_t* mtimecmp = 0x02004000;
+uint32_t* mtime    = (uint32_t*) 0x0200bff8;
+uint32_t* mtimecmp = (uint32_t*) 0x02004000;
 
 /** @fn static unsigned long mtime_low( )
  * @brief return the lower 32bit of mtime.

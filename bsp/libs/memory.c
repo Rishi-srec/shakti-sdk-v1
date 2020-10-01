@@ -27,6 +27,7 @@
 */
 
 #include "log.h"
+#include "memory.h"
 #include <stdint.h>
 
 /** @fn void dump_word_memory(uint32_t* start, uint32_t word_length)
@@ -46,13 +47,13 @@ void dump_word_memory(uint32_t* start, uint32_t word_length)
 	while(i++< word_length)
 	{
 		log_info("address = %x data = %x\n", address, *(uint32_t *) address);
-		address+=4;
+		address += 4;
 	}
 }
 
-/** @fn void dump_byte_memory(uint32_t* start, uint32_t word_length) 
+/** @fn void dump_byte_memory(uint32_t* start, uint32_t word_length)
  * @brief dump contents of byte addressabe location in the memory,
- *	 starting from the start address. 
+ *	 starting from the start address.
  * @param uint32_t* start
  * @param uint32_t word_length
  */
@@ -68,6 +69,6 @@ void dump_byte_memory(uint32_t* start, uint32_t word_length)
 	{
 		log_info("address = %x data = %x\n", address, *(unsigned char
 							       *) address);
-		address+=1;
+		address += 1;
 	}
 }

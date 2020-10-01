@@ -22,9 +22,13 @@
  ***************************************************************************/
  /**
  * @file memory.h
- * @brief dumps values at memory mapped locations, useful for debugging 
+ * @brief dumps values at memory mapped locations, useful for debugging
  */
+#ifndef _MEMORY_H
+#define _MEMORY_H
+
+#include<stdint.h>
 
 void dump_word_memory(uint32_t* start, uint32_t word_length);
 void dump_byte_memory(uint32_t* start, uint32_t word_length);
-
+#endif

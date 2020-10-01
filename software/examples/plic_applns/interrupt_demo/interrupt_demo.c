@@ -38,33 +38,31 @@ The interrupts are enabled for a gpio pin. Once the button connected to the gpio
 #include "log.h"
 #include "defines.h"
 #include "memory.h"
-#include "pwm_driver.h"
 
-/** @fn handle_button_press 
- * @brief a default handler to handle button press 
+void handle_button_press(__attribute__((unused)) uint32_t num);
+
+/** @fn handle_button_press
+ * @brief a default handler to handle button press event
  * @param unsigned num
  * @return unsigned
  */
-void handle_button_press (unsigned num)
+void handle_button_press(__attribute__((unused)) uint32_t num)
 {
 	log_info("button pressed\n");
 }
 
-/** @fn main 
- * @brief sets up the environment for plic feature 
+/** @fn main
+ * @brief sets up the environment for plic feature
  * @return int
  */
 int main(void){
-	unsigned int int_id = 1;
-	register uint32_t retval;
+	register unsigned int retval;
 	int i;
-
-	isr_table[PLIC_INTERRUPT_7] = handle_button_press;
 
 	plic_init();
 
-	for(int i=1;i<25;i++)
-		configure_interrupt(i);
+	configure_interrupt(PLIC_INTERRUPT_7);
+	isr_table[PLIC_INTERRUPT_7] = handle_button_press;
 
 	// Enable Global (PLIC) interrupts.
 	asm volatile("li      t0, 8\t\n"
@@ -83,7 +81,7 @@ int main(void){
 		     (retval)
 		    );
 
-	printf(" retval = %x\n", retval);
+	printf("mie = %x\n", retval);
 
 	asm volatile(
 		     "csrr %[retval], mie\n"
@@ -93,7 +91,7 @@ int main(void){
 		     (retval)
 		    );
 
-	printf(" retval = %x\n", retval);
+	printf("mie = %x\n", retval);
 
 	asm volatile(
 		     "csrr %[retval], mip\n"
@@ -103,12 +101,12 @@ int main(void){
 		     (retval)
 		    );
 
-	printf(" retval = %x\n", retval);
+	printf("mip = %u\n", retval);
 
 	while(1){
 		i++;
 
-		if((i%1000000) == 0){
+		if((i%10000000) == 0){
 
 			asm volatile(
 			     "csrr %[retval], mip\n"
@@ -117,7 +115,7 @@ int main(void){
 			     "=r"
 			     (retval)
 			    );
-			printf(" retval = %x\n", retval);
+			printf("mip = %u\n", retval);
 		}
 	}
 	return 0;

@@ -40,36 +40,36 @@
 #include "memory.h"
 #include "pwm_driver.h"
 
-/** @fn unsigned handle_button_press (unsigned num)
- * @brief a default handler to handle button press 
+/** @fn unsigned handle_pwm_interrupt (uint32_t num)
+ * @brief  Default handler to handle pwm interrupt,
+ *         the interrupt has to be cleared by doing a reset.
  * @param unsigned num
- * @return unsigned 
+ * @return unsigned
  */
-unsigned handle_button_press (unsigned num)
+void handle_pwm_interrupt( uint32_t num)
 {
-	log_info("button pressed\n");
-	return 0;
+	if(pwm_check_continuous_mode((6-num)) == 0)
+	{
+		set_pwm_control_register((6-num),0x80);
+	}
+	log_info("pwm interrupt handled\n");
 }
 
-/** @fn void main(void) 
- * @brief sets up the environment for pwn interrupt feature 
+/** @fn void main(void)
+ * @brief sets up the environment for pwn interrupt feature
   */
 void main(void){
 
-	unsigned int int_id = 1;
-	register uint32_t retval;
+	register unsigned int retval;
 	int i;
-
-	isr_table[PLIC_INTERRUPT_1] = handle_button_press;
-
-	log_debug("pwm interrupt isr set\n");
 
 	plic_init();
 
-/*
- Configure all pwm modules
-*/	for(i=6;i>0;i--)
-		configure_interrupt(i);
+	/*
+	   Configure pwm module interrupt
+	 */
+	configure_interrupt(PLIC_INTERRUPT_2);
+	isr_table[PLIC_INTERRUPT_2] = handle_pwm_interrupt;
 
 	// Enable Global (PLIC) interrupts.
 	asm volatile("li      t0, 8\t\n"
