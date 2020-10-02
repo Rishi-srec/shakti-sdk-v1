@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           		   : shakti devt board
- * Name of the file	     	   : counter.c
+ * Project                     : shakti devt board
+ * Name of the file	       : counter.c
  * Brief Description of file   : source file for mtime counter
  * Name of Author    	       : Sathya Narayanan N & Raghav
  * Email ID                    : sathya281@gmail.com
@@ -23,8 +23,11 @@
 ***************************************************************************/
 /**
 @file counter.c
-@brief source file for mtime counter
-@detail 
+@brief source file for mtime counter example
+@detail This file contains an application to use clint counters. The counter
+ is configured for a time period and on expiry the timer interrupt handler
+ handles the interrupt. Subsequently the clint counter is configured for 
+ subsequent operation.
 */ 
 
 #include "uart.h"
@@ -33,23 +36,21 @@
 #include "clint_driver.h"
 #include "log.h"
 
-/** @fn main
- * @brief 
- * @details 
- * @warning 
- * @return int
+/** @fn int main(void)
+ * @brief A simple application to use clint (mtime)
  */
-int main(void){
+void main(void){
 
 	uint64_t value = 50000000;
 	uint32_t id = 0,i;
 	uint32_t* mtimehi=(unsigned int*) mtime + 1;
 
-	printf("mtime lo %x\n",*mtime);
-	//printf("mtime hi %x\n", (unsigned int*) mtime + 1);
-	printf("mtime hi %x\n", mtimehi);
-	printf("mtimecmp lo %x\n",*mtimecmp);
-	printf("mtimecmp hi %x\n",(uint32_t *) mtimecmp +1);
+	log_debug("mtime lo %x\n",*mtime);
+	log_debug("mtime hi %x\n", mtimehi);
+
+	log_debug("mtimecmp lo %x\n",*mtimecmp);
+
+	log_debug("mtimecmp hi %x\n",(uint32_t *) mtimecmp +1);
 
 	asm volatile(
 		     "csrr %[id], mstatus\n"
@@ -65,8 +66,6 @@ int main(void){
 		     "csrrs   zero, mie, t0\t\n"
 		    );
 
-
-
 	asm volatile("li      t0, 8\t\n"
 		     "csrrs   zero, mstatus, t0\t\n"
 		    );
@@ -80,11 +79,9 @@ int main(void){
 
 		if(i%1000000 == 0)
 		{
-			printf("mtime value %x\n",*mtime);
-			printf("mtimecmp value %x\n",*mtimecmp);
+			log_debug("mtime value %x\n",*mtime);
+			log_debug("mtimecmp value %x\n",*mtimecmp);
 		}
 	}
-
-	return 0;
 }
 

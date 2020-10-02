@@ -17,7 +17,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>
 
 SHELL := /bin/bash # Use bash syntax
-XLEN=64
+XLEN ?=64
 DC=
 
 #default target board
@@ -55,35 +55,15 @@ bsputils:=$(BSP)/utils
 all: create_dir
 	make $(PROGRAM).riscv
 
-upload: all
-	@elf2hex 4 16384 ./output/$(PROGRAM).shakti 2147483648 > ./output/code.mem
-	@echo -e "Converting Codemem to array"
-	@gcc -g -w  $(bsputils)/elf_to_header.c -o ./output/elf_to_header
-	@./output/elf_to_header
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc) -I./output -c $(bsputils)/deploy.c -o ./output/deploy.o -march=$(MARCH) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc) -c $(bspboard)/uart.c -o ./output/uart.o -march=$(MARCH) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc) -c $(bspdri)/spi/spi_driver.c -o ./output/spi_driver.o -march=$(MARCH) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -T $(bspboard)/link.ld ./output/deploy.o ./output/syscalls.shakti ./output/uart.o ./output/crt.o ./output/spi_driver.o -o ./output/deploy.shakti -static -nostartfiles
-	@echo -e "Upload elf to Flash"
-	@$(bsputils)/burnFlash.py ./output/deploy.shakti
-
-
-$(PROGRAM).riscv: crt.o syscalls.shakti create_dir
-	 
-	 
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc)  -I$(bspboard) -c ./$(PROGRAM).c -o ./output/$(PROGRAM).o -march=$(MARCH) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc)  -c $(bsplib)/util.c -o ./output/util.o -march=$(MARCH) -lm -lgcc		
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf  -I$(bspinc)  -c $(bspboard)/uart.c -o ./output/uart.o -march=$(MARCH) -lm -lgcc	
-	@riscv$(XLEN)-unknown-elf-gcc -T $(bspboard)/link.ld  ./output/util.o ./output/$(PROGRAM).o ./output/uart.o ./output/syscalls.shakti ./output/crt.o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
+$(PROGRAM).riscv: create_dir
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS)-I$(bsplib) -I$(bspinc) -I$(bspdri)/plic -I$(bspboard) -c ./$(PROGRAM).c -o ./output/$(PROGRAM).o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)gen_lib/libshakti$(XLEN).a ./output/$(PROGRAM).o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
 	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
+
+#	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc)  -I$(bspboard) -c ./$(PROGRAM).c -o ./output/$(PROGRAM).o -march=$(MARCH) -lm -lgcc
+#	@riscv$(XLEN)-unknown-elf-gcc -T $(bspboard)/link.ld  $(GENLIB)/gen_lib/libshakti$(XLEN).a  ./output/$(PROGRAM).o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
+#	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 
 
 create_dir:
 	@mkdir -p ./output
-
-
-crt.o: create_dir
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf -D__ASSEMBLY__=1 -c $(bspinc)/crt.S -o ./output/crt.o
-
-syscalls.shakti:
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mcmodel=medany -static -std=gnu99 -fno-common -fno-builtin-printf  -c $(bsplib)/syscalls.c -o ./output/syscalls.shakti -I$(bspinc)

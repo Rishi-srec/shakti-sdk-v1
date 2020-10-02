@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           					:  shakti devt board
- * Name of the file	     				:  mcp4921_dac.c
- * Brief Description of file            :  Performs the Digital to analog operation with spi                                                    writing.
- * Name of Author    	                :  G Nambirajan, Koteeswaran
- * Email ID                             :  nambirajan2004@gmail.com
+ * Project           		:  shakti devt board
+ * Name of the file	     	:  mcp4921_dac.c
+ * Brief Description of file    :  Performs the Digital to analog operation with spi writing.
+ * Name of Author    	        :  G Nambirajan, Koteeswaran
+ * Email ID                     :  nambirajan2004@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -29,24 +29,33 @@
 */
 #include "spi.h"
 #include <stdint.h>
+#include "platform.h"
+#include "pinmux.h"
 
-/** @fn spi_dac
+#define PINMUX_CONF_REG 0x41510
+
+int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
+
+extern volatile unsigned int* pinmux_config_reg;
+extern int* spi_cr1 ;
+extern int* spi_dr1 ;
+extern int* spi_dr5;
+
+/** @fn void spi_dac()
  * @brief Configures DAC and write digital value to DAC.
  * @details configures the DAC and writes the digital value to DAC to convert 
  *          with digital to analog. Configuration is done using SPI.
- * @param[in]  unsigned int, unsigned int, unsigned char, unsigned long
- * @param[Out] int
- * @return Void function.
  */
 void spi_dac()
 {
+	*(pinmux_config_reg) =  0x154000;
     configure_spi(SPI1_OFFSET);	
 	spi_init();
 
 	log_debug("SPI init done\n");
 
 	waitfor(200);
-	write_dac_value(0xffff);
+	write_dac_value(0xfff);
 
 	log_debug("\nDac Value Written\n");
 
@@ -55,27 +64,22 @@ void spi_dac()
 		write_dac_value(0xFFF);
 		log_debug("Dac Value Written - 4096\n");
 
-		delay_loop(0x750, 0x750);
+		delay_loop(0x1750, 0x1750);
 		write_dac_value(0x0);
 		log_debug("Dac Value Written - 0\n");
 
-		delay_loop(0x750, 0x750);
+		delay_loop(0x1750, 0x1750);
 	}
 } 
 
-/** @fn write_dac_value
+/** @fn int write_dac_value(unsigned dac_value)
  * @brief Writes the passed Value to DAC
  * @details Writes Digital value that needs to be convert into analog over SPI interface
- * @param[in]  unsigned int
- * @param[Out] int
+ * @param dac_value
  * @return One.
  */
 int write_dac_value(unsigned dac_value)
 {
-	int* spi_dr1    = (int*) SPI_DR1 ;
-	int* spi_dr5    = (int*) SPI_DR5 ;
-	int* spi_cr1    = (int*) SPI_CR1;
-
 	int data1 = ((0x3 << 28) | (dac_value << 16));
 
 	log_info("\n Data value written: %x", data1);
@@ -90,13 +94,10 @@ int write_dac_value(unsigned dac_value)
 	return 1;
 }
 
-/** @fn main
+/** @fn void main()
  * @brief Configures and Write the SPI values.
  * @details Configures DAC registers and then write the digital 
  *          that needs to be converted to analog.  
- * @param[in] No input parameter
- * @param[Out] Nil
- * @return Void function.
  */
 void main()
 {

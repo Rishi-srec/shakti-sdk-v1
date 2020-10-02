@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           			 : shakti devt board
- * Name of the file	     		 : rgb.c
+ * Project           	         : shakti devt board
+ * Name of the file	         : rgb.c
  * Brief Description of file     : It will blink red, green and blue light after a specified delay.
  * Name of Author                : Soutrick Roy Chowdhury
  * Email ID                      : soutrick97@gmail.com
@@ -20,16 +20,18 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 *****************************************************************************/
+/**
+@file rgb.c
+@brief Implements gpio functionality
+@detail By giving signal it will glow Red Green Blue light within a certain interval.
+*/
+
 #include "platform.h"
 #include "gpio.h"
-#include "utils.h"
 
-/** @fn main
+/** @fn void main()
  * @brief Getting RGB light glow one by one
  * @details By giving HIGH signal RED GREEN and BLUE light glow automatically.
- * @warning No warning
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */
 void main()
 {

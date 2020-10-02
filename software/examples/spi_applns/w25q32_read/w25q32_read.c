@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           					: shakti devt board
- * Name of the file	     				: w25q32_read.c
- * Brief Description of file            : Performs the windonb flash  spi reading of 0 to 100                                                  numbers.
- * Name of Author    	                : G Nambirajan & Koteeswaran
- * Email ID                             : nambirajan2004@gmail.com
+ * Project           		: shakti devt board
+ * Name of the file	        : w25q32_read.c
+ * Brief Description of file    : Performs the windonb flash  spi reading of 0 to 100                                                  numbers.
+ * Name of Author    	        : G Nambirajan & Koteeswaran
+ * Email ID                     : nambirajan2004@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -25,6 +25,7 @@
 @brief  Contains the driver routines for flash read over SPI interface.
 @detail Configures and reads the flash over SPI interface..
 */
+
 /*********************************************
 PIN DETAILS CONNECTION OF WINBOND W25Q32 FLASH
 d1 - spi mosi
@@ -35,25 +36,30 @@ cs  -spi cs
 #include <stdint.h>
 #include "spi.h"
 
+#define PINMUX_CONF_REG 0x41510
+int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
+
 /** 
- * @fn read_w25q32_registers
+ * @fn void w25q32()
  * @brief Reads the spi value from w25q32
  * @details Reads SPI over w25q32 interface
- * @param[in]  Nil
- * @param[Out] int
- * @return Void function (Null)
  */
 void w25q32()
 {
-	 configure_spi(SPI1_OFFSET);
-	spi_init();
-	printf("SPI init done\n");
-	flash_device_id();
-	waitfor(200);
 	int total_data = 100; //total data you want to read/write
 	int read_address = 0x00000100;  //read from this address
 	int* bram_address = (int*) 0x80000100; //write to this address
 
+	*pinmux_reg = 0x154000;	
+
+	configure_spi(SPI1_OFFSET);
+	spi_init();
+
+	printf("SPI init done\n");
+
+	flash_device_id();
+	waitfor(200);
+		
 	for(int i = 0; i < total_data; ++i)
 	{
 		int read_value= flash_read(read_address);
@@ -65,13 +71,10 @@ void w25q32()
 }
 
 /** 
- * @fn main
+ * @fn void main()
  * @brief Configures and reads the SPI values.
  * @details Configures the SPI read FLASH values, reads the same 
  * prints the read values.
- * @param[in] No input parameter
- * @param[Out] int
- * @return Void function (Null)
  */
 void main()
 {
@@ -79,4 +82,3 @@ void main()
 
 	while(1);
 }
- 

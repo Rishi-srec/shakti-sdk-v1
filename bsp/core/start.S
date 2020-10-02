@@ -1,6 +1,7 @@
 /*******************************************************************************
+ * Project           		 : shakti devt board
  * Name of the file              : start.S 
- * Brief description             : header file for initializing the registers
+ * Brief description             : first instruction to execute in an application
  * Name of Author                : Abhinav Ramnath & Sathya Narayanan N
  * Email id                      : abhinavramnath13@gmail.com & sathya281@gmail.com
 
@@ -20,6 +21,11 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ********************************************************************************/
+/**
+@file start.S
+@detail first instruction to execute in an application is here. 
+ Registers are initialized, trap entry is setup here.
+*/
 
 #include "defines.h"
 
@@ -27,6 +33,10 @@
 .globl _start
 
 _start:
+
+la t0, trap_entry
+csrw mtvec, t0
+
 li  x1, 0
 li  x2, 0
 li  x3, 0
@@ -72,12 +82,34 @@ li  x31,0
 la gp, __global_pointer$
 .option pop
 
+init_bss:
+    /* init bss section */
+    la	a0, __bss_start
+    la	a1, __bss_end-4 /* section end is actually the start of the next section */
+    li	a2, 0x0
+  1:
+    sw		a2, 0(a0)
+    bgeu	a0, a1, init_sbss
+    addi	a0, a0, 4
+    j	        1b
+
+init_sbss:
+    /* init bss section */
+    la	a0, __sbss_start
+    la	a1, __sbss_end-4 /* section end is actually the start of the next section */
+    li	a2, 0x0
+   1:
+    sw		a2, 0(a0)
+    bgeu	a0, a1, 1f
+    addi	a0, a0, 4
+    j	        1b
+
+1:
 # initialize stack pointer
 .option push
 .option norelax
 la sp, __stack_pointer$
 .option pop
-
 
 /*
    If 'f' specified in march
@@ -132,7 +164,6 @@ and tp, tp, -64
 
 j init
 
-
 .section ".tdata.begin"
 .globl _tdata_begin
 _tdata_begin:
@@ -144,5 +175,4 @@ _tdata_end:
 .section ".tbss.end"
 .globl _tbss_end
 _tbss_end:
-
 

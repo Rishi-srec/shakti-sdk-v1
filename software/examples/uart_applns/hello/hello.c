@@ -1,7 +1,7 @@
 /***************************************************************************
-* Project           			:  shakti devt board
-* Name of the file	     		:  hello.c
-* Brief Description of file     :  Does the printing of hello with the help of uart communication                                       protocol.
+* Project           		:  shakti devt board
+* Name of the file	     	:  hello.c
+* Brief Description of file     :  Does the printing of hello with the help of uart communication protocol.
 * Name of Author    	        :  Sathya Narayanan N
 * Email ID                      :  sathya281@gmail.com
 
@@ -21,17 +21,18 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ***************************************************************************/
+/**
+@file hello.c
+@brief Prints "Hello world !" in the uart terminal.
+*/
+
 #include<uart.h>
 
-/** @fn main
+/** @fn void main()
  * @brief prints hello world
  */
 void main()
 {
-	float x=.9898;
-
 	printf ("Hello World !\n");
-	printf ("%f\n",x);
-	 x=0.8;
-	printf ("%f\n",x);
+	while(1);
 }

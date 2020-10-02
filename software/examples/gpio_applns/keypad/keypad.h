@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           			: shakti devt board
- * Name of the file	     		: keypad.h
- * Brief Description of file    : Declaration for keypad library.
- * Name of Author    	        : Kotteeswaran
- * Email ID                     : kottee.1@gmail.com
+ * Project           			:  shakti devt board
+ * Name of the file	     		:  keypad.h
+ * Brief Description of file            :  Declaration for keypad library.
+ * Name of Author    	                : Kotteeswaran
+ * Email ID                             : kottee.1@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -19,10 +19,10 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 ***************************************************************************/
 /**
  * @file keypad.h
- * @project shakti devt board
  * @brief Declaration for keypad library.
  * @detail Include File Definitions	
  */

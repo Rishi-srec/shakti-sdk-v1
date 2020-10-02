@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project               	     : shakti devt board
- * Name of the file	           : sys_brk.c
- * Brief Description of file   : System BRK
- * Name of Author    	         : Abhinav Ramnath
- * Email ID                    : abhinavramnath13@gmail.com
+ * Project               	: shakti devt board
+ * Name of the file	        : sys_brk.c
+ * Brief Description of file   	: System BRK
+ * Name of Author    	        : Abhinav Ramnath
+ * Email ID                     : abhinavramnath13@gmail.com
 
   Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -20,6 +20,11 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ***************************************************************************/
+/**
+@file sys_brk.c
+@brief System BRK
+@detail This file is used to the set the brk which specifies the start of the heap and the end of the text section.
+*/ 
 
 #include "platform.h"
 
@@ -35,12 +40,11 @@ char *end_of_heap=(char *)&_heap_end;
  *         left of memory on the board.
  */
 
-
-/** @fn  m_sbrk
- * @brief  
- * @warning 
- * @param[in] 
- * @param[Out] char 
+/** @fn  char * m_sbrk (nbytes)
+ * @brief this function is used to allocate the heap
+ * @detail this function is used to allocate the heap and returns the end of the text section or start of heap  
+ * @param int nbytes - specifies the size of the heap 
+ * @return  returns a pointer to the start of the heap
  */
 char * m_sbrk (nbytes)
 	int nbytes;
@@ -51,13 +55,11 @@ char * m_sbrk (nbytes)
 
 	if(!heap_ptr)
 		heap_ptr = (char *)&_end;
-	else
-		log_fatal("\n heap_ptr is null");
 
 	base = heap_ptr;
 	heap_ptr += nbytes;
 
-	log_info("\nNew System BRK: %x %x %x",base,heap_ptr,end_of_heap);
+	log_debug("\nNew System BRK: %x %x %x",base,heap_ptr,end_of_heap);
 
 	if(heap_ptr>end_of_heap)
 	{
@@ -66,5 +68,3 @@ char * m_sbrk (nbytes)
 	}
 	return base;
 }
-
-

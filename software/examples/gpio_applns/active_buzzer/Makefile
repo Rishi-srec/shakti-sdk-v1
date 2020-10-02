@@ -1,3 +1,4 @@
+
 #Created by Sathya Narayanan N
 # Email id: sathya281@gmail.com
 
@@ -37,5 +38,4 @@ active_buzzer.riscv: create_dir
 
 create_dir:
 	@mkdir -p ./output
-
 

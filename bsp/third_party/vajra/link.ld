@@ -1,12 +1,11 @@
 /***************************************************************************
- * Project           			:  shakti devt board
- * Name of the file	     		:  link.ld
- * Created date			        :   
- * Brief Description of file    :   linker file
+ * Project           		:  shakti devt board
+ * Name of the file	     	:  link.ld
+ * Brief Description of file    :  linker file
  * Name of Author    	        :  Sathya Narayanan N & Abhinav ramnath
  * Email ID                     :  sathya281@gmail.com
 
- Copyright (C) 2019  IIT Madras. All rights reserved.
+ Copyright (C) 2020  IIT Madras. All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -28,7 +27,6 @@ SECTIONS
 {
   . = 0x80000000;
   .text.init : { *(.text.init) }
-  .tohost ALIGN(0x1000) : { *(.tohost) }
   .text : { *(.text) }
   .rodata : {
        __rodata_start = .;
@@ -82,7 +80,7 @@ SECTIONS
   }
   . = ALIGN(4);
   _end = .;
-  . = 0x80000000 + 0x20000 - 4;
+  . = 0x80000000 + 0x8000000 - 0x400;
   _free_space = . - _end;
   _STACK_SIZE = (_free_space * 50) / 100 ;
   _HEAP_SIZE = _free_space - _STACK_SIZE;
@@ -97,3 +95,4 @@ SECTIONS
        _heap_end = .;
     }
 }
+

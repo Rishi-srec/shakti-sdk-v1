@@ -22,18 +22,19 @@
 *******************************************************************************/
 /**
  * @file traps.h
- * @project shakti devt board
- * @brief Header file for handling traps 
+ * @brief Header file for handling traps
+ * @detail This is the header file for traps.c. Here the definitions for
+ * handling traps are declared.
  */
 
 #ifndef TRAPS_H
 #define TRAPS_H
-
 #include <stdint.h>
+
 /*
    Table 3.6 risc v priv spec v1.10 chapter 7
 
-   -------------------------------------------------------------          
+   -------------------------------------------------------------
    Interrupt  Exception Code   Description
    -------------------------------------------------------------
    1           0                User software interrupt
@@ -94,10 +95,7 @@
 #define RESERVED_INTERRUPT5            14
 #define RESERVED_INTERRUPT6            15
 
-/*
-   Traps
- */
-
+/* Traps */
 #define MAX_TRAP_VALUE                 16
 
 #define INSTRUCTION_ADDRESS_MISALIGNED  0
@@ -117,24 +115,16 @@
 #define RESERVED_TRAP2                 14
 #define STORE_AMO_PAGE_FAULT           15
 
-
 /*
-   Trap table
-   Each entry in the table corresponds to a service routing for Trap (software, timer & external)
+   Trap table -  Each entry in the table corresponds to a service routine for a Trap
  */
 
-
 typedef void (*mtrap_fptr_t) (uintptr_t trap_cause, uintptr_t epc);
-
-mtrap_fptr_t mcause_trap_table[MAX_TRAP_VALUE];
-
-mtrap_fptr_t mcause_interrupt_table[MAX_INTERRUPT_VALUE];
-
+extern mtrap_fptr_t mcause_trap_table[MAX_TRAP_VALUE];
+extern mtrap_fptr_t mcause_interrupt_table[MAX_INTERRUPT_VALUE];
 
 void default_handler(uintptr_t cause, uintptr_t epc);
-
 unsigned int extract_ie_code(unsigned int num);
-
 uintptr_t handle_trap(uintptr_t cause, uintptr_t epc);
 
 #endif

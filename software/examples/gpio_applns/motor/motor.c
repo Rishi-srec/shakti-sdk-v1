@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           			: shakti devt board
- * Name of the file	     		: motor.c
- * Brief Description of file    : Determines the functioning of stepper motor with the  help of                                        gpio pins.  
- * Name of Author    	        : Sathya Narayanan N
- * Email ID                     : sathya281@gmail.com
+ * Project           	           : shakti devt board
+ * Name of the file	           : motor.c
+ * Brief Description of file       : Determines the functioning of stepper motor with the  help of gpio pins.  
+ * Name of Author    	           : Sathya Narayanan N
+ * Email ID                        : sathya281@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -20,6 +20,13 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  ***************************************************************************/
+/**
+@file motor.c
+@brief Determines the functioning of stepper motor with the  help of gpio pins.
+@detail This file contains the program to control a simple stepper motor using
+shakti. The demonstration is done using the gpio pins.
+*/
+
 #include <stdio.h>/* Includes definitions of standard input/output functions*/
 #include "gpio.h"/*Incudes the defintions of gpio functions and registers*/
 #include "platform.h"
@@ -27,11 +34,8 @@
 #define MOTOR_FORWARD_CNTRL (0xA << 0)/*Defines the Required Forward control word*/
 #define MOTOR_REVERSE_CNTRL (0x5 << 0)/*Defines the Required Reverse control word*/
 
-/** @fn main
+/** @fn void main()
  * @brief Performs the intilization of the corresponding registers of gpio pins.
- * @warning none 
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */
 void main()
 {
@@ -48,7 +52,7 @@ void main()
 		log_info("Reverse\n");
 		log_info("GPIO Data Register Value: %d\n",GPIO_DATA_REG);
 		delay_loop(5000, 5000);
-	}
+		}
 
 	delay_loop(5000, 5000);
 }

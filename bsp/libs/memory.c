@@ -19,49 +19,56 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
  ***************************************************************************/
 /**
 @file memory.c
-@brief A library to display the memory contents
-@detail 
+@brief A library to display the memory contents at byte and word level.
 */
 
-/** @fn dump_word_memory
+#include "log.h"
+#include "memory.h"
+#include <stdint.h>
+
+/** @fn void dump_word_memory(uint32_t* start, uint32_t word_length)
  * @brief dump contents of word addressabe location in the memory,
- *	 starting from the start address. 
- * @param unsigned int* 
- * @param unsigned int
+ *	 starting from the start address.
+ * @param uint32_t* start
+ * @param uint32_t word_length
  */
-void dump_word_memory(unsigned int* start, unsigned int word_length)
+
+void dump_word_memory(uint32_t* start, uint32_t word_length)
 {
-	unsigned int i=0;
+	uint32_t i=0;
 	void *address;
 
-	address = (unsigned int *) start;
+	address = (uint32_t *) start;
 
 	while(i++< word_length)
 	{
-		log_info("address = %x data = %x\n", address, *(unsigned int *) address);
-		address+=4;
+		log_info("address = %x data = %x\n", address, *(uint32_t *) address);
+		address += 4;
 	}
 }
 
-/** @fn dump_byte_memory
+/** @fn void dump_byte_memory(uint32_t* start, uint32_t word_length)
  * @brief dump contents of byte addressabe location in the memory,
- *	 starting from the start address. 
- * @param unsigned int*
- * @param unsigned int
+ *	 starting from the start address.
+ * @param uint32_t* start
+ * @param uint32_t word_length
  */
-void dump_byte_memory(unsigned int* start, unsigned int word_length)
+
+void dump_byte_memory(uint32_t* start, uint32_t word_length)
 {
-	unsigned int i=0;
+	uint32_t i=0;
 	void *address;
+
 	address = (unsigned char *) start;
 
 	while(i++< word_length)
 	{
 		log_info("address = %x data = %x\n", address, *(unsigned char
 							       *) address);
-		address+=1;
+		address += 1;
 	}
 }

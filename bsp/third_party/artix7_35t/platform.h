@@ -1,24 +1,23 @@
 /*
 platform.h - header file for Artix 35 T E class SoC
 
-Created by Sathya Narayanan N
-Email id: sathya281@gmail.com
+* Name of Author : Sathya Narayanan N
+* Email ID       : sathya281@gmail.com
 
-    Copyright (C) 2019  IIT Madras. All rights reserved.
+ Copyright (C) 2019  IIT Madras. All rights reserved.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #ifndef PLATFORM_H
@@ -71,7 +70,7 @@ Email id: sathya281@gmail.com
 #define PINMUX_CONFIGURE_REG 0x40310
 
 /*! Core Local Interruptor CLINT */
-#define CLINT_START 0x02000000
+
 
 /*! Inter Integrated Circuit (I2C) Interface */
 #define I2C0_BASE 0x00040000 /*! I2C Start Address */
@@ -103,8 +102,8 @@ Email id: sathya281@gmail.com
 #define PLIC_MAX_INTERRUPT_SRC 28
 
 
-/*!General Purpose Input / Output */
-#define GPIO_START 0x00040100 //GPIO Start Address */
+/*!General Purpose Input Output */
+#define GPIO_START 0x00040100 //GPIO Start Address 
 #define GPIO_OFFSET 0x08 /*!Generic offset used to access GPIO registers*/
 #define PLIC_GPIO_OFFSET 6
 

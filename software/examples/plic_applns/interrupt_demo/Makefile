@@ -31,8 +31,8 @@ all: create_dir
 	make interrupt_demo.riscv 
 
 interrupt_demo.riscv: create_dir
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bsplib) -I$(bspinc) -I$(bspboard) -I$(bspdri)/plic -c ./interrupt_demo.c -o ./output/btnled.o -march=$(MARCH) -mabi=$(MABI) -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc  -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany $(FLAGS) -I$(bspinc) -c $(bsplib)/memory.c -o ./output/memory.o
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bsplib) -I$(bspinc) -I$(bspboard) -I$(bspdri)/plic -c ./interrupt_demo.c -o ./output/btnled.o -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) $(DC) -mcmodel=medany $(FLAGS) -I$(bspinc) -c $(bsplib)/memory.c -o ./output/memory.o
 	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a  ./output/memory.o ./output/btnled.o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
 	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 

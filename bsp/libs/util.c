@@ -23,43 +23,47 @@
 /**
 @file util.c
 @brief source file for util
-@detail 
+@detail Commonly used utility fuctions are implemented here. These functions are
+used to achieve higher level objectives.
 */
 
-/** @fn  waitfor
- * @brief stall the process fro given time 
- * @param unsigned int
+#include "log.h"
+#include "utils.h"
+#include "string.h"
+
+/** @fn  void waitfor(unsigned int secs)
+ * @brief stall the process for given time
+ * @param unsigned int secs
  */
-void waitfor(unsigned int secs) 
+void waitfor(unsigned int secs)
 {
 	unsigned int time = 0;
 	while (time++ < secs);
 }
 
-/** @fn delay
- * @brief  sleeps for number seconds  
- * @param unsigned long (number of seconds) 
+/** @fn void delay(unsigned long count)
+ * @brief  sleeps for number of "count"
+ * @param unsigned long (number of count)
  */
-void delay(unsigned long seconds)
+void delay(unsigned long count)
 {
-	unsigned long cntr1 = seconds *1000;
+	unsigned long cntr1 = count *1000;
 	unsigned long tmpCntr;
 
-	while (cntr1--) {
+	while (cntr1--){
 		tmpCntr = 1000;
 		while (tmpCntr--);
 	}
 }
 
-/** @fn pow_10
- * @brief generate different powers of 10 
- * @param unsigned int
+/** @fn float pow_10(unsigned int y)
+ * @brief generate different powers of 10
+ * @param unsigned int y
  * @return return result in float 
  */
 float pow_10(unsigned int y)
 {
 	unsigned int x=1;
-	float result=1;
 
 	for (unsigned int i=0; i <y; i++)
 	{
@@ -68,46 +72,46 @@ float pow_10(unsigned int y)
 
 	return ((float) x);
 }
-/** @fn reverse 
+/** @fn void reverse(char *str, int length)
  * @brief reverse a string and store in the same string
- * @param char
- * @param int
+ * @param char *str
+ * @param int length
  */
-void reverse(char *str, int length) 
-{ 
+void reverse(char *str, int length)
+{
 	int i = 0;
 	int j = length - 1;
 	char tmp;
 
-	while (i<j) 
-	{ 
-		tmp = str[i]; 
-		str[i] = str[j]; 
-		str[j] = tmp; 
+	while (i<j)
+	{
+		tmp = str[i];
+		str[i] = str[j];
+		str[j] = tmp;
 
 		i++;
-		j--; 
-	} 
-} 
+		j--;
+	}
+}
 
-/** @fn int_to_string
+/** @fn int int_to_string(int number, char str[], int afterpoint)
  * @brief convert decimal numbers to string
  * @details Takes num as input and converts it to string.
- *	    The converted string is stored in str. The 
+ *	    The converted string is stored in str. The
  *          position of last character in the str is returned.
- *          This function is tailored to support ftoa. 
- * @param int
- * @param char
- * @param int
+ *          This function is tailored to support ftoa.
+ * @param int number
+ * @param char str[]
+ * @param int afterpoint
  * @return int
  */
-int int_to_string(int number, char str[], int afterpoint) 
+int int_to_string(int number, char str[], unsigned int afterpoint)
 {
-	int i = 0; 
+	uint32_t i = 0;
 
 	/*extract each digit and put into str[i]*/
 
-	while (number != 0) 
+	while (number != 0)
 	{
 		str[i] = ((number%10) + '0');
 		i++;
@@ -116,9 +120,9 @@ int int_to_string(int number, char str[], int afterpoint)
 
 	/*insert 0 after the numbers, if count of digits less than afterpoint*/
 
-	while (i < afterpoint) 
+	while (i < afterpoint)
 	{
-		str[i] = '0'; 
+		str[i] = '0';
 		i++;
 	}
 
@@ -126,12 +130,12 @@ int int_to_string(int number, char str[], int afterpoint)
 	   zeroth digit is in oth position in array,
 	   To read digits properly, reverse array
 	 */
-	reverse(str, i); 
-	str[i] = '\0'; 
+	reverse(str, i);
+	str[i] = '\0';
 
-	return i; 
+	return i;
 }
-/** @fn ftoa
+/** @fn void ftoa(float n, char *res, int afterpoint)
  * @brief converts float to string
  * @details Split floating number into fpart and ipart
  *          Finally merge it into one float number.
@@ -140,17 +144,17 @@ int int_to_string(int number, char str[], int afterpoint)
  * @param char* (float in string - res)
  * @param int (precision - afterpoint)
  */
-void ftoa(float n, char *res, int afterpoint) 
+void ftoa(float n, char *res, unsigned int afterpoint)
 {
 	int i=0;
 	char temp[30]={'\0'};
 	n += 0.0000001;
 
-	// Extract integer part 
-	int ipart = (int)n; 
+	// Extract integer part
+	int ipart = (int)n;
 
-	// Extract floating part 
-	float fpart = (float) (n - (float)ipart); 
+	// Extract floating part
+	float fpart = (float) (n - (float)ipart);
 	int j=0;
 
 	if(n < (0/1))
@@ -170,17 +174,17 @@ void ftoa(float n, char *res, int afterpoint)
 			ipart =(-1)*ipart;
 		}
 
-		i = int_to_string(ipart, temp, 0); 
+		i = int_to_string(ipart, temp, 0);
 
 		strcpy(res+j,temp);
 	}
 
 	i = i+j;
 
-	// check for display option after point 
-	if (afterpoint != 0) 
-	{ 
-		res[i] = '.'; // add dot 
+	// check for display option after point
+	if (afterpoint != 0)
+	{
+		res[i] = '.';// add dot
 
 		if (fpart < 0/1)
 		{
@@ -193,16 +197,16 @@ void ftoa(float n, char *res, int afterpoint)
 			fpart = fpart;
 		}
 
-		fpart = fpart * pow_10( afterpoint); 
+		fpart = fpart * pow_10( afterpoint);
 
-		int_to_string((int)fpart, res + i + 1, afterpoint); 
-	} 
-} 
+		int_to_string((int)fpart, res + i + 1, afterpoint);
+	}
+}
 
-/** @fn delay_loop
- * @brief Delay calculated interms of iterative operation 
- * @param unsigned long 
- * @param unsigned long
+/** @fn void delay_loop(unsigned long cntr1, unsigned long cntr2)
+ * @brief Delay calculated interms of iterative operation
+ * @param unsigned long cntr1 - one counter value
+ * @param unsigned long cntr2 - another counter value
  */
 void delay_loop(unsigned long cntr1, unsigned long cntr2)
 {
@@ -216,26 +220,25 @@ void delay_loop(unsigned long cntr1, unsigned long cntr2)
 	}
 }
 
-/** @fn read_word
+/** @fn long int read_word(int *addr)
  * @brief returns the value stored at a given address
  * Here we assume the word size to be 32 bits for gpio
- * @param int*
+ * @param int* addr
  * @return long int
  */
-long int read_word(int *addr)
+unsigned long read_word(uint32_t *addr)
 {
 	log_debug("addr = %x data = %x\n", addr, *addr);
 	return *addr;
 }
 
-/** @fn write_word
+/** @fn void write_word(int *addr, unsigned long val)
  * @brief  writes a value to an address
- * @param int* 
+ * @param int*
  * @param unsigned long
  */
-void write_word(int *addr, unsigned long val)
+void write_word(uint32_t *addr, unsigned long val)
 {
 	*addr = val;
 	log_debug("addr = %x data = %x\n", addr, *addr);
 }
-

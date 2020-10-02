@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project               	    : shakti devt board
- * Name of the file	            : malloc_test.c
+ * Project                      : shakti devt board
+ * Name of the file	        : malloc_test.c
  * Brief Description of file    : test file for malloc.
  * Name of Author    	        : Abhinav Ramnath
  * Email ID                     : abhinavramnath13@gmail.com
@@ -19,14 +19,18 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-***************************************************************************/
 
-/** @fn main
- * @brief 
- * @details 
- * @warning 
- * @param[in] No input parameter
- * @param[Out] int
+***************************************************************************/
+/**
+@file malloc_test.c
+@brief test file for malloc
+@detail This file is used to test the functions malloc and free
+*/
+
+/** @fn int main()
+ * @brief main runs the code to test malloc
+ * @details runs the code to test malloc
+ * @return returns 0
  */
 int main()
 {

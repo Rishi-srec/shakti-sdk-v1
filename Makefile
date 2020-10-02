@@ -31,7 +31,7 @@ export GENLIB
 
 # Default PROGRAM and TARGET
 PROGRAM ?= 
-TARGET ?= artix7_35t
+TARGET ?= pinaka
 DEBUG ?= DEBUG
 CLEAR ?=
 UPLOAD ?= UPLOAD
@@ -131,10 +131,21 @@ software:
 	@echo "Build $(PROGRAM) on $(TARGET) board"
 	cd ./software/examples && $(MAKE) PROGRAM=$(PROGRAM) TARGET=$(TARGET)
 
+#Project commands
+.PHONY: project
+project:
+	@echo "Build $(PROGRAM) on $(TARGET) board"
+	cd ./software/projects && $(MAKE) PROGRAM=$(PROGRAM) TARGET=$(TARGET)
+
 .PHONY: upload
 upload:
 	@echo Build and upload $(PROGRAM) on $(TARGET) board
 	cd ./software/examples && $(MAKE) UPLOAD=$(UPLOAD) PROGRAM=$(PROGRAM) TARGET=$(TARGET)
+
+.PHONY: erase
+erase:
+	@echo Erase on-board flash $(PROGRAM) on Arty board
+	cd ./software/examples && $(MAKE) erase TARGET=$(TARGET)
 
 .PHONY: flash
 flash:
@@ -159,9 +170,8 @@ ifeq ($(PROGRAM),)
 	cd ./software/examples/pwm_applns && $(MAKE) clean CLEAR=CLEAR
 	cd ./software/examples/plic_applns && $(MAKE) clean CLEAR=CLEAR
 	cd ./software/examples/malloc_test && $(MAKE) clean CLEAR=CLEAR
-
+	cd ./software/examples/xadc_applns && $(MAKE) clean CLEAR=CLEAR
+	cd ./software/projects && $(MAKE) clean CLEAR=CLEAR
 else
 	cd ./software/examples && $(MAKE) PROGRAM=$(PROGRAM) CLEAR=CLEAR
 endif
-
-

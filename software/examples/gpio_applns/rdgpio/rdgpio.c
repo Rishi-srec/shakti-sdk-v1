@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project           		   : shakti devt board
-* Name of the file	     	   : rdgpio.c
+* Project                      : shakti devt board
+* Name of the file	       : rdgpio.c
 * Brief Description of file    : Performs the reading operation with the help of gpio pins.
 * Name of Author    	       : Sathya Narayanan N
 * Email ID                     : sathya281@gmail.com
@@ -20,20 +20,21 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ***************************************************************************/
+/**
+@file rdgpio.c
+@brief Performs the reading operation with the help of gpio pins.
+*/
 
 #include <stdio.h>
 #include "gpio.h"
 #include "utils.h"
 #include "platform.h"
 
-/** @fn read_data
+/** @fn void read_data()
  * @brief set the direction reg to input and start reading from the gpio data reg
  * @details Configure the gpio direction reg to 0 for the corresponding gpio
  * pins. start reading the gpio pin value from data reg. delay for some time and
- * read data again
- * @warning none
- * @param[in] No input parameter
- * @param[Out] No output parameter
+ * read data again 
  */
 void read_data()
 {
@@ -47,13 +48,12 @@ void read_data()
 	}
 }
 
-/** @fn main
+/** @fn void main()
  * @brief initiate the reading from gpio
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */
 void main()
 {
     read_data();
 }
+
 

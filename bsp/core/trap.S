@@ -1,6 +1,7 @@
 /*************************************************************************
+ * Project           		 : shakti devt board
  * Name of the file              : trap.S 
- * Brief description             : header file for handling traps 
+ * Brief description             : Trap handling is managed from here. 
  * Name of Author                : Abhinav Ramnath & Sathya Narayanan N
  * Email id                      : abhinavramnath13@gmail.com & sathya281@gmail.com
  
@@ -20,6 +21,12 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ****************************************************************************/
+/**
+@file trap.S
+@detail Context switching on trap is taken here. After saving the context, trap handler
+        is called. After servicing the trap, context is restored. 
+*/
+
 #include "defines.h"
 
   .global trap_entry
@@ -35,7 +42,7 @@
    */
 
   addi sp, sp, -32*REGSIZE
-.p2align 3
+  .p2align 3
   SREG x1, 1*REGSIZE(sp)
   SREG x2, 2*REGSIZE(sp)
   SREG x3, 3*REGSIZE(sp)
@@ -108,4 +115,3 @@
 
   addi sp, sp, 32*REGSIZE
   mret
-

@@ -1,3 +1,31 @@
+/***************************************************************************
+* Project               	: shakti devt board
+* Name of the file	        : asm_int.S
+* Brief Description of file     : Source asm file for interrupt demonstration.
+* Name of Author    	        : Sathya narayanan
+* Email ID                      : sathya281@gmail.com
+
+ Copyright (C) 2019  IIT Madras. All rights reserved.
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+***************************************************************************/
+/**
+ * @file asm_int.S
+ * @brief Source file for interrupt demo using asm program.
+ * @detail This file is used to demonstrate the interrupt handling feature using asm.
+ */
+
 #start in m mode, jump to S mode. access M mode code. Trap happens. handle trap in M mode. jump to mepc
 
 #if __riscv_xlen == 64
@@ -41,7 +69,7 @@ _start:
 	andi ra,t2,0
 	andi gp,t2,0
 	andi tp,t2,0
-	andi s0,t2,0
+	andi fp,t2,0
 	li sp, 0x80010000
 	la t0, trap_entry
 	csrw mtvec, t0              #trying to access mtvec
@@ -56,11 +84,10 @@ uart_status_simple:	lb t1, 12(t2)
 loop:	j loop
 
 init_interrupt:
-	// Enable Global (PLIC) interrupts. 	asm volatile("
-	li      t0, 8
-	csrrs   zero, mstatus, t0
+    li      t0, 8
+	csrrs   zero, mstatus, t0  # Enable Global (PLIC) interrupt
 	li      t0, 0x800
-	csrrs   zero, mie, t0
+	csrrs   zero, mie, t0  #enable local external interrupt bit
 	csrr s8,mstatus
 	andi t1, s8, 8
 	bnez t1, putchar
@@ -77,7 +104,7 @@ begin:	li t3, 0x0C000000    #plic priority address
 	bge  t5, t6, begin
 
 	andi t4,t4,0
-	addi t4,t4,0xff            # enable int 
+	addi t4,t4,0xff            # enable individual interrupt
 	li t3, 0x0C002000    #plic base address
 	sb t4, 0(t3)
 	li t3, 0x0C002001    #plic base address
@@ -226,3 +253,4 @@ uart_status:	lb s1, 12(s2)
 	addi s1,s1,66
 	sb s1, 4(s2)
 	j returning
+

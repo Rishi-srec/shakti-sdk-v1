@@ -30,12 +30,11 @@ FLAGS ?=
 all: create_dir
 	make malloc_test.riscv
 
-malloc_test.riscv: create_dir
-	 
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspboard) -I$(bspinc)  -c $(bsplib)/sys_brk.c -o ./output/sys_brk.o -march=$(MARCH) -mabi=$(MABI) -lm -lgcc 
-	@riscv$(XLEN)-unknown-elf-gcc -fno-zero-initialized-in-bss -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc) -I$(bspboard) -c $(bsplib)/malloc_firstfit.c -o ./output/malloc_firstfit.o -march=$(MARCH) -mabi=$(MABI) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc)  -c ./malloc_test.c -o ./output/malloc_test.o -march=$(MARCH) -mabi=$(MABI) -lm -lgcc
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a ./output/sys_brk.o ./output/malloc_firstfit.o ./output/malloc_test.o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
+malloc_test.riscv: create_dir 
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf -I$(bspboard) -I$(bspinc)  -c $(bsplib)/sys_brk.c -o ./output/sys_brk.o -lm -lgcc 
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -fno-zero-initialized-in-bss -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc) -I$(bspboard) -c $(bsplib)/malloc_firstfit.c -o ./output/malloc_firstfit.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bspinc)  -c ./malloc_test.c -o ./output/malloc_test.o -lm -lgcc
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld ./output/sys_brk.o ./output/malloc_firstfit.o ./output/malloc_test.o $(GENLIB)/gen_lib/libshakti$(XLEN).a  -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
 	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 
 create_dir:

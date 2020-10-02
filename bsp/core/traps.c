@@ -19,21 +19,25 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
  ***************************************************************************/
 /**
 @file traps.c
 @brief source file for first level of trap handling.
-@detail 
+@detail This file contains Trap handler routines.
 */
 
 #include "traps.h"
+#include "log.h"
 
-/** @fn extract_ie_code
- * @brief Extract the exception code from the mcause reg
- * @details Extract the exception code from the mcause reg
- *	    by masking the most significant bit. 
- * @param unsigned int 
+mtrap_fptr_t mcause_trap_table[MAX_TRAP_VALUE];
+mtrap_fptr_t mcause_interrupt_table[MAX_INTERRUPT_VALUE];
+
+/** @fn unsigned int extract_ie_code(unsigned int num)
+ * @brief Extract the exception code from the mcause value
+ * @details Extract the exception code from the mcause value
+ *	    by masking the most significant bit and return
+ *	    the exception code.
+ * @param unsigned int num - mcause value
  * @return unsigned int
  */
 unsigned int extract_ie_code(unsigned int num)
@@ -44,19 +48,19 @@ unsigned int extract_ie_code(unsigned int num)
 
 	exception_code = (num & 0X7FFFFFFF);
 
-	log_info("exception code = %x\n",exception_code);
+	log_debug("exception code = %x\n",exception_code);
 
 	log_trace("extract_ie_code exited\n");
 
 	return exception_code;
 }
 
-/** @fn default_handler
+/** @fn void default_handler(uintptr_t mcause, uintptr_t epc)
  * @brief default handler that loops infinitely 
- * @param unsigned int ptr 
- * @param unsigned int ptr
+ * @param unsigned int ptr mcause
+ * @param unsigned int ptr epc
  */
-void default_handler(uintptr_t mcause, uintptr_t epc)
+void default_handler(__attribute__((unused)) uintptr_t mcause, __attribute__((unused)) uintptr_t epc)
 {
 	log_trace("\ndefault_handler entered\n");
 
@@ -65,17 +69,18 @@ void default_handler(uintptr_t mcause, uintptr_t epc)
 	log_trace("default_handler exited\n");
 }
 
-/** @fn handle_trap
+/** @fn uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
  * @brief Handles the trap, exception or interrupt is determined here
  * @details Trap handler routine, which identifies the cause of trap 
  *	    and calls the respective trap handler.
- * @param unsigned int ptr
- * @param unsigned int ptr
+ * @param unsigned int ptr mcause
+ * @param unsigned int ptr epc
  * @return unsigned int ptr
  */
 uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 {
 	unsigned int ie_entry = 0;;
+	uint32_t shift_length = 0;
 
 	log_trace("\nhandle_trap entered\n");
 
@@ -93,7 +98,7 @@ uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 	   Otherwise, mcause is never written by the implementation, though it may be explicitly written by software.
 	 */
 
-	log_info("mcause = %x, epc = %x\n", mcause, epc);
+	log_info("\nTrap: mcause = %x, epc = %x\n", mcause, epc);
 
 	/*
 	   The Interrupt bit in the mcause register is set if the trap was caused by an interrupt.
@@ -101,19 +106,19 @@ uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 	 */
 
 	log_debug("sizeof(uintptr)  = %d \n",sizeof(uintptr_t));
-	log_debug("__riscv_xlen     = %d \n",__riscv_xlen);
-	log_debug("__riscv_xlen - 1 = %d \n",0x1 << (__riscv_xlen - 1));
+	shift_length = __riscv_xlen - 1;
 
-	if (mcause & (0x1 << (__riscv_xlen -1))){
+	 /* checking for type of trap */
+	if (mcause & (1 << (shift_length))){
 
 		ie_entry = extract_ie_code(mcause);
 
-		log_info("Source of Trap: Interrupt\n");
+		log_debug("Source of Trap: Interrupt\n");
 
 		mcause_interrupt_table[ie_entry](mcause, epc);
 	}
 	else{
-		log_info("Source of Trap: Software\n");
+		log_debug("Source of Trap: Software\n");
 
 		mcause_trap_table[mcause](mcause, epc);
 	}
@@ -122,4 +127,3 @@ uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 
 return epc;
 }
-

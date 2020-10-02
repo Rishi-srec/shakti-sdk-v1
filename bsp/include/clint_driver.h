@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project           			:  shakti devt board
-* Name of the file	     		:  clint_driver.h
+* Project           		:  shakti devt board
+* Name of the file	     	:  clint_driver.h
 * Brief Description of file     :  Header file for clint.
 * Name of Author    	        :  Sathya Narayanan N
 * Email ID                      :  sathya281@gmail.com
@@ -20,24 +20,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ***************************************************************************/
-
 /**
  * @file clint_driver.h
- * @project shakti devt board
  * @brief  Header file for clint
+ * @detail This is the header file for clint_driver.c
  */
+
 #ifndef CLIC_DRIVER_H
 #define CLIC_DRIVER_H
 #include "traps.h"
 #include "platform.h"
 
-extern uint64_t* mtime;
-extern uint64_t* mtimecmp;
+extern uint32_t* mtime;
+extern uint32_t* mtimecmp;
 
 /* function prototype */
-static unsigned long mtime_low( );
-static uint32_t mtime_high(void);
-uint64_t get_timer_value();
+uint64_t get_timer_value(void);
 void configure_counter(uint64_t value);
 void mach_clint_handler(uintptr_t int_id, uintptr_t epc);
 

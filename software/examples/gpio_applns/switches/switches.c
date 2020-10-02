@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project           			: shakti devt board
-* Name of the file	     		: switches.c
+* Project           		: shakti devt board
+* Name of the file	     	: switches.c
 * Brief Description of file     : Read the value from the switches
 * Name of Author    	        : Madan Kumar S
 * Email ID                      : kumarmadan96@gmail.com
@@ -21,32 +21,28 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ***************************************************************************/
+/**
+@file switches.c
+@brief Read the value from the switches
+@detail 
+*/
 
 #include <stdio.h> //includes the definitions of standard input/output functions
 #include "platform.h"
 #include "gpio.h" // includes definitions of gpio pins and read, write functions//
 #include "switch_driver.h"
+#include "utils.h"
 
 /*! Define one of the the following macros to read buttons in different ways. */
 #define READ_INDIVIDUAL_SWITCHES /*! Read each switch value */
 //#define READ_ALL_SWITCHES /*! Read All switch values */
 
-/** @fn delay_loop
- * @brief Maintains the required delay to perform an operation
- * @warning No warning
- * @param[in] unsigned long, unsigned long
- * @param[Out] No output parameter
- */
-extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
-
 unsigned long read_data = 0;
 
-/** @fn main 
+/** @fn  void main() 
  * @brief Performs the toggling operation  with the help of button.
  * @details 
  * @warning 
- * @param[in] No input parameter
- * @param[Out] No output parameter
  */
 void main()
 {

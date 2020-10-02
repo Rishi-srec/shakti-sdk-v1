@@ -1,8 +1,7 @@
 /***************************************************************************
- * Project           			:  shakti devt board
- * Name of the file	     		:  link.ld
- * Created date			        :   
- * Brief Description of file    :   linker file
+ * Project           		:  shakti devt board
+ * Name of the file	     	:  link.ld  
+ * Brief Description of file    :  linker file
  * Name of Author    	        :  Sathya Narayanan N & Abhinav ramnath
  * Email ID                     :  sathya281@gmail.com
 
@@ -81,7 +80,7 @@ SECTIONS
   }
   . = ALIGN(4);
   _end = .;
-  . = 0x80000000 + 0x10000000 - 0x400;
+  . = 0x80000000 + 0x8000000 - 0x400;
   _free_space = . - _end;
   _STACK_SIZE = (_free_space * 50) / 100 ;
   _HEAP_SIZE = _free_space - _STACK_SIZE;

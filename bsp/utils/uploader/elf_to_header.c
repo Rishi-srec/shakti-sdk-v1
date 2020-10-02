@@ -24,17 +24,15 @@
 /**
 @file elf_to_header.c
 @brief Create hex array of the contents in elf.
-@detail 
 */
 
 #include <stdio.h>
 
-/** @fn convert_hex_array
+/** @fn void convert_hex_array()
  * @brief Converts the hex code to an array of hex code
  * @details reads code.mem file and coverts the hex code into an array of hex
  *     codes in the flashdata.h, first entry in the array tells the size of file.
  */
-
 void convert_hex_array()
 {
 	unsigned int  i= 0;
@@ -56,7 +54,7 @@ void convert_hex_array()
 		printf(" unable to open flashdata.h\n");
 		return;
 	}
-
+	
 	while (fscanf(myFile, "%x", &write_data) != EOF) {
 		count++;
 	}
@@ -71,14 +69,14 @@ void convert_hex_array()
 	}
 
 	fprintf(Cypress,"};\n\n");
+
 	fprintf(Cypress,"#define SIZE %d", count);
 
 	fclose(Cypress);
 	fclose(myFile);
 	printf("\n Converted codemem to array\n");
 }
-
-/** @fn main
+/** @fn void main()
  * @brief Initiates conversion by calling convert_hex_array
  */
 void main()
@@ -86,3 +84,4 @@ void main()
 	printf(" Converting codemem to array\n");
 	convert_hex_array();
 }
+

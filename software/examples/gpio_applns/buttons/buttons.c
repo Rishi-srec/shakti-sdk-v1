@@ -1,9 +1,9 @@
 /***************************************************************************
- * Project           			:  shakti devt board
- * Name of the file	     		:  buttons.c
- * Brief Description of file    :  Read the value from the switches
- * Name of Author    	        :  Madan Kumar S
- * Email ID                     :  kumarmadan96@gmail.com
+ * Project           		: shakti devt board
+ * Name of the file	     	: buttons.c
+ * Brief Description of file    : Read the value from the switches
+ * Name of Author    	        : Madan Kumar S
+ * Email ID                     : kumarmadan96@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
 
@@ -22,37 +22,27 @@
 
 ***************************************************************************/
 /**
-@file   buttons.c
-@brief  Contains the driver routines to read the pressed button.
+@file  buttons.c
+@brief Contains the driver routines to read the pressed button.
 @detail Detects the pressed key/button and prints pressed button.
 */
-#include <stdio.h>        //includes the definitions of standard input/output functions
+
+#include <stdio.h>        
 #include "platform.h"
-#include "gpio.h"         // includes definitions of gpio pins and read, write functions
+#include "gpio.h"         
 #include "button_driver.h"
+#include "utils.h"
 
 /*! Define one of the the following macros to read buttons in different ways. */
 #define READ_INDIVIDUAL_BTNS /*! Read each button value */
 //#define READ_ALL_BTNS /*! Read All button values */
 
-/** @fn delay_loop
- * @brief Maintains the required delay to perform an operation. 
- * @details adds cntr1 * cntr2 number of nops (delay)
- * @param[in] unsigned long, unsigned long 
- * @param[Out] No output parameter
- * @return Nil
- */
-extern void delay_loop(unsigned long cntr1, unsigned long cntr2);
-
 unsigned long read_data = 0;
 
-/** @fn main 
+/** @fn void main() 
  * @brief Performs the toggling operation  with the help of button.
  * @details Configures the buttons to be read as inputs and 
  *          displays the pressed button value.
- * @param[in] Registers,control word
- * @param[Out] No output parameter
- * @return Nil
  */
 void main()
 {

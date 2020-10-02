@@ -1,7 +1,7 @@
 /***************************************************************************
- * Project           			: shakti devt board
- * Name of the file	     		: memory.h
- * Brief Description of file    : dumps values at memory mapped locations,useful for debugging  
+ * Project           		: shakti devt board
+ * Name of the file	     	: memory.h
+ * Brief Description of file    : dumps values at memory mapped locations,useful for debugging 
  * Name of Author    	        : Sathya Narayanan N 
  * Email ID                     : sathya281@gmail.com
 
@@ -20,14 +20,15 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  ***************************************************************************/
-
-/**
+ /**
  * @file memory.h
- * @project shakti devt board
- * @brief dumps values at memory mapped locations, useful for debugging 
+ * @brief dumps values at memory mapped locations, useful for debugging
  */
+#ifndef _MEMORY_H
+#define _MEMORY_H
 
-void dump_word_memory(unsigned int* start, unsigned int word_length);
+#include<stdint.h>
 
-void dump_byte_memory(unsigned int* start, unsigned int word_length);
-
+void dump_word_memory(uint32_t* start, uint32_t word_length);
+void dump_byte_memory(uint32_t* start, uint32_t word_length);
+#endif

@@ -1,5 +1,5 @@
 #***************************************************************************
-# * Project           			: shakti devt board
+# * Project           		: shakti devt board
 # * Name of the file	     	: setenv.sh
 # * Brief Description of file   : Updates the PATH and sets SHAKTISDK env variables
 # * Name of Author    	        : Anand Kumar S

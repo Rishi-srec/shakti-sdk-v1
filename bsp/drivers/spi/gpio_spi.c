@@ -1,8 +1,8 @@
 /***************************************************************************
- * Project           	         		:  shakti devt board
- * Name of the file	     		        :  gpio_spi.c
+ * Project           	         	:  shakti devt board
+ * Name of the file	     		:  gpio_spi.c
  * Brief Description of file            :  driver file for using gpio pins as SPI
- * Name of Author    	                :  Kotteeswaran @ aditya dubey
+ * Name of Author    	                :  Kottee @ aditya dubey
  * Email ID                             :  kottee.1@gmail.com
 
  Copyright (C) 2019  IIT Madras. All rights reserved.
@@ -19,22 +19,22 @@
 
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
-****************************************************************************/
+ ****************************************************************************/
 /**
 @file   gpio_spi.c
 @brief  Contains the driver routines for GPIO based SPI interface.
 @detail The GPIO_SPI module driver supports SPI driver routines using GPIO lines as SPI lines.
 */
+
 #include "platform.h"
 #include "gpio.h"
 #include "gpio_spi.h"
 
-/** @fn writebyte
+/** @fn static void writebyte(unsigned char writeData, unsigned char delay)
  * @brief Writes a byte
  * @details This function writes a byte into SPI Slave device using GPIO lines.
- * @param[in] unsigned char, unsigned char
- * @param[Out] No output parameter
- * @return Nil
+ * @param unsigned char writeData
+ * @param unsigned char delay
  */
 // at starting  edge sending
 static void writebyte(unsigned char writeData, unsigned char delay)
@@ -75,11 +75,10 @@ static void writebyte(unsigned char writeData, unsigned char delay)
         write_word(GPIO_DATA_REG, (read_word(GPIO_DATA_REG) |SPI_SS ));
 }
 
-/** @fn readbyte
+/** @fn unsigned char readbyte(unsigned char delay)
  * @brief Reads a byte 
  * @details Reads a byte from slave SPI device using GPIO lines as SPI lines.
- * @param[in] unsigned char
- * @param[Out] unsigned char
+ * @param unsigned char delay
  * @return Read value
  */
 //reading at rising edge reading 
@@ -119,12 +118,9 @@ unsigned char readbyte(unsigned char delay)
   4.) SS_Pin   -->  4th GPIO  // 1
 */
 
-/** @fn config
+/** @fn int config()
  * @brief Configures the GPIO pins for SPI functionality
  * @details Configures the GPIO pins as input or output based on the SPI pin functionlity.
- * @param[in] No input parameter
- * @param[Out] int
- * @return Nil
  */
 int config()
 {
