@@ -364,7 +364,9 @@ ifeq ($(UPLOAD),UPLOAD)
 	@riscv$(XLEN)-unknown-elf-objdump -D $(filepath)/output/deploy.shakti > $(filepath)/output/deploy.dump
 	@echo -e "Upload elf to Flash"
 #	@$(UPLOADDIR)/burnFlash.py ./genlib/deploy.shakti
-	@sudo $(OPENOCD) -f $(INTERFACE).cfg -c "reset init" -c "load_image $(filepath)/output/deploy.shakti ;resume 0x80000000;shutdown"
+#	@sudo $(OPENOCD) -f $(INTERFACE).cfg -c "reset init" -c "load_image $(filepath)/output/deploy.shakti ;resume 0x80000000;shutdown"
+	@riscv$(XLEN)-unknown-elf-objcopy -O ihex $(filepath)/output/deploy.shakti $(filepath)/output/deploy.hex
+	@sudo $(OPENOCD) -f $(INTERFACE).cfg -c "reset init" -c "load_image $(filepath)/output/deploy.hex ;resume 0x80000000;shutdown"
 	@rm -rf ./gen_lib/*.o
 endif
 
