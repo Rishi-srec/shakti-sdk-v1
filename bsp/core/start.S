@@ -164,6 +164,9 @@ and tp, tp, -64
 
 j init
 
+1: 
+j 1b
+
 .section ".tdata.begin"
 .globl _tdata_begin
 _tdata_begin:
@@ -175,4 +178,3 @@ _tdata_end:
 .section ".tbss.end"
 .globl _tbss_end
 _tbss_end:
-
