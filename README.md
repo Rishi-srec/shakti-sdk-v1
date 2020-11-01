@@ -15,8 +15,8 @@ List of Interactive videos to use SHAKTI over Xilinx Arty boards
 4. [Steps to add a simple application to SHAKTI-SDK](https://www.youtube.com/watch?v=qEoJzhBs9uI)
 
 
-* Master branch is the stable one. It has support for SHAKTI C class on Arty 7 100t and SHAKTI E class Arty 7 35t.
-* This repository is currently under in-house testing.
+* Master branch is the stable one.
+* This repository has example code of many sensors integrated.
 * Please read the manuals and videos completely, before starting development.
 
 ## Logging Issue 
@@ -26,7 +26,7 @@ Before raising an issue, please check if there are any similar issues.
 
 Please follow the below steps to create an issue.
 
-- Go to [`Issues`](https://gitlab.com/shaktiproject/software/shakti-sdk-dev/issues).
+- Go to [`Issues`](https://gitlab.com/shaktiproject/software/shakti-sdk/issues).
 - After clicking on New Issue you will get an option to select a template.
 - Click on choose template, list of available templates will be displayed, Select template "Bug".
 - Once the template named 'Bug' is selected, the description text box is populated by the template.
