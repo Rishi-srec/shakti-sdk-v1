@@ -42,8 +42,8 @@ platform.h - header file for parashu E class SoC on artix7_100t
 
 /*! Core Local Interruptor CLINT */
 #define CLINT_BASE 0x020000000
-#define MTIME      CLINT_BASE + 0xBFF8
-#define MTIMECMP   CLINT_BASE + 0x4000
+#define MTIME      0x0200BFF8
+#define MTIMECMP   0x02004000
 
 #define CLOCK_FREQUENCY 50000000
 

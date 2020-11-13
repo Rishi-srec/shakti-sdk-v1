@@ -270,6 +270,9 @@ else
 ifeq ($(PROGRAM),pwmled)
 filepath := pwm_applns/pwmled
 else
+ifeq ($(PROGRAM),test)
+filepath := plic_applns/test
+else
 ifeq ($(PROGRAM),interrupt_demo)
 filepath := plic_applns/interrupt_demo
 else
@@ -292,6 +295,7 @@ ifeq ($(PROGRAM),default_mode)
 filepath := xadc_applns/default_mode
 else
 	@echo "Entry for $(PROGRAM) not present"
+endif
 endif
 endif
 endif
