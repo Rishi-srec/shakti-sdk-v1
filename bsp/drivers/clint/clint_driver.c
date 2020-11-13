@@ -29,19 +29,20 @@ interrupt handler, configure the counter and support for e and c class clint tim
 
 #include "clint_driver.h"
 #include "log.h"
+#include "platform.h"
 #include "defines.h"
 
-uint32_t* mtime    = (uint32_t*) 0x0200bff8;
-uint32_t* mtimecmp = (uint32_t*) 0x02004000;
+uint64_t* mtime    = (uint64_t*) MTIME;
+uint64_t* mtimecmp = (uint64_t*) MTIMECMP;
 
 /** @fn static unsigned long mtime_low( )
  * @brief return the lower 32bit of mtime.
  * @details return the lower half of mtime. And this is needed mostly in dealing mtime in 32 bit machines.
  * @return unsigned long
  */
-static unsigned long mtime_low(void)
+static uint32_t mtime_low(void)
 {
-  return *(volatile unsigned long *)(CLINT_BASE + MTIME);
+  return *(uint32_t *)(MTIME);
 }
 
 /*
@@ -56,7 +57,7 @@ Get each 32 bit and append for full timer value
  */
 static uint32_t mtime_high(void)
 {
-  return *(volatile uint32_t *)(CLINT_BASE + MTIME + 4);
+  return *(volatile uint32_t *)(MTIME + 4);
 }
 
 /** @fn uint64_t get_timer_value()
@@ -68,7 +69,7 @@ static uint32_t mtime_high(void)
 uint64_t get_timer_value()
 {
 
-#if __riscv_xlen == 32
+#if __riscv_xlen == 64
    return ( ((uint64_t)mtime_high() << 32) | mtime_low());
 #else
   return mtime_low();
@@ -102,6 +103,7 @@ void mach_clint_handler( __attribute__((unused)) uintptr_t int_id,  __attribute_
 {
 	log_trace("\nmach_clint_handler entered\n");
 
+	//set mtimecmp to some value. On appln reqt basis handle timer interrupt
 	*mtimecmp = -1;
 
 	log_debug("mtimecmp value = %x\n", *mtimecmp);

@@ -194,26 +194,22 @@ void interrupt_enable(uint32_t interrupt_id)
 	log_debug("interrupt_id = %x\n", interrupt_id);
 
 	log_debug("PLIC BASE ADDRESS = %x, PLIC ENABLE OFFSET = %x\n" \
-		  ,PLIC_BASE_ADDRESS, PLIC_ENABLE_OFFSET);
-
+			,PLIC_BASE_ADDRESS, PLIC_ENABLE_OFFSET);
 	interrupt_enable_addr = (uint8_t *) (PLIC_BASE_ADDRESS +
-					     PLIC_ENABLE_OFFSET +
-					     (interrupt_id >> 3));
+			PLIC_ENABLE_OFFSET +
+			((interrupt_id) >> 3));
 
 	current_value = *interrupt_enable_addr;
 
 	log_debug("interrupt_enable_addr = %x current_value = %x \n", \
-		  interrupt_enable_addr, current_value);
+			interrupt_enable_addr, current_value);
 
 	/*set the bit corresponding to the interrupt src*/
-	new_value = current_value | (0x1 << (interrupt_id & 0x07));
+	new_value = current_value | (0x1 << (interrupt_id % 8));
 
-	*interrupt_enable_addr = new_value;
+	*((uint8_t*)interrupt_enable_addr) = new_value;
 
-	log_debug("interrupt_enable_addr = %x new_value = %x\n", \
-		  interrupt_enable_addr, *interrupt_enable_addr);
-
-	log_debug("value read: new_value = %x\n", *interrupt_enable_addr);
+	log_debug("value read: new_value = %x\n", new_value);
 
 	log_trace("\ninterrupt_enable exited \n");
 }
@@ -246,7 +242,7 @@ void interrupt_disable(uint32_t interrupt_id)
 		  interrupt_disable_addr, current_value);
 
 	/*unset the bit corresponding to the interrupt src*/
-	new_value = current_value & (~(0x1 << (interrupt_id & 0x07)));
+	new_value = current_value & (~(0x1 << (interrupt_id % 8)));
 
 	*interrupt_disable_addr = new_value;
 
@@ -254,9 +250,6 @@ void interrupt_disable(uint32_t interrupt_id)
 
 	log_debug("interrupt id %d, state changed to %d\n",
 		  interrupt_id,hart0_interrupt_matrix[interrupt_id].state);
-
-	log_debug("interrupt_disable_addr = %x new_value = %x\n",
-		  interrupt_disable_addr, *interrupt_disable_addr);
 
 	log_trace("interrupt_disable exited\n");
 }
@@ -295,7 +288,7 @@ void set_interrupt_priority(uint32_t priority_value, uint32_t int_id)
 	uint32_t * interrupt_priority_address;
 
 	/*
-	   based address + priority offset + 4*interruptId
+	   base address + priority offset + 4*interruptId
 	 */
 
 	interrupt_priority_address = (uint32_t *) (PLIC_BASE_ADDRESS +
@@ -375,8 +368,6 @@ void plic_init()
 	hart0_interrupt_matrix[0].id = 0;
 	hart0_interrupt_matrix[0].priority = 0;
 	hart0_interrupt_matrix[0].count = 0;
-
-	interrupt_disable(int_id);
 
 	for(int_id = 1; int_id < PLIC_MAX_INTERRUPT_SRC; int_id++)
 	{
