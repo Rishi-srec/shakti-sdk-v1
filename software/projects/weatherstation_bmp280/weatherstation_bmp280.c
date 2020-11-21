@@ -47,10 +47,15 @@
 #include "log.h"
 #include "bmp280.h"
 
-//#define API_KEY "9T40C2TMUSU1ZX6E"
+// Replace the API KEY
 #define API_KEY "PPI6OVOI1A2LGXMZ"
+
+// UART 1 to communicate to ESP8266
 #define ESP_UART uart_instance[1]
+
+// Using I2C 1 to connect to BMP280
 #define I2C i2c_instance[1]
+
 /**
   * @fn int write_to_esp8266(char *data,uart_num sel,int baudrate)
   * @brief sends data to esp8266 using UART
@@ -102,11 +107,9 @@ int read_from_esp8266(char *data)
 	for (int i = 0; i < 198; i++)
 	{
 		read_uart_character(ESP_UART, &ch);
-		//printf("read from esp %c  \n",ch);
 		*str = ch;
 		str++;
 		*str = '\0';
-		//printf("read  %c\n",ch);
 		if (strstr(test, "OK") != NULL)
 		{
 			log_debug("read from esp8266 %s\n", test);
@@ -148,16 +151,7 @@ void setup_esp8266()
 	write_to_esp8266("AT");
 	delay_loop(1000, 1000);
 	read_from_esp8266(data);
-	/*
-	printf(" set esp8266 as AP\n");
-	write_to_esp8266("AT+CWMODE=1");
-	delay(1);
-	read_from_esp8266(data);
-	printf(" Connect esp8266 to AP \n");
-	write_to_esp8266("AT+CWJAP=\"newwifi\",\"1234drama#\"");
-	delay(3);
-	read_from_esp8266(data);
-*/
+
 	printf("sending AT Echo off command to esp\n");
 	write_to_esp8266("ATE0");
 	delay_loop(50, 50);

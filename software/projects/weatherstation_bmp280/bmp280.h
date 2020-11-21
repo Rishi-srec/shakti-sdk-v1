@@ -1,3 +1,29 @@
+/***************************************************************************
+* Project                               :  shakti devt board
+* Name of the file                      :  weatherstation.c
+* Brief Description of file     :  A sample project to demonstrate
+                                           integration of temperature sensor
+                                           and transmission of data to a website
+* Name of Author                :  Anand Kumar S
+* Email ID                      :  007334@imail.iitm.ac.in
+
+    Copyright (C) 2019  IIT Madras. All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+***************************************************************************/
+
 #define I2C i2c_instance[1]
 
 #define BMP280_SLAVE_ADDRESS 0xEC       //Defines the Starting address of slave//
