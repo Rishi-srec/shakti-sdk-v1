@@ -39,7 +39,7 @@ GENLIB:=$(shell pwd)/../../software/projects/
 # Invoke all possible combinations of applns for different targets
 # There is a provision to make in the exact folder where code is written
 # We are using that provision to invole appropriate makefile scripts from top folder
-all: check library do upload flash finish
+all: check do upload flash finish
 	@echo "TARGET is" $(TARGET)
 check:
 ifeq ($(DEBUG),DEBUG)
@@ -99,7 +99,7 @@ ifeq ($(TARGET),vajra)  # c-class 100t rv64imacsu
 	@$(eval XLEN = 64)
 	@$(eval WIDTH = 8 )
 	@$(eval FLAGS = -D vajra )
-	@$(eval MARCH = rv64imac)
+	@$(eval MARCH=rv64imac)
 	@$(eval MABI=lp64)
 	@$(eval UPLODER= $(UPLOADER)/spansion)
 	@$(eval INTERFACE = $(bspboard)/ftdi)
@@ -151,8 +151,8 @@ else
 ifeq ($(PROGRAM),irrigationsystem)
 filepath := ./irrigationsystem
 else
-ifeq ($(PROGRAM),weatherstation)
-filepath := ./weatherstation
+ifeq ($(PROGRAM),weatherstation_bmp280)
+filepath := ./weatherstation_bmp280
 else
 ifeq ($(PROGRAM),fingerprint)
 filepath := ./fingerprint
