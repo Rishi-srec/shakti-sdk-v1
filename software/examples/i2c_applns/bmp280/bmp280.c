@@ -72,25 +72,6 @@ int16_t  bmp280_calib_dig_P7;
 int16_t  bmp280_calib_dig_P8;
 int16_t  bmp280_calib_dig_P9;
 
-#include <stdint.h> //Includes the definitions of standard input/output functions
-#include "i2c.h"
-#include "log.h"
-#include "uart.h"
-
-uint16_t bmp280_calib_dig_T1;
-int16_t  bmp280_calib_dig_T2;
-int16_t  bmp280_calib_dig_T3;
-
-uint16_t bmp280_calib_dig_P1;
-int16_t  bmp280_calib_dig_P2;
-int16_t  bmp280_calib_dig_P3;
-int16_t  bmp280_calib_dig_P4;
-int16_t  bmp280_calib_dig_P5;
-int16_t  bmp280_calib_dig_P6;
-int16_t  bmp280_calib_dig_P7;
-int16_t  bmp280_calib_dig_P8;
-int16_t  bmp280_calib_dig_P9;
-
 /** @fn int read_bmp280_register(i2c_struct *i2c_instance, unsigned int reg_offset, unsigned int *readTemp, unsigned long delay) 
  * @brief It helps to read the register value of the bmp280.
  * @details It reads the 1byte register value of the chip.
