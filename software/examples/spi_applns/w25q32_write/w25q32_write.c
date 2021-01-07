@@ -1,6 +1,6 @@
 /***************************************************************************
  * Project           	           : shakti devt board
- * Name of the file	     	   : w25q32_write.c
+ * Name of the file	     	       : w25q32_write.c
  * Brief Description of file       : Performs the windonb flash  spi writing of 0 to 100 nos .
  * Name of Author    	           : G Nambirajan & Koteeswaran
  * Email ID                        : nambirajan2004@gmail.com
@@ -35,9 +35,7 @@ cs  -spi cs
 *************************************************/
 #include <stdint.h>
 #include "spi.h"
-
-#define PINMUX_CONF_REG 0x41510
-int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
+#include "pinmux.h"
 
 /** @fn void w25q32()
  * @brief Writes the spi value to w25q32
@@ -48,7 +46,7 @@ void w25q32()
 	int tmp = 0x00;//32 bits of data can be written at a time
 	int write_address = 0x0000100;  // read/write from/to this address
 
-	*pinmux_reg = 0x154000;	
+	*pinmux_config_reg = 0x154000;	
 
 	waitfor(200);
 	configure_spi(SPI1_OFFSET);
@@ -83,4 +81,4 @@ void main()
 {
 	w25q32();
 	while (1);
-}                                                                       
+}

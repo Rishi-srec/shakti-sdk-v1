@@ -35,9 +35,7 @@ cs  -spi cs
 **********************************************/
 #include <stdint.h>
 #include "spi.h"
-
-#define PINMUX_CONF_REG 0x41510
-int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
+#include "pinmux.h"
 
 /** 
  * @fn void w25q32()
@@ -50,7 +48,7 @@ void w25q32()
 	int read_address = 0x00000100;  //read from this address
 	int* bram_address = (int*) 0x80000100; //write to this address
 
-	*pinmux_reg = 0x154000;	
+	*pinmux_config_reg = 0x154000;	
 
 	configure_spi(SPI1_OFFSET);
 	spi_init();

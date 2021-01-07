@@ -1,6 +1,6 @@
 /***************************************************************************
- * Project           		:  shakti devt board
- * Name of the file	     	:  mcp4921_dac.c
+ * Project           	     	:  shakti devt board
+ * Name of the file	     	    :  mcp4921_dac.c
  * Brief Description of file    :  Performs the Digital to analog operation with spi writing.
  * Name of Author    	        :  G Nambirajan, Koteeswaran
  * Email ID                     :  nambirajan2004@gmail.com
@@ -31,10 +31,6 @@
 #include <stdint.h>
 #include "platform.h"
 #include "pinmux.h"
-
-#define PINMUX_CONF_REG 0x41510
-
-int * pinmux_reg  =   (const int*) PINMUX_CONF_REG;
 
 extern volatile unsigned int* pinmux_config_reg;
 extern int* spi_cr1 ;

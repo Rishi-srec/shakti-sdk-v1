@@ -1,8 +1,9 @@
-
 #Created by Sathya Narayanan N
 # Email id: sathya281@gmail.com
 
-#   Copyright (C) 2019  IIT Madras. All rights reserved.
+#Edited by : P Girinath, Shivaram Prasad Meesa
+# Email id: palanigirinath@gmail.com, shivaramprasadmeesa@gmail.com 
+#   Copyright (C) 2020  IIT Madras. All rights reserved.
 
 #This program is free software: you can redistribute it and/or modify
 #it under the terms of the GNU General Public License as published by
@@ -21,21 +22,25 @@ SHELL := /bin/bash # Use bash syntax
 DC ?=
 PROGRAM ?=
 #default target board
-TARGET ?= artix7_35t
+TARGET ?= artix7_100t
 DEBUG ?=
 MARCH ?= rv32imac
 MABI  ?= ilp32
-XLEN  ?=32
+XLEN  ?= 32
 FLAGS ?=
 
 all: create_dir
-	make pwmled.riscv
+	make uart-cam.riscv
 
-pwmled.riscv: create_dir
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -w $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(FLAGS) -I$(bspinc) -I$(bspboard) -c ./pwmled.c -o ./output/pwmled.o
-	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T  $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a ./output/pwmled.o -o ./output/$(PROGRAM).shakti -static -nostartfiles
+
+uart-cam.riscv: create_dir
+	@riscv$(XLEN)-unknown-elf-gcc -w  $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bsplib) -I$(bspinc) -I$(bspdri)/plic -I$(bspboard) -c  ./camera/ucam.c -o ./output/ucam.o      -march=$(MARCH) -mabi=$(MABI) -lm -lgcc 
+	@riscv$(XLEN)-unknown-elf-gcc -w  $(DC) -mcmodel=medany -static -std=gnu99 -fno-builtin-printf $(flags) -I$(bsplib) -I$(bspinc) -I$(bspdri)/plic -I$(bspboard) -c  main.c  -o ./output/main.o        -march=$(MARCH) -mabi=$(MABI) -lm -lgcc  
+	@riscv$(XLEN)-unknown-elf-gcc -march=$(MARCH) -mabi=$(MABI) -T $(bspboard)/link.ld $(GENLIB)/gen_lib/libshakti$(XLEN).a  ./output/ucam.o  ./output/main.o -o ./output/$(PROGRAM).shakti -static -nostartfiles -lm -lgcc
 	@riscv$(XLEN)-unknown-elf-objdump -D ./output/$(PROGRAM).shakti > ./output/$(PROGRAM).dump
 
 create_dir:
 	@mkdir -p ./output
+
+
 
