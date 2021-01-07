@@ -32,8 +32,8 @@ interrupt handler, configure the counter and support for e and c class clint tim
 #include "platform.h"
 #include "defines.h"
 
-uint64_t* mtime    = (uint64_t*) MTIME;
-uint64_t* mtimecmp = (uint64_t*) MTIMECMP;
+volatile uint64_t* mtime    =  (MTIME);
+volatile uint64_t* mtimecmp =  (MTIMECMP);
 
 /** @fn static unsigned long mtime_low( )
  * @brief return the lower 32bit of mtime.
@@ -87,8 +87,8 @@ void configure_counter( uint64_t value)
 
 	*mtimecmp = *mtime + value;
 
-	log_info("mtimecmp value = %d\n", *mtimecmp);
-	log_info("mtime value = %d\n", *mtime);
+	log_debug("mtimecmp value = %d\n", *mtimecmp);
+	log_debug("mtime value = %d\n", *mtime);
 
 	log_trace("\nconfigure_counter exited\n");
 }
@@ -106,8 +106,7 @@ void mach_clint_handler( __attribute__((unused)) uintptr_t int_id,  __attribute_
 	//set mtimecmp to some value. On appln reqt basis handle timer interrupt
 	*mtimecmp = -1;
 
-	log_debug("mtimecmp value = %x\n", *mtimecmp);
-	log_debug("mtime value = %x\n", *((uint32_t *)(0x0200bff8)));
+	log_info("Timer interrupt handled \n");
 
 	log_trace("mach_clint_handler exited\n");
 }

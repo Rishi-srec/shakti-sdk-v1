@@ -39,7 +39,7 @@ GENLIB:=$(shell pwd)/../../software/projects/
 # Invoke all possible combinations of applns for different targets
 # There is a provision to make in the exact folder where code is written
 # We are using that provision to invole appropriate makefile scripts from top folder
-all: check do upload flash finish
+all: check library do upload flash finish
 	@echo "TARGET is" $(TARGET)
 check:
 ifeq ($(DEBUG),DEBUG)
@@ -160,6 +160,10 @@ else
 ifeq ($(PROGRAM),flash_gpio)
 filepath := ./flash_gpio
 else
+ifeq ($(PROGRAM),uart-cam)
+filepath := ./uart-cam/ucam
+else
+endif
 endif
 endif
 endif

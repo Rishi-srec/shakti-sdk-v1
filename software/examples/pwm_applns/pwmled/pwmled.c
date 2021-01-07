@@ -1,6 +1,6 @@
 /***************************************************************************
-* Project               	    	:  shakti devt board
-* Name of the file	            	:  pwmled.c
+* Project               	        	:  shakti devt board
+* Name of the file	            	    :  pwmled.c
 * Brief Description of file             :  example file for pwm led.
 * Name of Author    	                :  Abhinav Ramnath
 * Email ID                              :  abhinavramnath13@gmail.com
@@ -28,10 +28,7 @@
 */
 
 #include "pwm_driver.h"
-
-#define PINMUX_CONF_REG 0x40310
-
-int *pinmux_reg = (const int*) PINMUX_CONF_REG;
+#include "pinmux.h"
 
 /** @fn int main()
  * @brief main function that runs the code
@@ -43,7 +40,7 @@ int main()
 	 *to set it to the frequency required. Base clock is 50MHz
 	 **/
 	pwm_configure(PWM_0, 0xf000, 0xf0, 0x80, false);
-        *pinmux_reg = 0x80;
+    *pinmux_config_reg = 0x80;
 		
 	/*This function starts the PWM in the specified mode*/
 	pwm_start(PWM_0,0);
