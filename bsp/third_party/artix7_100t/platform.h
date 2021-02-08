@@ -30,6 +30,8 @@ platform.h - header file for Artix 100T C class SoC
 #define CLINT_BASE 0x020000000
 #define MTIME      0x0200BFF8
 #define MTIMECMP   0x02004000
+#define CLINT_DIVISOR   256
+
 #define CLOCK_FREQUENCY 20000000
 
 #define MCAUSE_INT         0x80000000
