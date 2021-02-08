@@ -285,6 +285,9 @@ else
 ifeq ($(PROGRAM),counter)
 filepath := clint_applns/counter
 else
+ifeq ($(PROGRAM),1_second)
+filepath := clint_applns/1_second
+else
 ifeq ($(PROGRAM),gyro_softi2c)
 filepath := gpio_applns/gyro_softi2c
 else
@@ -302,6 +305,7 @@ endif
 endif
 endif
 endif	
+endif
 endif
 endif
 endif

@@ -45,6 +45,7 @@ platform.h - header file for pinaka E class SoC on artix7_35t
 #define CLINT_BASE 0x020000000
 #define MTIME      0x0200BFF8
 #define MTIMECMP   0x02004000
+#define CLINT_DIVISOR   16
 
 #define CLOCK_FREQUENCY 50000000
 

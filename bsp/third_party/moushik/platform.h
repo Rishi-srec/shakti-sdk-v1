@@ -34,6 +34,7 @@ platform.h - header file for moushik E class SoC
 #define CLINT_BASE 0x020000000
 #define MTIME      0x0200BFF8
 #define MTIMECMP   0x02004000
+#define CLINT_DIVISOR   16
 
 #define MCAUSE_INT         0x80000000
 #define MCAUSE_CAUSE       0x7FFFFFFF

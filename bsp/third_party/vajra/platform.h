@@ -44,6 +44,7 @@ platform.h - header file for vajra C class SoC on artix7_100t
 #define CLINT_BASE 0x020000000
 #define MTIME      0x0200BFF8
 #define MTIMECMP   0x02004000
+#define CLINT_DIVISOR   256
 
 #define CLOCK_FREQUENCY 50000000
 
