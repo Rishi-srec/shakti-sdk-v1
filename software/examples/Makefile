@@ -153,6 +153,12 @@ else
 ifeq ($(PROGRAM),hello)
 filepath := uart_applns/hello
 else
+ifeq ($(PROGRAM),uss)
+filepath := uart_applns/uss
+else
+ifeq ($(PROGRAM),first)
+filepath := uart_applns/first
+else
 ifeq ($(PROGRAM),csr_test)
 filepath := uart_applns/csr_test
 else
@@ -179,6 +185,9 @@ filepath := i2c_applns/at24c256
 else
 ifeq ($(PROGRAM),mpu6050)
 filepath := i2c_applns/mpu6050
+else
+ifeq ($(PROGRAM),sps30)
+filepath := gpio_applns/sps30_V1/release/sps30-i2c-
 else
 ifeq ($(PROGRAM),btnled)
 filepath := gpio_applns/btnled
@@ -348,6 +357,8 @@ endif
 endif
 endif
 endif
+endif
+endif
 
 erase: check library 
 	@rm -r output
@@ -433,6 +444,7 @@ ifeq ($(PROGRAM),)
 	cd $(filepath)/../ && $(MAKE) clean CLEAR=$(CLEAR)
 else
 	cd $(filepath)/../ && $(MAKE) clean PROGRAM=$(PROGRAM) CLEAR=$(CLEAR)
+endif
 endif
 endif
 endif

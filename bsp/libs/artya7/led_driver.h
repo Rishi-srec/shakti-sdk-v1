@@ -44,10 +44,10 @@
 #define LED1_B GPIO21
 
 /*! Normal LED 1 defines */
-#define LED2 GPIO22
+#define LED2 GPIO2
 
 /*! Normal LED 2 defines */
-#define LED3 GPIO23
+#define LED3 GPIO3
 
 
 /*! Combined RGB LED defines */

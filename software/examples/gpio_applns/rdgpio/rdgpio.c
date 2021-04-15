@@ -39,7 +39,7 @@
 void read_data()
 {
 	unsigned long data = 0;
-	write_word(GPIO_DIRECTION_CNTRL_REG, 0x00000000);
+//	write_word(GPIO_DIRECTION_CNTRL_REG, 0x00000000);
 
 	while (1) {
 		data =read_word(GPIO_DATA_REG);//copi GPIO_DATA_REG content

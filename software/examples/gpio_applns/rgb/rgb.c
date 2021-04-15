@@ -39,12 +39,12 @@ void main()
     write_word(GPIO_DIRECTION_CNTRL_REG, 0x00000FFF);
 
     while (1) {
-        write_word(GPIO_DATA_REG, GPIO0);
-	    delay_loop(1000, 1000);
-	printf("\nRED LIGHT");			//RED LIGHT.
-        write_word(GPIO_DATA_REG, 0x00);
-        delay_loop(1000,1000);
 
+       write_word(GPIO_DATA_REG, GPIO0);
+	    delay_loop(1000, 1000);
+			printf("\nRED LIGHT");					//RED LIGHT.
+        write_word(GPIO_DATA_REG, 0x00);
+     
         write_word(GPIO_DATA_REG, GPIO1);
 	    delay_loop(1000, 1000);
 	printf("\nGREEN LIGHT");			//GREEN LIGHT.
@@ -53,7 +53,7 @@ void main()
         
         write_word(GPIO_DATA_REG, GPIO2);
 	    delay_loop(1000, 1000);
-	printf("\nBLUE LIGHT");			//BLUE LIGHT.
+	printf("\nBLUE LIGHT");				//BLUE LIGHT.
         write_word(GPIO_DATA_REG, 0x00);
         delay_loop(1000,1000);
     }

@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "gpio.h": "c",
+        "gpio_i2c.h": "c",
+        "types.h": "c",
+        "clock_t.h": "c",
+        "sensirion_arch_config.h": "c",
+        "sps_git_version.h": "c"
+    }
+}

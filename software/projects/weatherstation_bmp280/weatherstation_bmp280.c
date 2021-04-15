@@ -183,7 +183,7 @@ void transmit_data(int temperature, int pressure)
 	length = length + 2;
 	sprintf(CIPSEND, "AT+CIPSEND=%d", length);
 	// Connect to Wifi using esp8266
-
+	write_to_esp8266("AT+CWJAP=\"AndroidA\",\"244466666\"");
 	// Connect to Wifi using esp8266
 	printf("\n Open connection to thingspeak.com\n");
 	printf("\n sending  %s\n", sendData);

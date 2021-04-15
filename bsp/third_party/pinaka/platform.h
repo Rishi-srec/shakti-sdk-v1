@@ -159,7 +159,7 @@ platform.h - header file for pinaka E class SoC on artix7_35t
 #define GPIO27 (1 << 27)
 #define GPIO28 (1 << 28)
 #define GPIO29 (1 << 29)
-#define GPIO30 (1 << 30)
+#define GPIO30 (1 << 30) 
 #define GPIO31 (1 << 31)
 #define GPIO_COUNT  0x20
 

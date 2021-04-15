@@ -38,22 +38,26 @@ implemented using gpio pins.
  */
 int main(void)
 {
-	write_word(GPIO_DIRECTION_CNTRL_REG, ~(1 << 0) );
+	write_word(GPIO_DIRECTION_CNTRL_REG, 0xFFEFFFFF );
 
 	while (1) {
 
 		unsigned long readData = 0;
 
-		readData = read_word(GPIO_DATA_REG) & 0x1;    
+		readData = read_word(GPIO_DATA_REG) & 0x00100000;  
+		//readData = read_word(0x00100000);    
+  
 
-		log_debug("\n Read Data is :0x%08lx", readData);
+		log_info("\n Read Data is :%x", readData);
 
 		if (readData) {           //if readdata //
-			log_debug("; LED ON");
-			write_word(GPIO_DATA_REG, 0X2); 
+			log_info("; LED ON");
+			write_word(GPIO_DATA_REG, (0x000f0000)); 
+			
+			
 		}
 		else {                    //if not //
-			log_debug("; LED OFF");
+			log_info("; LED OFF");
 			write_word(GPIO_DATA_REG, 0X0); 
 		}
 		delay_loop(1000,1000);

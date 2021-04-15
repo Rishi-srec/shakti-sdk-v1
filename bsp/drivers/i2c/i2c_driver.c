@@ -190,6 +190,7 @@ int wait_till_txrx_operation_Completes(i2c_struct * instance, int *status)
 	*status = instance->status;
 
 	while ((*status & I2C_PIN) && --timeout) {
+		printf("%d",*status);
 		waitfor(10000); /* wait for 100 us */
 		*status = instance->status;
 	}
